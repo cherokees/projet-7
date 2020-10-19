@@ -6,7 +6,7 @@ import Header from './template/header';
 function App() {
   return (
     <div className="App">
-      <Header />
+      < Header />
     </div>
   );
 }

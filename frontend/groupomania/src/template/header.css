@@ -2,10 +2,12 @@
     background-color: aqua;
     width: 100%;
     height: 8rem;
+    display: flex;
+    justify-content: space-around;
   }
 
 .logo{
-    background-image: url("/frontend/groupomania/public/images/icon-left-font.png");
+    /* background-image: url("/frontend/groupomania/public/images/icon-left-font.png"); */
     width: 5rem;
     height: 5rem;
 }
