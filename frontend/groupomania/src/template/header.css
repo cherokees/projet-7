@@ -1,0 +1,11 @@
+.container_header{
+    background-color: aqua;
+    width: 100%;
+    height: 8rem;
+  }
+
+.logo{
+    background-image: url("/frontend/groupomania/public/images/icon-left-font.png");
+    width: 5rem;
+    height: 5rem;
+}
