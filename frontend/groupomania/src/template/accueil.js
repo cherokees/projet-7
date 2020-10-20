@@ -9,6 +9,7 @@ const style_accueil = {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
+        backgroundAttachment: 'fixed',
     }
 }
 

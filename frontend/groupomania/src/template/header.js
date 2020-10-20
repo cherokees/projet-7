@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
 const styles = {
@@ -22,12 +23,16 @@ class Header extends React.Component {
                 <div className="logo" style={styles.logo}>
                 </div>
                 <div className='header_container_login'>
-                    <div className="login">
-                        <p>Login</p>
-                    </div>
-                    <div className="signup">
-                        <p>Signup</p>
-                    </div>
+                    <Link to='/Login'>
+                        <div className="login">
+                            <p>Login</p>
+                        </div>
+                    </Link>
+                    <Link to='/Signup'>
+                        <div className="signup">
+                            <p>Signup</p>
+                        </div>
+                    </Link>
                 </div>
             </div>
         )
