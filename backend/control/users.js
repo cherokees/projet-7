@@ -1,6 +1,6 @@
 const { getAllRows, sqlQuery } = require("../database/mysql");
-const bcrypt = require("bcrypt");
-
+// const bcrypt = require("bcrypt");
+import bcrypt from 'bcrypt';
 
 const tableName = 'users';
 const defaultReturnFields = ['users_id', 'users_email', 'users_first_name', 'users_last_name', 'users_created_date'];

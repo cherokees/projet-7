@@ -1,12 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 import Header from './template/header';
+import Footer from './template/footer';
+import Accueil from './template/accueil';
+import './scss/style.scss'
 
 function App() {
   return (
     <div className="App">
-      < Header />
+      <Header />
+      <Accueil />
+      <Footer />
     </div>
   );
 }

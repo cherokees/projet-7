@@ -1,12 +1,25 @@
-import styles from './header.css';
 import React from 'react';
-import logo from '../images/icon-left-font.png'
+
+
+const styles = {
+    container: {
+        width: '100%',
+        height: '4rem',
+        display: 'flex',
+    },
+    logo: {
+        backgroundImage: 'url("./images/logo-groupomania.png")',
+        backgroundSize: 'contain',
+        width: '4rem',
+        height: '4rem',
+    },
+}
 
 class Header extends React.Component {
     render() {
         return (
-            <div className='container_header'>
-                <div className='logo' styles={{ backgroundImage: `url(${logo})` }}>
+            <div className='container_header' style={styles.container}>
+                <div className="logo" style={styles.logo}>
                 </div>
                 <div className='header_container_login'>
                     <div className="login">
