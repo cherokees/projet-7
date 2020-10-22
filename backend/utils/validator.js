@@ -2,7 +2,34 @@ export const VLD_NOT_NULL = 0;
 export const VLD_IS_NUMBER = 1;
 export const VLD_IS_STRING = 2;
 export const VLD_NOT_EMPTY_STRING = 3;
+export const VLD_NO_SPECIAL_CHARS = 4;
+export const VLD_IS_EMAIL = 5;
 
+
+function hasSpecialChars(value, allowed = []) {
+    const checks = [];
+    checks.push(/[`!#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/);
+    if (!allowed.includes('@')) checks.push(/[@]/);
+    if (!allowed.includes('-')) checks.push(/[-]/);
+    if (!allowed.includes('_')) checks.push(/[_]/);
+    if (!allowed.includes('.')) checks.push(/[.]/);
+    if (!allowed.includes(' ')) checks.push(/[ ]/);
+
+    let result = false;
+    checks.forEach((rgx) => {
+        if (rgx.test(value)) {
+            result = true;
+        }
+    });
+    return result;
+}
+
+function isValidEmail(value) {
+    if (/\S+@\S+\.\S+/.test(value) && !hasSpecialChars(value, ['.', '@'])) {
+        return true;
+    }
+    return false;
+}
 
 function getValidationReport(targetObj, fields) {
     const report = [];
@@ -14,6 +41,8 @@ function getValidationReport(targetObj, fields) {
         const isNumberCheck = !isNaN(parseFloat(value)) && isFinite(value); // Vérifie que la valeur est un nombre
         const isStringCheck = typeof value === 'string'; // Vérifie que la valeur est un string
         const notEmptyStringCheck = value !== ''; // Vérifie que la valeur n'est pas un string vide
+        const noSpecialCharsCheck = !hasSpecialChars(value);
+        const isEmailCheck = isValidEmail(value);
 
         if (!requiredCheck) {
             report.push(`Paramètre manquant : ${key}`);
@@ -24,11 +53,23 @@ function getValidationReport(targetObj, fields) {
         } else if (vldTypes.includes(VLD_IS_NUMBER) && !isNumberCheck) {
             report.push(`Mauvais type : ${key} [got ${typeof value}]`);
 
-        } else if ((vldTypes.includes(VLD_IS_STRING) || vldTypes.includes(VLD_NOT_EMPTY_STRING)) && !isStringCheck) {
+        } else if (
+            (
+                vldTypes.includes(VLD_IS_STRING)
+                || vldTypes.includes(VLD_NOT_EMPTY_STRING)
+                || vldTypes.includes(VLD_IS_EMAIL)
+            )
+            && !isStringCheck) {
             report.push(`Mauvais type : ${key} [got ${typeof value}]`);
 
         } else if (vldTypes.includes(VLD_NOT_EMPTY_STRING) && !notEmptyStringCheck) {
             report.push(`Paramètre vide : ${key}`);
+
+        } else if (vldTypes.includes(VLD_NO_SPECIAL_CHARS) && !noSpecialCharsCheck) {
+            report.push(`Caractères interdits : ${key}`);
+
+        } else if (vldTypes.includes(VLD_IS_EMAIL) && !isEmailCheck) {
+            report.push(`L'adresse e-mail n'est pas valide : ${key}`);
 
         }
     });

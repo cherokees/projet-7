@@ -6,6 +6,8 @@
 const http = require('http');
 const bodyParser = require('body-parser');
 const express = require('express');
+const userRouter = require('./routes/usersRouter')
+
 
 // import './utils/validator';
 
@@ -30,6 +32,8 @@ server.on('listening', () => {
     const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
     console.log('Listening on ' + bind);
 });
+
+app.use('/api/login', userRouter);
 
 // module.exports = app;
 // export default app;

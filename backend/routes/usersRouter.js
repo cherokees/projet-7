@@ -1,7 +1,8 @@
-const express = require('express');
-const { getAllUsers, addUser } = require('../control/users');
-const { validateFieldsPOST, VLD_NOT_EMPTY_STRING } = require('../utils/validator');
-const router = express.Router();
+import express from 'express';
+import { getAllUsers, addUser } from '../control/users';
+import { validateFieldsPOST, VLD_NOT_EMPTY_STRING } from '../utils/validator';
+const router = express.Router()
+
 
 router.get("/", async (req, res, next) => {
     try {

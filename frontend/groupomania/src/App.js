@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import Header from './template/header';
 import Footer from './template/footer';
@@ -8,17 +8,30 @@ import Signup from './template/Signup';
 import './scss/style.scss';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
+const style_accueil = {
+  container: {
+    backgroundImage: 'url("./images/city-ravi-patel.jpg")',
+    opacity: '0.6',
+    height: '60rem',
+    width: '100%',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundAttachment: 'fixed',
+  }
+}
+
 function App() {
   return (
     <div className="App">
       <Router>
         <Header />
-        {/* <Accueil /> */}
-        <Footer />
+        <div className="container_bg_img" style={style_accueil.container}></div>
         <Route path="/" exact component={Accueil}></Route>
-        <Route path="/Login" exact component={Login}></Route>
-        <Route path="/Signup" exact component={Signup}></Route>
+        <Route path="/login" exact component={Login}></Route>
+        <Route path="/signup" exact component={Signup}></Route>
 
+        <Footer />
       </Router>
     </div>
   );

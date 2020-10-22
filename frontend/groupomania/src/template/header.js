@@ -20,8 +20,9 @@ class Header extends React.Component {
     render() {
         return (
             <div className='container_header' style={styles.container}>
-                <div className="logo" style={styles.logo}>
-                </div>
+                <Link to='/'>
+                    <div className="logo" style={styles.logo}></div>
+                </Link>
                 <div className='header_container_login'>
                     <Link to='/Login'>
                         <div className="login">
