@@ -1,4 +1,5 @@
 import React from 'react';
+import { appFetch } from '../appFetch/appFetch';
 
 class Signup extends React.Component {
 
@@ -64,10 +65,42 @@ class Signup extends React.Component {
         e.preventDefault();
 
 
+        try {
+
+            // if else
+            let body = {
+                email: this.state.email,
+                password: this.state.password,
+            }
+
+            const result = await appFetch('/user/login', body);
+            console.log(result);
+
+            // else ici
+
+            // dans constructor, crée une clé du state
+            // pageErrors: { email: "", password: ""}
+
+
+            // gérer l'affichage des erreurs
+            // si pass !== cfPass => state.pageErrors.password = "Bla bla bla"
+
+            // Ouverture/fermeture du state
+
+
+        } catch (err) {
+            console.error('erreur login', err);
+        }
+
     }
 
-
     render() {
+
+        // let disableSubmit = true
+        // conditions if pass = cfpass etc...
+        // => disableSubmit = false
+        // + désactiver (disable) le bouton submit
+
         return (
             <>
                 <form className="form_signup">

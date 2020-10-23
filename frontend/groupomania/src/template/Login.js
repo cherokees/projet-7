@@ -1,14 +1,5 @@
 import React from 'react';
-
-
-class Test extends React.Component {
-    render() {
-        return (
-            <h1>{this.props.text}</h1>
-        );
-    }
-}
-
+import { appFetch } from '../appFetch/appFetch';
 
 class Login extends React.Component {
 
@@ -48,17 +39,20 @@ class Login extends React.Component {
     async handleSubmit(e) {
         e.preventDefault();
 
-        fetch('http://localhost:3000/api/login', {
-            method: "POST",
-            body: JSON.stringify(this.state),
-            headers: { 'content-type': 'application/json' }
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((login_value) => {
-                console.log(login_value);
-            })
+
+        try {
+            let body = {
+                email: this.state.email,
+                password: this.state.password,
+            }
+
+            const result = await appFetch('/user/login', body);
+            console.log(result);
+
+        } catch (err) {
+            console.error('erreur login', err);
+        }
+
     }
 
     render() {

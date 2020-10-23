@@ -5,6 +5,7 @@ export const VLD_NOT_EMPTY_STRING = 3;
 export const VLD_NO_SPECIAL_CHARS = 4;
 export const VLD_IS_EMAIL = 5;
 
+//Fonction de vérification des caractères spéciaux
 
 function hasSpecialChars(value, allowed = []) {
     const checks = [];
@@ -24,12 +25,16 @@ function hasSpecialChars(value, allowed = []) {
     return result;
 }
 
+//Fonction de vérification de l'adresse email
+
 function isValidEmail(value) {
-    if (/\S+@\S+\.\S+/.test(value) && !hasSpecialChars(value, ['.', '@'])) {
+    if (/\S+@\S+\.\S+/.test(value) && !hasSpecialChars(value, ['.', '@'])) { //comparaison des caractères de l'adresse mail avec ce qui est attendu
         return true;
     }
     return false;
 }
+
+//
 
 function getValidationReport(targetObj, fields) {
     const report = [];

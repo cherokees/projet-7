@@ -3,4 +3,4 @@ require('babel-register')({ presets: ['env'] });
 require('babel-polyfill');
 
 // Importe le reste de l'application
-module.exports = require('./serveur.js');
+module.exports = require('./server.js');
