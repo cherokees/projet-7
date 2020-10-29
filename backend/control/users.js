@@ -21,13 +21,14 @@ export async function addUser(email, password, firstName, lastName) {
         const passwordHash = await bcrypt.hash(password, 10);
 
         const result = await sqlQuery(`INSERT INTO ${tableName} (
-            email, password, first_name, last_name
+            users_email, users_password, users_first_name, users_last_name
         )
         VALUES (
             '${email}',
             '${passwordHash}',
             '${firstName}',
             '${lastName}'
+
         )`);
         return result.insertId;
     } catch (err) {
@@ -50,7 +51,7 @@ export async function getUserByEmail(email, returnFields = null) {
     try {
         returnFields = returnFields || defaultReturnFields;
         // const rows = await findUsersBy({ email: email });
-        const rows = await sqlQuery(`SELECT ${returnFields} FROM ${tableName} WHERE email='${email}'`);
+        const rows = await sqlQuery(`SELECT ${returnFields} FROM ${tableName} WHERE users_email='${email}'`);
         return rows.length > 0 ? rows[0] : null;
     } catch (err) {
         throw err;
