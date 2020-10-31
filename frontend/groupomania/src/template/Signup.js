@@ -1,5 +1,6 @@
 import React from 'react';
 import { appFetch } from '../appFetch/appFetch';
+import { Redirect } from 'react-router-dom';
 
 class Signup extends React.Component {
 
@@ -16,6 +17,7 @@ class Signup extends React.Component {
             confirm_email: "",
             confirm_password: "",
             signupSuccess: false,
+            emailError: "",
         };
 
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
@@ -32,6 +34,12 @@ class Signup extends React.Component {
 
     handleChangeEmail(e) {
         e.preventDefault();
+
+        if (!this.state.email.includes("@")) {
+            this.setState({ emailError: "l'email saisie n'est pas correcte" });
+        } else {
+            this.setState({ emailError: "" });
+        }
 
         this.setState({ email: e.target.value });
     }
@@ -93,26 +101,17 @@ class Signup extends React.Component {
             }
 
             const result = await appFetch('/user/signup', body);
-            console.log(result);
+            // console.log(result.status);
+            // console.log(result);
 
-            // GESTION DE MESSAGES D'ERREUR (ALERTE)
-            // 500: Un problème est survenu. Veuillez réessayer plus tard
-            // 400 : affiche le message
-
-            // 200 : cache le formulaire et affiche une boite de dialogue de succès
-
-            // ------------------------------
-
-            // else ici
-
-            // dans constructor, crée une clé du state
-            // pageErrors: { email: "", password: ""}
-
-
-            // gérer l'affichage des erreurs
-            // si pass !== cfPass => state.pageErrors.password = "Bla bla bla"
-
-            // Ouverture/fermeture du state
+            if (result.status === 200) {
+                alert("Félicitations, vous êtes enregistré")
+                this.setState({ signupSuccess: true });
+            } else if (result.status === 400) {
+                alert("Cette email est déja enregistré")
+            } else {
+                alert("Une erreur s'est produite, veuillez rééssayer plus tard")
+            }
 
 
         } catch (err) {
@@ -132,8 +131,9 @@ class Signup extends React.Component {
 
 
         if (this.state.signupSuccess) {
+            // this.props.history.push('/Chat')
             return (
-                <div>OK</div>
+                <Redirect to="/Chat" />
             );
         } else {
 
@@ -142,27 +142,70 @@ class Signup extends React.Component {
                     <form className="form_signup">
                         <div className="container_form">
                             <label>Prénom</label>
-                            <input type="text" value={this.state.firstName} onChange={this.handleChangeFirstName} placeholder="Entrer votre prénom"></input>
+                            <input
+                                type="text"
+                                value={this.state.firstName}
+                                onChange={this.handleChangeFirstName}
+                                placeholder="Entrer votre prénom">
+                            </input>
 
                             <label>Nom</label>
-                            <input type="text" value={this.state.lastName} onChange={this.handleChangeLastName} placeholder="Entrer votre nom"></input>
+                            <input
+                                type="text"
+                                value={this.state.lastName}
+                                onChange={this.handleChangeLastName}
+                                placeholder="Entrer votre nom">
+                            </input>
 
                             <label className="email_label_form"> Email</label>
-                            <input className="email_input_form" type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder="Entrer votre Email"></input>
+                            <input
+                                className="email_input_form"
+                                type="email"
+                                value={this.state.email}
+                                onChange={this.handleChangeEmail}
+                                placeholder="Entrer votre Email">
+                            </input>
+                            <div style={{ fontSize: 12, color: "red" }}>
+                                {this.state.emailError}
+                            </div>
 
                             <label className="confirm_email_label_form"> Confirmer votre email</label>
-                            <input className="confirm_email_input_form" type="email" value={this.state.confirm_email} onChange={this.handleChangeConfirmEmail} placeholder="Confirmer votre Email"></input>
+                            <input
+                                className="confirm_email_input_form"
+                                type="email"
+                                value={this.state.confirm_email}
+                                onChange={this.handleChangeConfirmEmail}
+                                placeholder="Confirmer votre Email">
+                            </input>
 
                             <label className="password_label_form"> Mot de passe</label>
                             <div>
-                                <input className="password_input_form" type={this.state.showPassword ? "text" : "password"} value={this.state.password} onChange={this.handleChangePassword} placeholder="Entrer votre mot de passe"></input>
-                                <button className="password_button_form" onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}</button>
+                                <input
+                                    className="password_input_form"
+                                    type={this.state.showPassword ? "text" : "password"}
+                                    value={this.state.password}
+                                    onChange={this.handleChangePassword}
+                                    placeholder="Entrer votre mot de passe">
+                                </input>
+                                <button
+                                    className="password_button_form"
+                                    onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}
+                                </button>
                             </div>
 
                             <label className="confirm_password_label_form"> Confirmer votre de passe</label>
                             <div>
-                                <input className="password_input_form" type={this.state.showConfirmPassword ? "text" : "password"} value={this.state.confirm_password} onChange={this.handleChangeConfirmPassword} placeholder="Confirmer votre mot de passe"></input>
-                                <button className="password_button_form" onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? "cacher" : "montrer"}</button>
+                                <input
+                                    className="password_input_form"
+                                    type={this.state.showConfirmPassword ? "text" : "password"}
+                                    value={this.state.confirm_password}
+                                    onChange={this.handleChangeConfirmPassword}
+                                    placeholder="Confirmer votre mot de passe">
+                                </input>
+                                <button
+                                    className="password_button_form"
+                                    onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? "cacher" : "montrer"}
+                                </button>
                             </div>
 
                             <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>

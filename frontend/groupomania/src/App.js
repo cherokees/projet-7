@@ -5,6 +5,7 @@ import Footer from './template/footer';
 import Accueil from './template/accueil';
 import Login from './template/Login';
 import Signup from './template/Signup';
+import Chat from './template/Chat';
 import './scss/style.scss';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -30,7 +31,7 @@ function App() {
         <Route path="/" exact component={Accueil}></Route>
         <Route path="/login" exact component={Login}></Route>
         <Route path="/signup" exact component={Signup}></Route>
-
+        <Route path="/chat" exact component={Chat}></Route>
         <Footer />
       </Router>
     </div>
