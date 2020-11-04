@@ -1,6 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router';
 import { appFetch } from '../appFetch/appFetch';
+import Layout from './layout';
+
 
 class Login extends React.Component {
 
@@ -13,6 +15,10 @@ class Login extends React.Component {
             showPassword: false,
             loginSuccess: false,
         };
+
+        // DEBUG
+        this.state.email = "ggg@gmail.com";
+        this.state.password = "ggg";
 
 
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
@@ -46,11 +52,12 @@ class Login extends React.Component {
                 password: this.state.password,
             }
 
-            const result = await appFetch('/user/login', body);
+            const result = await appFetch('POST', '/user/login', body);
             console.log(result);
 
 
             if (result.status === 200) {
+                // localStorage.setItem("user-id", JSON.stringify(result.userId));
                 localStorage.setItem("access-token", JSON.stringify(result.token));
                 this.setState({ loginSuccess: true });
             } else if (result.status === 400) {
@@ -74,7 +81,7 @@ class Login extends React.Component {
         } else {
 
             return (
-                <>
+                <Layout>
                     <form className="form_login">
                         <div className="container_form">
                             <label className="email_label_form"> Email</label>
@@ -90,7 +97,7 @@ class Login extends React.Component {
                         </div>
                     </form>
 
-                </>
+                </Layout>
             )
 
         }

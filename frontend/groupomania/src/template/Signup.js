@@ -1,6 +1,7 @@
 import React from 'react';
 import { appFetch } from '../appFetch/appFetch';
 import { Redirect } from 'react-router-dom';
+import Layout from './layout';
 
 class Signup extends React.Component {
 
@@ -100,7 +101,7 @@ class Signup extends React.Component {
                 lastName: this.state.lastName,
             }
 
-            const result = await appFetch('/user/signup', body);
+            const result = await appFetch('POST', '/user/signup', body);
             // console.log(result.status);
             // console.log(result);
 
@@ -138,80 +139,93 @@ class Signup extends React.Component {
         } else {
 
             return (
-                <>
+                <Layout>
                     <form className="form_signup">
                         <div className="container_form">
-                            <label>Prénom</label>
-                            <input
-                                type="text"
-                                value={this.state.firstName}
-                                onChange={this.handleChangeFirstName}
-                                placeholder="Entrer votre prénom">
-                            </input>
-
-                            <label>Nom</label>
-                            <input
-                                type="text"
-                                value={this.state.lastName}
-                                onChange={this.handleChangeLastName}
-                                placeholder="Entrer votre nom">
-                            </input>
-
-                            <label className="email_label_form"> Email</label>
-                            <input
-                                className="email_input_form"
-                                type="email"
-                                value={this.state.email}
-                                onChange={this.handleChangeEmail}
-                                placeholder="Entrer votre Email">
-                            </input>
-                            <div style={{ fontSize: 12, color: "red" }}>
-                                {this.state.emailError}
-                            </div>
-
-                            <label className="confirm_email_label_form"> Confirmer votre email</label>
-                            <input
-                                className="confirm_email_input_form"
-                                type="email"
-                                value={this.state.confirm_email}
-                                onChange={this.handleChangeConfirmEmail}
-                                placeholder="Confirmer votre Email">
-                            </input>
-
-                            <label className="password_label_form"> Mot de passe</label>
-                            <div>
+                            <div className="container_label">
+                                <label>Prénom</label>
                                 <input
-                                    className="password_input_form"
-                                    type={this.state.showPassword ? "text" : "password"}
-                                    value={this.state.password}
-                                    onChange={this.handleChangePassword}
-                                    placeholder="Entrer votre mot de passe">
+                                    type="text"
+                                    value={this.state.firstName}
+                                    onChange={this.handleChangeFirstName}
+                                    placeholder="Entrer votre prénom">
                                 </input>
-                                <button
-                                    className="password_button_form"
-                                    onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}
-                                </button>
                             </div>
 
-                            <label className="confirm_password_label_form"> Confirmer votre de passe</label>
-                            <div>
+                            <div className="container_label">
+                                <label>Nom</label>
                                 <input
-                                    className="password_input_form"
-                                    type={this.state.showConfirmPassword ? "text" : "password"}
-                                    value={this.state.confirm_password}
-                                    onChange={this.handleChangeConfirmPassword}
-                                    placeholder="Confirmer votre mot de passe">
+                                    type="text"
+                                    value={this.state.lastName}
+                                    onChange={this.handleChangeLastName}
+                                    placeholder="Entrer votre nom">
                                 </input>
-                                <button
-                                    className="password_button_form"
-                                    onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? "cacher" : "montrer"}
-                                </button>
+                            </div>
+                            <div className="container_label">
+                                <label className="email_label_form"> Email</label>
+                                <input
+                                    className="email_input_form"
+                                    type="email"
+                                    value={this.state.email}
+                                    onChange={this.handleChangeEmail}
+                                    placeholder="Entrer votre Email">
+                                </input>
+                                <div style={{ fontSize: 12, color: "red" }}>
+                                    {this.state.emailError}
+                                </div>
                             </div>
 
-                            <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
+                            <div className="container_label">
+                                <label className="confirm_email_label_form"> Confirmer votre email</label>
+                                <input
+                                    className="confirm_email_input_form"
+                                    type="email"
+                                    value={this.state.confirm_email}
+                                    onChange={this.handleChangeConfirmEmail}
+                                    placeholder="Confirmer votre Email">
+                                </input>
+                            </div>
+
+                            <div className="container_label">
+                                <label className="password_label_form"> Mot de passe</label>
+                                <div>
+                                    <input
+                                        className="password_input_form"
+                                        type={this.state.showPassword ? "text" : "password"}
+                                        value={this.state.password}
+                                        onChange={this.handleChangePassword}
+                                        placeholder="Entrer votre mot de passe">
+                                    </input>
+                                    <button
+                                        className="password_button_form"
+                                        onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="container_label">
+                                <label className="confirm_password_label_form"> Confirmer votre de passe</label>
+                                <div>
+                                    <input
+                                        className="password_input_form"
+                                        type={this.state.showConfirmPassword ? "text" : "password"}
+                                        value={this.state.confirm_password}
+                                        onChange={this.handleChangeConfirmPassword}
+                                        placeholder="Confirmer votre mot de passe">
+                                    </input>
+                                    <button
+                                        className="password_button_form"
+                                        onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? "cacher" : "montrer"}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="container_button_submit">
+                                <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
+                            </div>
                         </div>
                     </form>
-                </>
+                </Layout>
             )
         }
 

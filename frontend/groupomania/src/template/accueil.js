@@ -1,4 +1,5 @@
 import React from 'react';
+import Layout from './layout';
 
 // const style_accueil = {
 //     container: {
@@ -16,13 +17,16 @@ import React from 'react';
 class Accueil extends React.Component {
     render() {
         return (
-            <main className="container_accueil">
-                {/* <div className="container_bg_img" style={style_accueil.container}></div> */}
-                <div className="container_accueil_titre">
-                    <p>Bienvenue sur le tchat de GROUPOMANIA</p>
-                </div>
-            </main>
+            <Layout>
+                <main className="container_accueil">
+                    {/* <div className="container_bg_img" style={style_accueil.container}></div> */}
+                    <div className="container_accueil_titre">
+                        <p>Bienvenue sur le tchat de GROUPOMANIA</p>
+                    </div>
+                </main>
+            </Layout>
         )
+
     }
 }
 

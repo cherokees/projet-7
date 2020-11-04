@@ -151,15 +151,22 @@
         display: flex;
         flex-direction: column;
         border-radius: 5%;
-        width: 30%;
+        width: 50%;
         padding: 5rem;
-        align-items: center;
         background-color: rgba(0,84,63, 0.7);
         box-shadow: inset 1px 1px 20px 0px #00543f;
+
+        .container_label{
+            display: flex;
+            justify-content: space-around;
+        }
         
         label{
             font-family: 'Playfair Display SC', serif;
-            font-size: 2rem;
+            font-size: 1.4rem;
+            padding-top: 1rem;
+            flex-grow: 1;
+            text-align: left;
         }
 
         input{
@@ -176,12 +183,17 @@
             font-family: 'Playfair Display SC', serif;
         }
 
-        .button_form_submit{
-            margin-top: 2rem;
-            height: 4rem;
-            width: 7rem;
-            font-family: 'Playfair Display SC', serif;
+        .container_button_submit{
+            display: flex;
+            justify-content: center;
 
+            .button_form_submit{
+                margin-top: 2rem;
+                height: 4rem;
+                width: 7rem;
+                font-family: 'Playfair Display SC', serif;
+    
+            }
         }
     }
 }

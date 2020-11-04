@@ -3,7 +3,7 @@ import { getAllUsers, addUser, getUserByEmail, getUserById } from '../control/us
 import { validateFieldsPOST, VLD_IS_EMAIL, VLD_NOT_EMPTY_STRING, VLD_NO_SPECIAL_CHARS } from '../utils/validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import auth from '../middleware/auth'
+import auth from '../middleware/auth';
 
 export const router = express.Router();
 
@@ -18,7 +18,30 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-router.post("/signup", auth,
+router.get("/profil/:id", async (req, res, next) => {
+    try {
+        // res.send('trololo')
+        // console.log('trololo', req.params.id)
+        // const rows = res.send(req.params);
+        const result = await getUserById(req.params.id);
+        console.log(result);
+        res.status(200).json({ data: result });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ data: null, message: "Internal error" });
+    }
+})
+
+router.post("/auth", auth, async (req, res, next) => {
+    try {
+        res.status(200).json({ message: 'connecté' });
+    } catch (err) {
+        console.error(err); // On affiche l'erreur côté serveur
+        res.status(500).json({ data: null, message: "Internal error" }); // L'erreur renvoyée est générique
+    }
+});
+
+router.post("/signup",
     validateFieldsPOST({
         email: [VLD_IS_EMAIL],
         password: [VLD_NOT_EMPTY_STRING],

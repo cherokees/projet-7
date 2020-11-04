@@ -40,7 +40,7 @@ export async function getUserById(userId, returnFields = null) {
     try {
         returnFields = returnFields || defaultReturnFields;
         // const rows = await findUsersBy({ id: userId });
-        const rows = await sqlQuery(`SELECT ${returnFields} FROM ${tableName} WHERE id=${userId}`);
+        const rows = await sqlQuery(`SELECT ${returnFields} FROM ${tableName} WHERE users_id=${userId}`);
         return rows.length > 0 ? rows[0] : null;
     } catch (err) {
         throw err;
