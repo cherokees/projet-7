@@ -1,5 +1,7 @@
 import React from 'react';
 
+//const/objet qui contient le CSS permanent au composant footer
+
 const styles_footer = {
     container: {
         width: '100%',
@@ -7,6 +9,8 @@ const styles_footer = {
         bottom: '0',
     }
 }
+
+//fonction getCurrentDate qui affiche la date dynamiquement
 
 export function getCurrentDate(separator = '') {
 
@@ -18,10 +22,10 @@ export function getCurrentDate(separator = '') {
     return `${year}${separator}${month < 10 ? `0${month}` : `${month}`}${separator}${date}`
 }
 
+//Composant pied de page présent sur l'ensemble du site
+
 class Footer extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    // }
+
     render() {
         return (
             <div className="container_footer" style={styles_footer.container}>

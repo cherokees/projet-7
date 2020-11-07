@@ -56,22 +56,25 @@
 .container_accueil{
 
     .container_accueil_titre {
-        top: 40%;
+        top: 30%;
         left: 0;
         right: 0;
         margin: 0 auto;
-        width: 40rem;
-        height: 11rem;
+        // width: 40rem;
+        // height: 11rem;
         position: absolute;
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: rgba(0,84,63, 0.7);
+    box-shadow: inset 1px 1px 20px 0px #00543f;
+
         p{
-            color: rgb(0,84,63);
+            color: white;
             font-weight: 700;
             font-size: 4rem;
             font-family: 'Playfair Display SC', serif;
-            text-shadow: white 5px 0 5px;
+            text-shadow: #00543f 5px 0 5px;
             
         }
     }
@@ -257,15 +260,6 @@
             font-size: 1.5rem;
             color: white;
         }
-
-        // input{
-        //     height: 2rem;
-        //     margin-top: 1.3rem;
-        //     background-color: #00543f;
-        //     border: none;
-        //     color: white;
-        //     font-size: 1.5rem;
-        // }
     }
 
     .container_profil_p:hover{
@@ -296,5 +290,25 @@
     }
 }
 
-
 //FIN PROFIL
+
+//DEBUT PAGE ERROR
+
+.container_erreur{
+    top: 25%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    position: absolute;
+    background-color: rgba(0,84,63, 0.7);
+    box-shadow: inset 1px 1px 20px 0px #00543f;
+
+    p{
+        font-size: 4rem;
+        font-weight: bold;
+        color: white;
+        text-shadow: #00543f 5px 0 5px;
+    }
+}
+
+//FIN PAGE ERROR

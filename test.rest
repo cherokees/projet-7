@@ -1,0 +1,8 @@
+PUT http://localhost:3000/user/profil/18 
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJpYXQiOjE2MDQ2NTkwMTYsImV4cCI6MTYwNDc0NTQxNn0.MCn4LkGSEpczjri_u5GY80MJGmEehDCe9roKAAdGQtM
+
+{
+    "lastName":"aaa",
+    "firstName": "aaa"
+}

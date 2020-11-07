@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
 
         // decodedToken.userId
         // req.params.id
-        if (decodedToken.userId === parseInt(req.params.id, 10)) {
+        if (decodedToken.userId === parseInt(req.params.id, 10)) { //on compare l'id du token avec celui de l'url
             next();
         } else {
             throw new Error('Erreur d\'accès')

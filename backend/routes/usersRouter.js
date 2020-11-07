@@ -42,6 +42,8 @@ router.post("/auth", auth, async (req, res, next) => {
 
 router.post("/signup",
     validateFieldsPOST({
+
+        //vérification des champs saisies 
         email: [VLD_IS_EMAIL],
         password: [VLD_NOT_EMPTY_STRING],
         firstName: [VLD_NOT_EMPTY_STRING],

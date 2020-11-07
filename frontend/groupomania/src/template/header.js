@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import { appHistory } from '../App';
 
-
+//const/objet qui contient le CSS permanent au composant
 const styles = {
     container: {
         width: '100%',
@@ -31,34 +31,38 @@ const styles = {
 // 4- rediriger vers Login
 // 5- trouver un moyen d'afficher soit Login & Signup, soit Logout
 
+//Composant tête de page présent sur l'ensemble du site
 class Header extends React.Component {
     constructor(props) {
         super(props);
+        //bind des fonctions pour que le this corresponde au module et non à la fonction dans le render()
         this.handleLogoutClick = this.handleLogoutClick.bind(this);
         this.handleLoginClick = this.handleLoginClick.bind(this);
-        // this.state = { boolLogin: false };
     }
 
     async componentDidMount() {
 
     }
 
+    //fonction handleLogoutClick qui efface le token enregistré dans le localStorage et qui passe le boolLogin à faux (cela change le rendu du composant)
     handleLogoutClick() {
         this.setState({ boolLogin: false })
 
         //effacer le localStorage et faire une redirection
         localStorage.removeItem('access-token');
 
+        //faire une redirection vers la page d'accueil
         appHistory.push('/accueil');
 
     }
 
+    //fonction handleLoginClick qui passe le boolLogin à vraie
     handleLoginClick() {
         this.setState({ boolLogin: true });
     }
 
     render() {
-        // let boolLogin = this.state.boolLogin;
+        //on définit le boolLogin en tant que propriété "auth"
         let boolLogin = this.props.auth;
 
         if (boolLogin === true) {
@@ -87,6 +91,7 @@ class Header extends React.Component {
     }
 }
 
+//composant header non connecté
 class HeaderAccueil extends Header {
     render() {
         return (
@@ -105,6 +110,8 @@ class HeaderAccueil extends Header {
         )
     }
 }
+
+//composant header connecté
 class HeaderChat extends Header {
     render() {
         return (

@@ -33,6 +33,7 @@ class Signup extends React.Component {
 
     }
 
+    //fonction de vérification de l'email saisie 
     handleChangeEmail(e) {
         e.preventDefault();
 
@@ -45,6 +46,7 @@ class Signup extends React.Component {
         this.setState({ email: e.target.value });
     }
 
+    //fonction de confirmation de l'email
     handleChangeConfirmEmail(e) {
         e.preventDefault();
 
@@ -75,6 +77,7 @@ class Signup extends React.Component {
         this.setState({ confirm_password: e.target.value });
     }
 
+    //fonction qui permet d'afficher le mdp saisie
     handleShowPassword(e) {
         e.preventDefault();
 
@@ -87,6 +90,7 @@ class Signup extends React.Component {
         this.setState({ showConfirmPassword: !this.state.showConfirmPassword })
     }
 
+    //fonction asynchrone pour l'envoie d'une requête fetch (inscription au forum)
     async handleSubmit(e) {
         e.preventDefault();
 
@@ -122,17 +126,8 @@ class Signup extends React.Component {
     }
 
     render() {
-
-        // let disableSubmit = true
-        // conditions if pass = cfpass etc...
-        // => disableSubmit = false
-        // + désactiver (disable) le bouton submit
-
-
-
-
+        //si la requête renvoie un status 200
         if (this.state.signupSuccess) {
-            // this.props.history.push('/Chat')
             return (
                 <Redirect to="/Chat" />
             );
