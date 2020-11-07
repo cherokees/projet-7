@@ -218,3 +218,83 @@
 }
 
 //FIN CHAT
+
+//DEBUT PROFIL
+
+.container_profil{
+    top: 15%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    position: absolute;
+    justify-content: center;
+    border-radius: 5%;
+    width: 40%;
+    padding: 0;
+    background-color: rgba(0,84,63, 0.7);
+    box-shadow: inset 1px 1px 20px 0px #00543f;
+    display: flex;
+    flex-direction: column;
+
+    .container_profil_img{
+        border-radius: 50%;
+        margin: auto;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        width: 15rem;
+        height: 15rem;
+        background-color: rgb(255, 255, 255);
+    }
+
+    .container_profil_p{
+        width: auto;
+        height: 5rem;
+        background-color: #00543f;
+        transition: all 200ms ease-in;
+        transform: scale(1);
+
+        p{
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        // input{
+        //     height: 2rem;
+        //     margin-top: 1.3rem;
+        //     background-color: #00543f;
+        //     border: none;
+        //     color: white;
+        //     font-size: 1.5rem;
+        // }
+    }
+
+    .container_profil_p:hover{
+        transform: scale(1.2);
+        background-color: #019973;
+        z-index: 1;
+        box-shadow: inset 1px 1px 20px 0px #00543f;
+    }
+
+    .container_profil_button{
+        margin: 1rem;
+        
+        button{
+            width: 10rem;
+            height: 4rem;
+            border-radius: 30px;
+            font-size: 1.5rem;
+            background-color: #00543f;
+            border: none;
+            color: white;
+            transition: all 200ms ease-in;
+        }
+
+        button:hover{
+            background-color: #00febe;
+            color: black;
+        }
+    }
+}
+
+
+//FIN PROFIL

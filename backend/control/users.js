@@ -57,3 +57,12 @@ export async function getUserByEmail(email, returnFields = null) {
         throw err;
     }
 }
+
+export async function putUserById(userId, firstName, lastName) {
+    try {
+        await sqlQuery(`UPDATE ${tableName} SET users_first_name = '${firstName}', users_last_name = '${lastName}' WHERE users_id='${userId}'`);
+        return true;
+    } catch (err) {
+        throw err;
+    }
+}

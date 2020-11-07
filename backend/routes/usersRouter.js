@@ -1,9 +1,10 @@
 import express from 'express';
-import { getAllUsers, addUser, getUserByEmail, getUserById } from '../control/users';
+import { getAllUsers, addUser, getUserByEmail, getUserById, putUserById } from '../control/users';
 import { validateFieldsPOST, VLD_IS_EMAIL, VLD_NOT_EMPTY_STRING, VLD_NO_SPECIAL_CHARS } from '../utils/validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import auth from '../middleware/auth';
+import authUserId from '../middleware/authUserId';
 
 export const router = express.Router();
 
@@ -18,11 +19,9 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-router.get("/profil/:id", async (req, res, next) => {
+router.get("/profil/:id", auth, authUserId, async (req, res, next) => {
+    console.log(req.params.id);
     try {
-        // res.send('trololo')
-        // console.log('trololo', req.params.id)
-        // const rows = res.send(req.params);
         const result = await getUserById(req.params.id);
         console.log(result);
         res.status(200).json({ data: result });
@@ -113,32 +112,6 @@ router.post("/login",
                 }
             }
 
-            //     .then(valid => {
-            //         if (!valid) {
-            //             return res.status(401).json({ error: 'Mot de passe incorrect !' });
-            //         }
-            //         res.status(200).json({
-            //             userId: user._id,
-            //             token: jwt.sign(            //utilisation de jsonWebToken
-            //                 { userId: user._id },   //gestion du UserId
-            //                 'RANDOM_TOKEN_KEY',     // clé de cryptage
-            //                 { expiresIn: '24h' }    // temps de validité
-            //             )
-            //         });
-            //     })
-            // }
-            // vérif mot de passe
-
-
-
-
-
-            // const result = await getUserById(
-            //     req.body.email,
-            //     req.body.password,
-            // );
-            // res.status(200).json({ data: { id: result }, message: "Vous êtes connecté" });
-
         } catch (err) {
             console.error(err);
             res.status(500).json({ data: null, message: "Erreur interne du serveur" });
@@ -146,3 +119,14 @@ router.post("/login",
     }
 );
 
+router.put('/profil/:id', auth, authUserId, async (req, res, next) => {
+    try {
+        const result = await putUserById(req.params.id, req.body.firstName, req.body.lastName);
+        const user = await getUserById(req.params.id);
+        res.status(200).json({ data: user, message: "Profil modifié" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ data: null, message: "Erreur interne du serveur" });
+    }
+
+})

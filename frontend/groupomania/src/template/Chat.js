@@ -1,36 +1,24 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
 import { appFetch } from '../appFetch/appFetch';
 import Layout from './layout';
+
+//Composant de la page du forum
 
 class Chat extends React.Component {
 
     constructor(props) {
         super(props);
 
+        //valeur booléenne, qui sert a définir si le composant doit s'afficher ou non en fonction de la réponse du serveur
         this.state = {
             display: false,
-            // redirection: false,
         }
     }
 
-
-
-    // Logout
-
-    // Page d'édition de profil
-    // componentDidMount => fetch vers une route user/profile*
-    // cette route doit avoir le middleware auth
-    // si on se fait sortir avec 401, redirection vers accueil (voir ci-dessous)/logout
-    // si on reçoit 200 (succès), afficher un formulaire (identique à Signup??) => RELIRE LES SPECS, peut-etre une simple page statique
-
-    // *(backend)
-    // renvoie juste les données de l'utilisateur (essaie de capter l'id de l'utilisateur grâce au token, voir jwt.decode)
-
+    //fonction handleFetchErrors qui redirige l'utilisateur vers une page d'erreur, en fonction de la réponse serveur à l'aide de "props.history"
+    //https://reactrouter.com/web/api/history
 
     handleFetchErrors(errStatus) {
-        // rediriger vers la page d'erreur
-        // OU vers une page alternative (ex: accueil si pas connecté, chat si connecté)
         switch (errStatus) {
             case 404: this.props.history.replace('/error?code=404'); break;
             case 200: break;
@@ -38,47 +26,30 @@ class Chat extends React.Component {
         }
     }
 
+    //Dans la fonction componentDidMount(fonction native react pour le cycle de vie) 
     async componentDidMount() {
+        //On fait un appel fetch de type post pour que le serveur vérifie l'identité de l'utilisateur
         const result = await appFetch('POST', '/user/auth');
 
 
         if (result.status !== 200) {
             if (result.status === 401) {
+                //en cas d'erreur 401 on renvois l'utilisateur vers l'accueil
                 this.props.history.replace("/Accueil");
             } else {
+                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
                 this.props.history.replace(`/error?code=${result.status}`);
             }
+            return;
         }
 
-
-        // code en cas d'erreur
-
-        // handleFetchErrors(result.status);
-
         console.log("OK, pas d'erreur");
-
-        // code si tout a fonctionné
-
-
+        //si l'utilisateur est autorisé, on affiche le composant chat
         this.setState({ display: true });
-
-        // console.log(this.props.history);
-
     }
 
     render() {
-
-        // if (this.state.redirection) {
-        //     return (
-        //         <Redirect to='/accueil' />
-        //     )
-        // }
-
-
         return (
-
-            // <Redirect to="/Login" />
-
             this.state.display ?
                 (
                     <Layout auth>
@@ -91,7 +62,6 @@ class Chat extends React.Component {
                 )
                 :
                 null
-
         )
     }
 }

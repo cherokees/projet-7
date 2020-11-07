@@ -5,8 +5,9 @@ import Login from './template/Login';
 import Signup from './template/Signup';
 import Chat from './template/Chat';
 import Profil from './template/profil';
+import Error from './template/error';
 import './scss/style.scss';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 // const style_accueil = {
@@ -28,16 +29,18 @@ export const appHistory = createBrowserHistory();
 function App() {
   return (
     <div className="App">
+
       <Router history={appHistory}>
-        {/* <Header /> */}
-        {/* <div className="container_bg_img" style={style_accueil.container}></div> */}
-        <Route path="/" exact component={Accueil}></Route>
-        <Route path="/accueil" exact component={Accueil}></Route>
-        <Route path="/login" exact component={Login}></Route>
-        <Route path="/signup" exact component={Signup}></Route>
-        <Route path="/chat" exact component={Chat}></Route>
-        <Route path="/profil" exact component={Profil}></Route>
-        {/* <Footer /> */}
+        <Switch>
+          <Route path="/" exact component={Accueil} />
+          <Route path="/accueil" exact component={Accueil} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/signup" exact component={Signup} />
+          <Route path="/chat" exact component={Chat} />
+          <Route path="/profil" exact component={Profil} />
+
+          <Route component={Error} />
+        </Switch>
       </Router>
     </div>
   );

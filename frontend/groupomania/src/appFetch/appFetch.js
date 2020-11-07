@@ -6,7 +6,7 @@ export async function appFetch(method, url, body = {}) {
             method,
             headers: {
                 'content-type': 'application/json',
-                'authorization': JSON.parse(localStorage.getItem('access-token'))
+                'authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access-token'))
             }
         }
         if (method !== 'GET') {
