@@ -12,7 +12,15 @@ class Chat extends React.Component {
         //valeur booléenne, qui sert a définir si le composant doit s'afficher ou non en fonction de la réponse du serveur
         this.state = {
             display: false,
+            displayMsg: false,
+            titleMsg: "",
+            message: "",
         }
+
+        this.handleDisplayMsg = this.handleDisplayMsg.bind(this);
+        this.handleTitleMsg = this.handleTitleMsg.bind(this);
+        this.handleMessage = this.handleMessage.bind(this);
+        // this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     //fonction handleFetchErrors qui redirige l'utilisateur vers une page d'erreur, en fonction de la réponse serveur à l'aide de "props.history"
@@ -24,6 +32,24 @@ class Chat extends React.Component {
             case 200: break;
             default: this.props.history.replace('/error?code=500'); break;
         }
+    }
+
+    handleDisplayMsg() {
+        this.setState({ displayMsg: true })
+    }
+
+    handleTitleMsg(e) {
+        this.setState({ titleMsg: e.target.value })
+    }
+
+    handleMessage(e) {
+        this.setState({ message: e.target.value })
+    }
+
+    handleSubmit(e) {
+        this.setState({
+
+        })
     }
 
     //Dans la fonction componentDidMount(fonction native react pour le cycle de vie) 
@@ -54,14 +80,41 @@ class Chat extends React.Component {
                 (
                     <Layout auth>
                         <div className="container_chat">
-                            <div className="chat">
-
+                            {this.state.displayMsg ? <button className="chat">Votre message</button> : <button onClick={this.handleDisplayMsg} className="chat">Poster un nouveaux message</button>}
+                            <div className="container_message">
+                                {this.state.displayMsg ? <FormChat /> : <ChatMessage />}
                             </div>
                         </div>
                     </Layout>
                 )
                 :
                 null
+        )
+    }
+}
+
+class FormChat extends Chat {
+    render() {
+        return (
+            <div className="container_form_chat">
+                <div className="title_message">
+                    <label>Titre du message</label>
+                    <input value={this.state.titleMsg} onChange={this.handleTitleMsg}></input>
+                </div>
+                <div className="message">
+                    <label>Votre message</label>
+                    <textarea value={this.state.message} onChange={this.handleMessage}></textarea>
+                </div>
+                <button className="Send_message" onClick={this.handleSubmit}>Envoyer</button>
+            </div>
+        )
+    }
+}
+
+class ChatMessage extends Chat {
+    render() {
+        return (
+            <p>ici les messages présent sur le forum</p>
         )
     }
 }
