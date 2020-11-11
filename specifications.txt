@@ -1,0 +1,47 @@
+Fonctionnalités à prévoir :
+
+- la présentation des fonctionnalités doit être simple                                                                  REUSSIT
+- la création d’un compte doit être simple et possible depuis un téléphone mobile ;                                     EN COURS
+- le profil doit contenir très peu d’informations pour que sa complétion soit rapide ;                                  REUSSIT
+- la suppression du compte doit être possible ;                                                                         EN COURS
+- l’accès à un forum où les salariés publient des contenus multimédias doit être présent ;                              EN COURS
+- l’accès à un forum où les salariés publient des textes doit être présent ;                                            REUSSIT
+- les utilisateurs doivent pouvoir facilement repérer les dernières participations des employés ;                       EN COURS
+- le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre                            EN COURS
+- le ou la chargé-e de communication Groupomania doit pouvoir afficher les dernières participations des employés        EN COURS
+
+
+Routes à prévoir pour le forum :
+
+- Création d'un post par utilisateur
+- Récupération des posts par mots clés
+- Récupération des posts par son utilisateur
+- Récuperer tout les posts créez
+- Supprimer un post
+
+Route à prévoir pour les commentaires dans le forum :
+
+- Création d'un commentaire par l'utilisateur (post)
+- Récupération du commentaire par l'utilisateur (get)
+- Changement du commentaire par l'utilisateur (put)
+- Suppression d'un commentaire par l'utilisateur (delete)
+
+Route à prévoire pour l'admin :
+
+- Création d'un profile ADMIN (post)
+- Création de commentaires admin (post)
+- Création de posts admin (post)
+- Récupération d'un profile (get)
+- Changement d'un profile (put)
+- Suppression d'un profile (delete)
+- Récupération d'un post utilisateur (get)
+- Changement d'un post utilisateur (put)
+- Suppression d'un post utilisateur (delete)
+- Récupération d'un commentaire utilisateur (get)
+- Changement d'un commentaire utilisateur (put)
+- Suppression d'un commentaire utilisateur (delete)
+
+Base de données pour le forum 
+
+- table pour les messages posté (post)
+- table pour les commentaires (post)
