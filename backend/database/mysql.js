@@ -7,7 +7,9 @@ const config = {
     password: '',
     database: 'groupomania',
     connectionLimit: 20,
+    port: 3308, // Warning !! port précisé --> conflit avec workbench
 };
+
 
 // const connection = mysql.createConnection(config);
 

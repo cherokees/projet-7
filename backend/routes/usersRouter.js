@@ -31,7 +31,7 @@ router.get("/profil/:id", auth, authUserId, async (req, res, next) => {
     }
 })
 
-router.post("/auth", auth, async (req, res, next) => {
+router.get("/auth", auth, async (req, res, next) => {
     try {
         res.status(200).json({ message: 'connecté' });
     } catch (err) {

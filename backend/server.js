@@ -4,6 +4,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { router as usersRouter } from './routes/usersRouter';
+import { router as messagesRouter } from './routes/messagesRouter';
 
 //Mise en place du serveur
 const app = express();
@@ -20,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false })); // pour les corps de requê
 app.use(cors());                                  // to support Cross-origin requests
 
 app.use('/user', usersRouter);
+app.use('/message', messagesRouter);
 
 
 const server = http.createServer(app);

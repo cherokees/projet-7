@@ -17,10 +17,23 @@ const style_accueil = {
 
 // composant layout qui regroupe les composants header/footer ainsi que l'image de fonds
 class Layout extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleHeaderLogout = this.handleHeaderLogout.bind(this);
+
+    }
+
+    handleHeaderLogout() {
+        if (this.props.onHeaderLogout) {
+            this.props.onHeaderLogout();
+        }
+    }
+
     render() {
         return (
             <>
-                <Header auth={this.props.auth} />
+                <Header auth={this.props.auth} onLogout={this.handleHeaderLogout} />
                 <div className="container_bg_img" style={style_accueil.container}></div>
                 {/* On précise l'endroit dans le layout ou l'on inclut les différents autres composants */}
                 {this.props.children}

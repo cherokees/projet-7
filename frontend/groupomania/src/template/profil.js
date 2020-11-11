@@ -122,7 +122,7 @@ class Profil extends React.Component {
         return (
             this.state.display ?
                 (
-                    <Layout>
+                    <Layout auth>
                         <div className="container_profil">
                             <div className="container_profil_img">
                             </div>

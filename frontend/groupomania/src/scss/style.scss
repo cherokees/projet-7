@@ -214,6 +214,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+
     .chat{
         border-radius: 20px;
         border: none;
@@ -227,7 +228,9 @@
         margin-right: 30%;
     }
     .container_message{
-        margin-top: 10%;
+        margin-top: 7%;
+        height: 50rem;
+        overflow-y: scroll;
         
         .container_form_chat {
         background-color: rgba(0,84,63, 0.7);
@@ -276,9 +279,33 @@
                 background-color: #00febe;
                 color: black;
             }
+
+        }
+        .messagePost{
+            background-color: #00543f;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 4rem;
+
+        }
+        :nth-child(even){
+            margin-left: 30%;
+            margin-right: 3rem;
+        }
+        :nth-child(2n+1){
+            margin-right: 30%;
+            margin-left: 3rem;
         }
     }
+    ::-webkit-scrollbar {
+        display: none;
+    }
 }
+::-webkit-scrollbar {
+    display: none;
+}
+
+
 
 //FIN CHAT
 

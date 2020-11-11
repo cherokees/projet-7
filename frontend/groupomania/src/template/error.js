@@ -1,4 +1,5 @@
 import React from 'react';
+import { appFetch } from '../appFetch/appFetch';
 import Layout from './layout';
 
 //fonction getErrorMessage qui liste dans un objet toutes les erreurs répértoriées et affichées dans la page d'erreur 
@@ -21,7 +22,22 @@ class Error extends React.Component {
     constructor(props) {
         super(props);
 
-    };
+        this.state = {
+            isConnected: false,
+        }
+
+    }
+
+    async componentDidMount() {
+        //On fait un appel fetch de type get pour que le serveur vérifie l'identité de l'utilisateur
+        const result = await appFetch('GET', '/user/auth');
+
+
+        if (result.status === 200) {
+            this.setState({ isConnected: true });
+        }
+
+    }
 
     render() {
 
@@ -35,7 +51,7 @@ class Error extends React.Component {
 
 
         return (
-            <Layout>
+            <Layout auth={this.state.isConnected}>
                 <div className="container_erreur">
                     <p>{getErrorMessage(errCode)}</p>
                 </div>

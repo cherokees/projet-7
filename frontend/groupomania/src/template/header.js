@@ -37,16 +37,11 @@ class Header extends React.Component {
         super(props);
         //bind des fonctions pour que le this corresponde au module et non à la fonction dans le render()
         this.handleLogoutClick = this.handleLogoutClick.bind(this);
-        this.handleLoginClick = this.handleLoginClick.bind(this);
-    }
-
-    async componentDidMount() {
-
     }
 
     //fonction handleLogoutClick qui efface le token enregistré dans le localStorage et qui passe le boolLogin à faux (cela change le rendu du composant)
     handleLogoutClick() {
-        this.setState({ boolLogin: false })
+        // this.setState({ boolLogin: false })
 
         //effacer le localStorage et faire une redirection
         localStorage.removeItem('access-token');
@@ -54,11 +49,51 @@ class Header extends React.Component {
         //faire une redirection vers la page d'accueil
         appHistory.push('/accueil');
 
+        //lancer la prop onLogout (une fonction)
+        if (this.props.onLogout) {
+            this.props.onLogout();
+        }
     }
 
-    //fonction handleLoginClick qui passe le boolLogin à vraie
-    handleLoginClick() {
-        this.setState({ boolLogin: true });
+    //composant header non connecté
+    renderHeaderAccueil() {
+        return (
+            <>
+                <Link to='/Login'>
+                    <div className="login">
+                        <button>Login</button>
+                    </div>
+                </Link>
+                <Link to='/Signup'>
+                    <div className="signup">
+                        <p>Signup</p>
+                    </div>
+                </Link>
+            </>
+        )
+    }
+
+    //composant header connecté
+    renderHeaderChat() {
+        return (
+            <>
+                <Link to='/'>
+                    <div className="logout">
+                        <button onClick={this.handleLogoutClick}>Logout</button>
+                    </div>
+                </Link>
+                <Link to='/profil'>
+                    <div className="profil">
+                        <p>profil</p>
+                    </div>
+                </Link>
+                <Link to='/chat'>
+                    <div className="forum">
+                        <p>Forum</p>
+                    </div>
+                </Link>
+            </>
+        )
     }
 
     render() {
@@ -72,7 +107,7 @@ class Header extends React.Component {
                         <div className="logo" style={styles.logo}></div>
                     </Link>
                     <div className='header_container_login'>
-                        <HeaderChat />
+                        {this.renderHeaderChat()}
                     </div>
                 </div >
             )
@@ -83,7 +118,7 @@ class Header extends React.Component {
                         <div className="logo" style={styles.logo}></div>
                     </Link>
                     <div className='header_container_login'>
-                        <HeaderAccueil />
+                        {this.renderHeaderAccueil()}
                     </div>
                 </div >
             )
@@ -91,44 +126,5 @@ class Header extends React.Component {
     }
 }
 
-//composant header non connecté
-class HeaderAccueil extends Header {
-    render() {
-        return (
-            <>
-                <Link to='/Login'>
-                    <div className="login">
-                        <button onClick={this.handleLoginClick}>Login</button>
-                    </div>
-                </Link>
-                <Link to='/Signup'>
-                    <div className="signup">
-                        <p>Signup</p>
-                    </div>
-                </Link>
-            </>
-        )
-    }
-}
-
-//composant header connecté
-class HeaderChat extends Header {
-    render() {
-        return (
-            <>
-                <Link to='/'>
-                    <div className="logout">
-                        <button onClick={this.handleLogoutClick}>Logout</button>
-                    </div>
-                </Link>
-                <Link to='/profil'>
-                    <div className="profil">
-                        <p>profil</p>
-                    </div>
-                </Link>
-            </>
-        )
-    }
-}
 
 export default Header;

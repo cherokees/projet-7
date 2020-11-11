@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-
-    console.log("IN AUTH");
     try {
         const token = req.headers.authorization.split(' ')[1]; //on récupère le token
         const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_KEY'); // on vérifie que le token a bien été créé à partir de la clée secrete
