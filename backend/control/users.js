@@ -80,3 +80,12 @@ export async function putUserById(userId, firstName, lastName) {
         throw err;
     }
 }
+
+export async function deleteUserById(userId) {
+    try {
+        await sqlQuery(`DELETE FROM ${tableName} WHERE users_id='${userId}'`);
+        return true;
+    } catch (err) {
+        throw (err)
+    }
+}

@@ -5,7 +5,7 @@ import React from 'react';
 const styles_footer = {
     container: {
         width: '100%',
-        height: '12rem',
+        height: '10%',
         bottom: '0',
     }
 }

@@ -206,7 +206,7 @@
 //DEBUT CHAT
 
 .container_chat{
-    top: 10%;
+    top: 6.5%;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -214,8 +214,10 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    scroll-behavior: smooth;
 
-    .chat{
+    .button_chat{
+        height: 3rem;
         border-radius: 20px;
         border: none;
         background-color: rgba(0,84,63, 0.9);
@@ -223,14 +225,25 @@
         font-size: 1.3rem;
         font-weight: bold;
         color: white;
-        text-shadow: #00543f 5px 0 5px;
+        margin-top: 2rem;
         margin-left: 30%;
         margin-right: 30%;
+        
     }
+
+    .button_chat:hover{
+        background-color: #00febe;
+        color: black;
+    }
+
     .container_message{
-        margin-top: 7%;
+        margin-top: 2rem;
         height: 50rem;
         overflow-y: scroll;
+        margin-left: 2rem;
+        margin-right: 2rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
         
         .container_form_chat {
         background-color: rgba(0,84,63, 0.7);
@@ -281,21 +294,56 @@
             }
 
         }
-        .messagePost{
-            background-color: #00543f;
+        .message_post{
+            background-color: white;
             display: flex;
             flex-direction: column;
-            margin-bottom: 4rem;
+            margin-bottom: 2rem;
+            margin-left: 10%;
+            margin-right: 10%; 
+            border-radius: 15px;
+            height: auto;
+            ;
+
+            .message_post_user{
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+                display: flex;
+                background-color: rgb(0,190,142);
+                p{
+                    margin-left: 1rem;
+                    // text-align: right;
+                }
+                .message_post_date{
+                    margin-left: auto;
+                    margin-right: 1rem;
+                }
+
+            }
+
+            .message_post_content{
+
+                h2{
+                    text-align: left;
+                    margin-left: 1rem;
+                }
+
+                p{
+                    margin: 1rem;
+                    text-align: left;
+                }
+            }
 
         }
-        :nth-child(even){
-            margin-left: 30%;
-            margin-right: 3rem;
-        }
-        :nth-child(2n+1){
-            margin-right: 30%;
-            margin-left: 3rem;
-        }
+        // .message_post:nth-child(even){
+        //     margin-left: 30%;
+        // }
+        // .message_post:nth-child(2n+1){
+        //     margin-right: 30%;
+        // }
+    }
+    .container_message:hover{
+        box-shadow: 0 0 10px 5px rgba(0,0,0,0.25),
     }
     ::-webkit-scrollbar {
         display: none;

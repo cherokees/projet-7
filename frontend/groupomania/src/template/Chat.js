@@ -134,15 +134,16 @@ class Chat extends React.Component {
         // msg_user_id: 18
         return (
             <>
-                <button>Bas de page</button>
+                {/* <a id="section1" href="#section2" className="button_bas_page">Bas de page</a> */}
                 {this.state.messageList.map((element, index) => {
                     return (
-                        <div className="messagePost" key={index}>
-                            <div>
+                        <div className="message_post" key={index}>
+                            <div className="message_post_user">
                                 <p>{element.users_first_name}</p>
                                 <p>{element.users_last_name}</p>
+                                <p className="message_post_date">{element.msg_date}</p>
                             </div>
-                            <div>
+                            <div className="message_post_content">
                                 <h2>{element.msg_title}</h2>
                                 <p>{element.msg_content}</p>
                             </div>
@@ -150,7 +151,7 @@ class Chat extends React.Component {
                     );
                 })}
                 {/* // <p>ici les messages présent sur le forum</p> */}
-                <button>Haut de page</button>
+                {/* <a id="section2" href="#section1" className="button_haut_page">Haut de page</a> */}
             </>
         )
     }
@@ -162,7 +163,9 @@ class Chat extends React.Component {
                 (
                     <Layout auth>
                         <div className="container_chat">
-                            {this.state.displayMsg ? <button className="chat">Votre message</button> : <button onClick={this.handleDisplayMsg} className="chat">Poster un nouveaux message</button>}
+                            <div className="banner_chat">
+                                {this.state.displayMsg ? <button className="button_chat">Votre message</button> : <button onClick={this.handleDisplayMsg} className="button_chat">Poster un nouveaux message</button>}
+                            </div>
                             <div className="container_message">
                                 {this.state.displayMsg ? this.renderForm() : this.renderMessagesList()}
                             </div>
@@ -174,7 +177,6 @@ class Chat extends React.Component {
         )
     }
 }
-
 // class FormChat extends Chat {
 //     render() {
 //         return (
