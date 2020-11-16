@@ -222,6 +222,7 @@
         border: none;
         background-color: rgba(0,84,63, 0.9);
         box-shadow: inset 1px 1px 20px 0px #00543f;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);
         font-size: 1.3rem;
         font-weight: bold;
         color: white;
@@ -242,8 +243,7 @@
         overflow-y: scroll;
         margin-left: 2rem;
         margin-right: 2rem;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        box-shadow: 0 1px 10px rgba(0,0,0,0.12), 0 1px 5px rgba(0,0,0,0.24);
         
         .container_form_chat {
         background-color: rgba(0,84,63, 0.7);
@@ -298,11 +298,13 @@
             background-color: white;
             display: flex;
             flex-direction: column;
+            margin-top: 2rem;
             margin-bottom: 2rem;
             margin-left: 10%;
             margin-right: 10%; 
             border-radius: 15px;
             height: auto;
+            box-shadow: 0 0 5px 5px rgba(0,0,0,0.25);
             ;
 
             .message_post_user{
@@ -334,6 +336,36 @@
                 }
             }
 
+            .btn_comment_post{
+                text-align: right;
+
+                button{
+                    margin-right: 2rem;
+                    margin-bottom: 1rem;
+                    background-color: rgba(0,84,63, 0.7);
+                    color: white;
+                    border-radius: 15px;
+                    height: 2rem;
+                    border: none;
+                }
+                
+                button:hover{
+                    background-color: #00febe;
+                    color: black;
+                }
+
+                .container_txt_area_comment{
+                    
+                    textarea{
+                        width: 80%;
+                        margin-right: 10%;
+                        height: 6rem;
+                        margin-bottom: 1rem;
+
+                    }
+                }
+            }
+
         }
         // .message_post:nth-child(even){
         //     margin-left: 30%;
@@ -342,9 +374,7 @@
         //     margin-right: 30%;
         // }
     }
-    .container_message:hover{
-        box-shadow: 0 0 10px 5px rgba(0,0,0,0.25),
-    }
+    
     ::-webkit-scrollbar {
         display: none;
     }

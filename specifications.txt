@@ -1,9 +1,9 @@
 Fonctionnalités à prévoir :
 
 - la présentation des fonctionnalités doit être simple                                                                  REUSSIT
-- la création d’un compte doit être simple et possible depuis un téléphone mobile ;                                     EN COURS
+- la création d’un compte doit être simple et possible depuis un téléphone mobile ;                                     REUSSIT
 - le profil doit contenir très peu d’informations pour que sa complétion soit rapide ;                                  REUSSIT
-- la suppression du compte doit être possible ;                                                                         EN COURS
+- la suppression du compte doit être possible ;                                                                         REUSSIT
 - l’accès à un forum où les salariés publient des contenus multimédias doit être présent ;                              EN COURS
 - l’accès à un forum où les salariés publient des textes doit être présent ;                                            REUSSIT
 - les utilisateurs doivent pouvoir facilement repérer les dernières participations des employés ;                       EN COURS

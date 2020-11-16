@@ -20,7 +20,6 @@ class Accueil extends React.Component {
         //On fait un appel fetch de type get pour que le serveur vérifie l'identité de l'utilisateur
         const result = await appFetch('GET', '/user/auth');
 
-
         if (result.status === 200) {
             this.setState({ isConnected: true });
         }

@@ -16,12 +16,18 @@ class Chat extends React.Component {
             formMsgTitle: "",
             formMsgContent: "",
             messageList: [],
+            comment: "",
+            replyIndex: null,
         }
 
         this.handleDisplayMsg = this.handleDisplayMsg.bind(this);
         this.handleFormMsgTitle = this.handleFormMsgTitle.bind(this);
         this.handleFormMsgContent = this.handleFormMsgContent.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFormComment = this.handleFormComment.bind(this);
+        this.renderFormComment = this.renderFormComment.bind(this);
+        this.handlePostComment = this.handlePostComment.bind(this);
+        this.handleGetComment = this.handleGetComment.bind(this);
     }
 
     //Dans la fonction componentDidMount(fonction native react pour le cycle de vie) 
@@ -46,13 +52,8 @@ class Chat extends React.Component {
         // Cette partie de code se déclenche si l'utilisateur est connecté
         console.log(result);
 
-
-
         // load msg
         // state
-
-
-
 
         //si l'utilisateur est autorisé, on affiche le composant chat
         this.setState({ display: true, messageList: result.data });
@@ -126,18 +127,13 @@ class Chat extends React.Component {
     }
 
     renderMessagesList() {
-        console.log(this.state.messageList);
-        // msg_attachment: null
-        // msg_content: "texte"
-        // msg_id: 1
-        // msg_title: "titre"
-        // msg_user_id: 18
         return (
             <>
                 {/* <a id="section1" href="#section2" className="button_bas_page">Bas de page</a> */}
                 {this.state.messageList.map((element, index) => {
                     return (
                         <div className="message_post" key={index}>
+
                             <div className="message_post_user">
                                 <p>{element.users_first_name}</p>
                                 <p>{element.users_last_name}</p>
@@ -147,15 +143,141 @@ class Chat extends React.Component {
                                 <h2>{element.msg_title}</h2>
                                 <p>{element.msg_content}</p>
                             </div>
+                            <div className="btn_comment_post">
+                                {this.state.replyIndex == index ?
+                                    // onClick attend une fonction, donc on lui donne une fonction fléchée pour pouvoir ajouter notre argument en second ensuite
+                                    <button value={index} onClick={e => this.handlePostComment(e, element.msg_id)}>Poster votre commentaire</button> :
+                                    <button value={index} onClick={this.handleFormComment}>Laissez un commentaire</button>
+                                }
+                                {this.state.replyIndex == index ?
+                                    <div value={index}>{this.renderFormComment()}</div> :
+                                    <div value={index}>{this.renderComments(element.comments)}</div>
+                                }
+                            </div>
                         </div>
                     );
                 })}
-                {/* // <p>ici les messages présent sur le forum</p> */}
-                {/* <a id="section2" href="#section1" className="button_haut_page">Haut de page</a> */}
             </>
         )
     }
 
+    //button commentaire --> boolean (créez/poster)
+    //en fonction du boolean --> faire apparaitre areaTexte ou <p>
+    //lié les commentaires au compte
+    //chargé les commentaires en même temps que les messages
+    //les msg doivent resté même si le compte est effacé
+
+    async handlePostComment(e, postId) {
+        e.preventDefault();
+        let body = {
+            commentContent: this.state.comment,
+            postId,
+        }
+
+        //fetch qui envois les infos à la bdd
+        //si réussite on repasse displayMsg à false
+        const result = await appFetch('POST', '/comment', body);
+
+
+        if (result.status !== 200) {
+            if (result.status === 401) {
+
+                console.log('une erreur 401');
+                //en cas d'erreur 401 on renvois l'utilisateur vers l'accueil
+                // this.props.history.replace("/Accueil");
+            } else {
+                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+                this.props.history.replace(`/error?code=${result.status}`);
+            }
+            return;
+        }
+
+
+        // retour des commentaires du message : result.data
+
+        // const messageList = this.state.messageList;
+
+        // messageList[this.state.replyIndex].comments = result.data;
+
+        // this.setState({ messageList });
+
+
+
+
+
+        this.setState({
+            replyIndex: null,
+        });
+
+        console.log("OK, pas d'erreur");
+        // this.setState({ displayComment: true })
+
+    }
+
+
+    handleFormComment(e) {
+        e.preventDefault(e);
+        this.setState({
+            replyIndex: e.target.value,
+        })
+    }
+
+    renderFormComment() {
+        return (
+            <div className="container_txt_area_comment">
+                <textarea value={this.state.comment} onChange={this.handleGetComment}></textarea>
+            </div>
+        )
+    }
+
+    renderComments(comments) {
+        return (
+            <div>
+                {comments.map((element, index) => {
+                    return (
+                        <div key={index}>
+                            <p>{element.comment_content}</p>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
+
+    handleGetComment(e) {
+        e.preventDefault();
+        this.setState({ comment: e.target.value })
+    }
+
+    // async handleFormCommentSubmit() {
+    //     console.log(this.state.msg_id);
+    //     let body = {
+    //         commentContent: this.state.comment,
+    //         // postId: ,
+    //     }
+
+    //     //fetch qui envois les infos à la bdd
+    //     //si réussite on repasse displayMsg à false
+    //     const result = await appFetch('POST', '/comment', body);
+
+
+    //     if (result.status !== 200) {
+    //         if (result.status === 401) {
+
+    //             console.log('une erreur 401');
+    //             //en cas d'erreur 401 on renvois l'utilisateur vers l'accueil
+    //             // this.props.history.replace("/Accueil");
+    //         } else {
+    //             //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+    //             this.props.history.replace(`/error?code=${result.status}`);
+    //         }
+    //         return;
+    //     }
+
+    //     console.log("OK, pas d'erreur");
+    //     // this.setState({ displayComment: true })
+
+    // }
 
     render() {
         return (
@@ -177,30 +299,5 @@ class Chat extends React.Component {
         )
     }
 }
-// class FormChat extends Chat {
-//     render() {
-//         return (
-//             <div className="container_form_chat">
-//                 <div className="title_message">
-//                     <label>Titre du message</label>
-//                     <input value={this.state.formMsgTitle} onChange={this.handleFormMsgTitle}></input>
-//                 </div>
-//                 <div className="message">
-//                     <label>Votre message</label>
-//                     <textarea value={this.state.formMsgContent} onChange={this.handleFormMsgContent}></textarea>
-//                 </div>
-//                 <button className="Send_message" onClick={this.handleSubmit}>Envoyer</button>
-//             </div>
-//         )
-//     }
-// }
-
-// class ChatMessage extends Chat {
-//     render() {
-//         return (
-//             <p>ici les messages présent sur le forum</p>
-//         )
-//     }
-// }
 
 export default Chat;

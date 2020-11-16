@@ -1,5 +1,4 @@
 import express from 'express';
-import { getAllUsers, addUser, getUserByEmail, getUserById, putUserById } from '../control/users';
 import { validateFieldsPOST, VLD_IS_EMAIL, VLD_NOT_EMPTY_STRING, VLD_NO_SPECIAL_CHARS } from '../utils/validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';

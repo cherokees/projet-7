@@ -16,7 +16,14 @@ export async function appFetch(method, url, body) {
             options.body = JSON.stringify(body);
         }
         const response = await fetch('http://localhost:3000' + url, options);
+
+        console.log("FETCH RESPONSE", response);
+
         const responseJSON = await response.json();
+
+
+        console.log("FETCH RESPONSE JSON", response);
+
         responseJSON.status = response.status;
         return responseJSON;
     } catch (err) {

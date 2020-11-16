@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllUsers, addUser, getUserByEmail, getUserById, putUserById, deleteUserById } from '../control/users';
+import { getAllUsers, addUser, getUserByEmail, getUserById, putUserById, disableUserById } from '../control/users';
 import { validateFieldsPOST, VLD_IS_EMAIL, VLD_NOT_EMPTY_STRING, VLD_NO_SPECIAL_CHARS } from '../utils/validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -133,12 +133,23 @@ router.put('/profil/:id', auth, authUserId, async (req, res, next) => {
 
 })
 
-router.delete('/profil/:id', auth, authUserId, async (req, res, next) => {
+router.put('/disable/:id', auth, authUserId, async (req, res, next) => {
     try {
-        const result = await deleteUserById(req.params.id);
+        const result = await disableUserById(req.params.id);
         res.status(200).json({ data: null, message: "profil supprimé" });
     } catch (err) {
         console.error(err);
         res.status(500).json({ data: null, message: "Erreur interne du serveur" });
     }
 })
+
+
+// router.delete('/profil/:id', auth, authUserId, async (req, res, next) => {
+//     try {
+//         const result = await deleteUserById(req.params.id);
+//         res.status(200).json({ data: null, message: "profil supprimé" });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ data: null, message: "Erreur interne du serveur" });
+//     }
+// })

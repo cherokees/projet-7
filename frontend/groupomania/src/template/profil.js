@@ -22,7 +22,7 @@ class Profil extends React.Component {
         this.handleChangeLastName = this.handleChangeLastName.bind(this);
         this.handleChangeFirstName = this.handleChangeFirstName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.deleteProfil = this.deleteProfil.bind(this);
+        this.handleDeleteProfile = this.handleDeleteProfile.bind(this);
     }
 
     async componentDidMount() {
@@ -73,14 +73,15 @@ class Profil extends React.Component {
         this.setState({ firstName: e.target.value })
     }
 
-    async deleteProfil(e) {
+    async handleDeleteProfile(e) {
         e.preventDefault();
         const token = await JSON.parse(localStorage.getItem('access-token'));
         const payload = await jwt.decode(token);
-        const result = appFetch('DELETE', '/user/profil/' + payload.userId);
+        const result = await appFetch('PUT', '/user/disable/' + payload.userId);
+
         if (result.status === 200) {
             localStorage.removeItem('access-token');
-            this.props.history.replace("/accueil");
+            this.props.history.replace("/Accueil");
         } else {
             this.props.history.replace(`/error?code=${result.status}`);
         }
@@ -146,7 +147,7 @@ class Profil extends React.Component {
                             </div>
 
                             <div className="container_profil_button">
-                                <button onClick={this.deleteProfil}>Supprimer</button>
+                                <button onClick={this.handleDeleteProfile}>Supprimer</button>
                                 {this.state.changeName ? <button onClick={this.handleSubmit}>Envoyer</button> : <button onClick={this.handleName}>Changer</button>}
                             </div>
                         </div>

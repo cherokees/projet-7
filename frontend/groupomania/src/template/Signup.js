@@ -21,6 +21,15 @@ class Signup extends React.Component {
             emailError: "",
         };
 
+        // DEBUG
+        this.state.email = "123@gmail.com";
+        this.state.confirm_email = "123@gmail.com";
+        this.state.password = "123";
+        this.state.confirm_password = "123";
+        this.state.firstName = "123";
+        this.state.lastName = "123";
+        //
+
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.handleShowPassword = this.handleShowPassword.bind(this);

@@ -1,5 +1,4 @@
-const { getAllRows, sqlQuery } = require("../database/mysql");
-// const bcrypt = require("bcrypt");
+const { sqlQuery } = require("../database/mysql");
 import bcrypt from 'bcrypt';
 
 //nom de la table dans la bdd
@@ -81,11 +80,28 @@ export async function putUserById(userId, firstName, lastName) {
     }
 }
 
-export async function deleteUserById(userId) {
+export async function disableUserById(userId) {
     try {
-        await sqlQuery(`DELETE FROM ${tableName} WHERE users_id='${userId}'`);
+        await sqlQuery(`
+        UPDATE ${tableName} 
+        SET users_first_name = 'utilisateur supprimé', users_last_name = '', users_email='', users_password=''
+        WHERE users_id='${userId}'`);
         return true;
     } catch (err) {
         throw (err)
     }
 }
+
+
+
+// export async function deleteUserById(userId) {
+//     try {
+//         await sqlQuery(`DELETE FROM ${tableName} WHERE users_id='${userId}'`);
+//         return true;
+//     } catch (err) {
+//         throw (err)
+//     }
+// }
+
+// Réecriture des données: email/password vide, firtsName lastName à remplacer 
+// '/login': ne pas tenir compte des emails vides 
