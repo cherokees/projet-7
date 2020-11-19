@@ -20,7 +20,7 @@ class Chat extends React.Component {
             comment: "",
             replyIndex: null,
             btnDisplayComment: false,
-            txtDisplayComment: "Cacher les commentaires",
+            txtDisplayComment: "Afficher les commentaires",
             replyIndexComment: null,
         }
 
@@ -176,7 +176,7 @@ class Chat extends React.Component {
                                 {this.state.replyIndex == index ?
                                     <div value={index}>{this.renderFormComment()}</div>
                                     :
-                                    this.state.btnDisplayComment == true ?
+                                    this.state.btnDisplayComment == true && this.state.replyIndexComment == index ?
 
                                         <div className="container_comments" value={index}>{this.renderComments(element.comments)}</div>
                                         :
@@ -196,13 +196,13 @@ class Chat extends React.Component {
 
             this.setState({
                 btnDisplayComment: false,
-                txtDisplayComment: "Masquer les commentaires",
+                txtDisplayComment: "Afficher les commentaires",
                 replyIndexComment: e.target.value,
             })
-        } else if (this.state.btnDisplayComment === false && this.state.replyIndexComment == index) {
+        } else {
             this.setState({
                 btnDisplayComment: true,
-                txtDisplayComment: "Afficher les commentaires",
+                txtDisplayComment: "Cacher les commentaires",
                 replyIndexComment: e.target.value,
             })
         }
