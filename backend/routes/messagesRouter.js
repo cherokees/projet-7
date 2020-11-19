@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import auth from '../middleware/auth';
 import authUserId from '../middleware/authUserId';
 import { addMessage, getAllMessages } from '../control/messages';
+import { getMessageComments } from '../control/comment';
 
 export const router = express.Router();
 
@@ -28,6 +29,16 @@ router.post('/', auth, async (req, res, next) => {
 router.get("/", auth, async (req, res, next) => {
     try {
         const rows = await getAllMessages();
+        res.status(200).json({ data: rows });
+    } catch (err) {
+        console.error(err); // On affiche l'erreur côté serveur
+        res.status(500).json({ data: null, message: "Internal error" }); // L'erreur renvoyée est générique
+    }
+});
+
+router.get("/comments/:id", auth, async (req, res, next) => {
+    try {
+        const rows = await getMessageComments(req.params.id);
         res.status(200).json({ data: rows });
     } catch (err) {
         console.error(err); // On affiche l'erreur côté serveur

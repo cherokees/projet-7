@@ -84,16 +84,18 @@ class Login extends React.Component {
                 <Layout>
                     <form className="form_login">
                         <div className="container_form">
-                            <label className="email_label_form"> Email</label>
-                            <input className="email_input_form" type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder="Entrer votre Email"></input>
+                            <div className="container_form_style">
+                                <label className="email_label_form"> Email</label>
+                                <input className="email_input_form" type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder="Entrer votre Email"></input>
 
-                            <label className="password_label_form"> Mot de passe</label>
-                            <div>
-                                <input className="password_input_form" type={this.state.showPassword ? "text" : "password"} value={this.state.password} onChange={this.handleChangePassword} placeholder="Entrer votre mot de passe"></input>
-                                <button className="password_button_form" onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}</button>
+                                <label className="password_label_form"> Mot de passe</label>
+                                <div>
+                                    <input className="password_input_form" type={this.state.showPassword ? "text" : "password"} value={this.state.password} onChange={this.handleChangePassword} placeholder="Entrer votre mot de passe"></input>
+                                    <button className="password_button_form" onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}</button>
+                                </div>
+
+                                <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
                             </div>
-
-                            <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
                         </div>
                     </form>
 

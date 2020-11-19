@@ -66,7 +66,7 @@ class Header extends React.Component {
                 </Link>
                 <Link to='/Signup'>
                     <div className="signup">
-                        <p>Signup</p>
+                        <button>Signup</button>
                     </div>
                 </Link>
             </>
@@ -84,12 +84,12 @@ class Header extends React.Component {
                 </Link>
                 <Link to='/profil'>
                     <div className="profil">
-                        <p>profil</p>
+                        <button>profil</button>
                     </div>
                 </Link>
                 <Link to='/chat'>
                     <div className="forum">
-                        <p>Forum</p>
+                        <button>Forum</button>
                     </div>
                 </Link>
             </>

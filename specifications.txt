@@ -6,7 +6,7 @@ Fonctionnalités à prévoir :
 - la suppression du compte doit être possible ;                                                                         REUSSIT
 - l’accès à un forum où les salariés publient des contenus multimédias doit être présent ;                              EN COURS
 - l’accès à un forum où les salariés publient des textes doit être présent ;                                            REUSSIT
-- les utilisateurs doivent pouvoir facilement repérer les dernières participations des employés ;                       EN COURS
+- les utilisateurs doivent pouvoir facilement repérer les dernières participations des employés ;                       REUSSIT
 - le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre                            EN COURS
 - le ou la chargé-e de communication Groupomania doit pouvoir afficher les dernières participations des employés        EN COURS
 

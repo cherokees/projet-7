@@ -192,7 +192,7 @@ class Signup extends React.Component {
 
                             <div className="container_label">
                                 <label className="password_label_form"> Mot de passe</label>
-                                <div>
+                                <div className="container_mdp_form_style">
                                     <input
                                         className="password_input_form"
                                         type={this.state.showPassword ? "text" : "password"}
@@ -200,16 +200,15 @@ class Signup extends React.Component {
                                         onChange={this.handleChangePassword}
                                         placeholder="Entrer votre mot de passe">
                                     </input>
-                                    <button
-                                        className="password_button_form"
-                                        onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}
-                                    </button>
                                 </div>
+                                <button className="password_button_form"
+                                    onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}
+                                </button>
                             </div>
 
                             <div className="container_label">
                                 <label className="confirm_password_label_form"> Confirmer votre de passe</label>
-                                <div>
+                                <div className="container_mdp_form_style">
                                     <input
                                         className="password_input_form"
                                         type={this.state.showConfirmPassword ? "text" : "password"}
@@ -217,16 +216,12 @@ class Signup extends React.Component {
                                         onChange={this.handleChangeConfirmPassword}
                                         placeholder="Confirmer votre mot de passe">
                                     </input>
-                                    <button
-                                        className="password_button_form"
-                                        onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? "cacher" : "montrer"}
-                                    </button>
                                 </div>
+                                <button className="password_button_form"
+                                    onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? "cacher" : "montrer"}
+                                </button>
                             </div>
-
-                            <div className="container_button_submit">
-                                <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
-                            </div>
+                            <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
                         </div>
                     </form>
                 </Layout>

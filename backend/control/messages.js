@@ -1,6 +1,6 @@
-const { getAllRows, sqlQuery } = require("../database/mysql");
+const { sqlQuery } = require("../database/mysql");
+import multer from 'multer';
 
-import bcrypt from 'bcrypt';
 import { getMessageComments } from './comment';
 
 //nom de la table dans la bdd

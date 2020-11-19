@@ -133,23 +133,26 @@ class Profil extends React.Component {
                         <div className="container_profil">
                             <div className="container_profil_img">
                             </div>
-                            <div className="container_profil_p">
-                                <p>{this.state.email}</p>
-                            </div>
-                            <div className="container_profil_p">
-                                {this.state.changeName ? <input value={this.state.lastName} onChange={this.handleChangeLastName}></input> : <p>{this.state.lastName}</p>}
-                            </div>
-                            <div className="container_profil_p">
-                                {this.state.changeName ? <input value={this.state.firstName} onChange={this.handleChangeFirstName}></input> : <p>{this.state.firstName}</p>}
-                            </div>
-                            <div className="container_profil_p">
-                                <p>{this.state.createdDate}</p>
-                            </div>
 
-                            <div className="container_profil_button">
-                                <button onClick={this.handleDeleteProfile}>Supprimer</button>
-                                {this.state.changeName ? <button onClick={this.handleSubmit}>Envoyer</button> : <button onClick={this.handleName}>Changer</button>}
+                            <div className="container_profil_p">
+                                <div className="profil_p">
+                                    <p>Email : {this.state.email}</p>
+                                </div>
+                                <div className="profil_p">
+                                    {this.state.changeName ? <input value={this.state.lastName} onChange={this.handleChangeLastName}></input> : <p>Nom de famille : {this.state.lastName}</p>}
+                                </div>
+                                <div className="profil_p">
+                                    {this.state.changeName ? <input value={this.state.firstName} onChange={this.handleChangeFirstName}></input> : <p>Prénom : {this.state.firstName}</p>}
+                                </div>
+                                <div className="profil_p">
+                                    <p> Date de création du profil : </p>
+                                    <p>{this.state.createdDate}</p>
+                                </div>
                             </div>
+                        </div>
+                        <div className="container_profil_button">
+                            <button onClick={this.handleDeleteProfile}>Supprimer</button>
+                            {this.state.changeName ? <button onClick={this.handleSubmit}>Envoyer</button> : <button onClick={this.handleName}>Changer</button>}
                         </div>
                     </Layout>
                 ) : null

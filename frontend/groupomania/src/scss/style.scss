@@ -3,20 +3,38 @@
 .container_header{
     background-color: rgb(0,190,142);
     justify-content: space-between;
+    box-shadow: 0px 2px 8px 0px #000000;
+    position: fixed;
+    z-index: 1;
 
     .header_container_login{
         width: 12rem;
         display: flex;
+        padding-right: 7rem; 
 
-        .login, .signup{
+        .login, .signup, .logout, .profil, .forum{
             height: 100%;
             width: 5rem;
+            margin-right: 1rem;
+            padding-top: 0.4rem;
 
-            &:hover{
-                border-radius: 0px;
-                background: #00bf8f;
-                box-shadow: inset 32px 32px 45px #008060, 
-                            inset -32px -32px 45px #00febe;
+            button{
+                font-size: 17px;
+                height: 80%;
+                width: 5rem;
+                border-radius: 15px;
+                background: linear-gradient(145deg, #00cc99, #00ac81);
+                box-shadow:  4px 4px 7px #00a27a, 
+                -4px -4px 7px #00dca4;
+                border: none;
+            }
+
+            button:hover{
+                border-radius: 15px;
+                background: linear-gradient(145deg, #00ac81, #00cc99);
+                box-shadow:  4px 4px 7px #00a27a, 
+                -4px -4px 7px #00dca4;
+                border: none;
             }
 
             p{
@@ -35,7 +53,7 @@
 .container_footer {
     background-color: rgb(0,48,36);
     display: flex;
-    justify-content: space-around;
+    justify-content: space-around;s
 
     :nth-child(1), :nth-child(2){
         margin-top: 2.5rem;
@@ -50,6 +68,14 @@
 }
 
 //FIN FOOTER
+
+//DEBUT LAYOUT
+
+// .container_bg_img{
+//     z-index: 1;
+// }
+
+//FIN LAYOUT
 
 //DEBUT PAGE ACCUEIL
 
@@ -85,7 +111,7 @@
 //DEBUT FORM LOGIN
 
 .form_login{
-    top: 30%;
+    top: 20%;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -94,46 +120,92 @@
     justify-content: center;
 
     .container_form{
-        display: flex;
-        flex-direction: column;
         border-radius: 5%;
-        width: 30%;
-        padding: 5rem;
-        height: 25rem;
-        align-items: center;
-        background-color: rgba(0,84,63, 0.7);
-        box-shadow: inset 1px 1px 20px 0px #00543f;
+        width: 35rem;
+        height: 30rem;
+        text-align: left;
+        align-items: left;
+        border-radius: 15px;
+        background: #008362;
+        box-shadow: 0px 0px 8px 0px #000000;
+
+        .container_form_style{
+            padding: 1rem;
+            margin-left: 3rem;
+            margin-right: 3rem;
+            display: flex;
+            flex-direction: column;
+            border-radius: 15px;
+
+            label{
+                font-size: 2rem;
+                border-radius: 15px;
+                background: #008362;
+                box-shadow:  4px 4px 9px #006f53, 
+                -4px -4px 9px #009771;
+                width: auto;
+                padding-left: 1rem;
+            }
+    
+            input{
+                margin-top: 2rem;
+                width: 15rem;
+                height: 2rem;
+                border: none;
+                border-radius: 15px;
+                background: white;
+                box-shadow:  4px 4px 9px #006f53, 
+                -4px -4px 9px #009771;
+
+            }
+
+            .email_label_form{
+                margin-top: 2rem;
+            }
+    
+            .email_input_form{
+                margin-bottom: 3rem;
+            }
+    
+            .password_button_form{
+                padding: 1rem;
+                font-size: 19px;
+                margin-left: 3rem;
+                border-radius: 15px;
+                background: linear-gradient(145deg, #008c69, #007658);
+                box-shadow:  2px 2px 4px #006f53, 
+                -2px -2px 4px #009771;
+                border: none;
+
+                &:hover{
+                    border-radius: 15px;
+                    background: linear-gradient(145deg, #007658, #008c69);
+                    box-shadow:  2px 2px 4px #006f53, 
+                    -2px -2px 4px #009771;
+                }
+            }
+    
+            .button_form_submit{
+                font-size: 19px;
+                margin: auto;
+                margin-top: 3rem;
+                height: 5rem;
+                width: 8rem;
+                border-radius: 15px;
+                background: linear-gradient(145deg, #008c69, #007658);
+                box-shadow:  2px 2px 4px #006f53, 
+                -2px -2px 4px #009771;
+                border: none;
+
+                &:hover{
+                    border-radius: 15px;
+                    background: linear-gradient(145deg, #007658, #008c69);
+                    box-shadow:  2px 2px 4px #006f53, 
+                    -2px -2px 4px #009771;
+                }
+            }
+        }
         
-        label{
-            font-family: 'Playfair Display SC', serif;
-            font-size: 2rem;
-        }
-
-        input{
-            margin-top: 2rem;
-            width: 15rem;
-            height: 2rem;
-            font-family: 'Playfair Display SC', serif;
-            border: 2px black solid;
-        }
-
-        .email_input_form{
-            margin-bottom: 3rem;
-        }
-
-        .password_button_form{
-            margin-left: 1rem;
-            height: 2.4rem;
-            font-family: 'Playfair Display SC', serif;
-        }
-
-        .button_form_submit{
-            margin-top: 6rem;
-            height: 5rem;
-            width: 8rem;
-            font-family: 'Playfair Display SC', serif;
-
-        }
     }
 }
 
@@ -153,49 +225,79 @@
     .container_form{
         display: flex;
         flex-direction: column;
-        border-radius: 5%;
-        width: 50%;
-        padding: 5rem;
-        background-color: rgba(0,84,63, 0.7);
-        box-shadow: inset 1px 1px 20px 0px #00543f;
+        width: 70%;
+        padding: 3rem;
+        border-radius: 15px;
+        background: #008362;
+        box-shadow: 0px 0px 8px 0px #000000;
 
         .container_label{
             display: flex;
             justify-content: space-around;
-        }
-        
-        label{
-            font-family: 'Playfair Display SC', serif;
-            font-size: 1.4rem;
-            padding-top: 1rem;
-            flex-grow: 1;
-            text-align: left;
+            border-radius: 15px;
+            background: #008362;
+            box-shadow:  2px 2px 4px #006f53, 
+            -2px -2px 4px #009771;
+            margin-bottom: 1rem;
+
+            label{
+                height: 2rem;
+                font-size: 1.4rem;
+                padding: 1.5rem;
+                flex-grow: 1;
+                text-align: left;                
+            }
+
+            input{
+                margin: 1rem;
+                width: 15rem;
+                border-radius: 15px;
+                background: white;
+                box-shadow:  4px 4px 9px #006f53, 
+                -4px -4px 9px #009771;
+                border: none;
+            }
+
+            .password_input_form{
+                height: 3rem;
+            }
+
+            .password_button_form{
+                margin: 0.5rem;
+                font-size: 19px;
+                border-radius: 15px;
+                background: linear-gradient(145deg, #008c69, #007658);
+                box-shadow:  2px 2px 4px #006f53, 
+                -2px -2px 4px #009771;
+                border: none;
+
+                &:hover{
+                    border-radius: 15px;
+                    background: linear-gradient(145deg, #007658, #008c69);
+                    box-shadow:  2px 2px 4px #006f53, 
+                    -2px -2px 4px #009771;
+                }
+            }
+            
         }
 
-        input{
-            margin-bottom: 2rem;
-            margin-top: 1rem;
-            width: 15rem;
-            height: 2rem;
-            font-family: 'Playfair Display SC', serif;
-            border: 2px black solid;
-        }
-
-        .password_button_form{
-            margin-left: 1rem;
-            font-family: 'Playfair Display SC', serif;
-        }
-
-        .container_button_submit{
-            display: flex;
-            justify-content: center;
-
-            .button_form_submit{
-                margin-top: 2rem;
-                height: 4rem;
-                width: 7rem;
-                font-family: 'Playfair Display SC', serif;
-    
+        .button_form_submit{
+            margin: auto;
+            margin-top: 2rem;
+            height: 4rem;
+            font-size: 24px;
+            padding: 1rem;
+            border-radius: 15px;
+            background: linear-gradient(145deg, #008c69, #007658);
+            box-shadow:  2px 2px 4px #006f53, 
+            -2px -2px 4px #009771;
+            border: none;
+            
+            &:hover{
+                border-radius: 15px;
+                background: linear-gradient(145deg, #007658, #008c69);
+                box-shadow:  2px 2px 4px #006f53, 
+                -2px -2px 4px #009771;
             }
         }
     }
@@ -239,11 +341,11 @@
 
     .container_message{
         margin-top: 2rem;
-        height: 50rem;
+        height: 45rem;
         overflow-y: scroll;
-        margin-left: 2rem;
-        margin-right: 2rem;
-        box-shadow: 0 1px 10px rgba(0,0,0,0.12), 0 1px 5px rgba(0,0,0,0.24);
+        margin-left: 10rem;
+        margin-right: 10rem;
+        box-shadow: 0 1px 10px rgba(0,0,0,0.12), 0 1px 20px rgba(0,0,0,0.24);
         
         .container_form_chat {
         background-color: rgba(0,84,63, 0.7);
@@ -336,7 +438,7 @@
                 }
             }
 
-            .btn_comment_post{
+            .container_comment_post{
                 text-align: right;
 
                 button{
@@ -352,6 +454,30 @@
                 button:hover{
                     background-color: #00febe;
                     color: black;
+                }
+
+                .container_comments{
+                    text-align: left;
+                    
+
+                    .container_user_comment{
+                        margin: 1rem;
+                        border-radius: 5px;
+                        background: linear-gradient(145deg, #e6e6e6, #ffffff);
+                        box-shadow:  7px 7px 0px #cccccc, 
+                        -7px -7px 0px #ffffff;
+
+                        .user_comment{
+                            padding: 0.5rem;
+                            font-size: 19px;
+                            border-top-left-radius: 5px;
+                            border-top-right-radius: 5px;
+                        }
+
+                        .comment{
+                            padding: 0.5rem;
+                        }
+                    }
                 }
 
                 .container_txt_area_comment{
@@ -390,68 +516,88 @@
 //DEBUT PROFIL
 
 .container_profil{
-    top: 15%;
+    top: 20%;
     left: 0;
     right: 0;
     margin: 0 auto;
     position: absolute;
-    justify-content: center;
-    border-radius: 5%;
-    width: 40%;
+    border-radius: 15px;
     padding: 0;
-    background-color: rgba(0,84,63, 0.7);
-    box-shadow: inset 1px 1px 20px 0px #00543f;
+    width: 80%;
     display: flex;
-    flex-direction: column;
-
+    background-color: #008362;
+    box-shadow: 0px 0px 10px 0px #000000;
+    
     .container_profil_img{
-        border-radius: 50%;
+        border-radius: 15px;
         margin: auto;
-        margin-top: 3rem;
-        margin-bottom: 3rem;
-        width: 15rem;
-        height: 15rem;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        margin-left: 1%;
+        margin-right: 1%;
+        width: 25rem;
+        height: 30rem;
         background-color: rgb(255, 255, 255);
+        
     }
 
     .container_profil_p{
-        width: auto;
-        height: 5rem;
-        background-color: #00543f;
-        transition: all 200ms ease-in;
-        transform: scale(1);
-
-        p{
-            font-size: 1.5rem;
-            color: white;
-        }
-    }
-
-    .container_profil_p:hover{
-        transform: scale(1.2);
-        background-color: #019973;
-        z-index: 1;
-        box-shadow: inset 1px 1px 20px 0px #00543f;
-    }
-
-    .container_profil_button{
+        margin-top: 1.5rem;
+        flex-grow: 1;
         margin: 1rem;
-        
-        button{
-            width: 10rem;
-            height: 4rem;
-            border-radius: 30px;
-            font-size: 1.5rem;
-            background-color: #00543f;
-            border: none;
-            color: white;
-            transition: all 200ms ease-in;
-        }
+        border-radius: 15px;
+        background: #008362;
+        box-shadow:  10px 10px 20px #006f53, 
+        -10px -10px 20px #009771;
 
-        button:hover{
-            background-color: #00febe;
-            color: black;
+
+        .profil_p{
+            text-align: left;
+            margin-top: 1.5rem;
+            margin-left: 2rem;
+            margin-right: 2rem;
+            width: auto;
+            padding-top: 0.1rem;
+            padding-bottom: 0.1rem;
+            border-radius: 15px;
+            background: #008362;
+            box-shadow: inset 2px 2px 4px #006f53, 
+            inset -2px -2px 4px #009771;
+    
+            p{
+                font-size: 1.5rem;
+                color: rgb(255, 255, 255);
+                margin-left: 1rem;
+            }
         }
+    }
+
+}
+.container_profil_button{
+    left: 0;
+    right: 0;
+    bottom: 0%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+            
+    button{
+        margin: 2rem;
+        width: 10rem;
+        height: 4rem;
+        border-radius: 30px;
+        font-size: 1.5rem;
+        background-color: #00543f;
+        border: none;
+        color: white;
+        transition: all 200ms ease-in;
+        box-shadow: 0px 0px 10px 0px #000000;
+    }
+    
+    button:hover{
+        background-color: #00febe;
+        color: black;
     }
 }
 
