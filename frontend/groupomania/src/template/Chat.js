@@ -19,6 +19,9 @@ class Chat extends React.Component {
             messageList: [],
             comment: "",
             replyIndex: null,
+            // deletePostIndex: null,
+            displayCommentsList: [],
+
             btnDisplayComment: false,
             txtDisplayComment: "Afficher les commentaires",
             replyIndexComment: null,
@@ -34,6 +37,8 @@ class Chat extends React.Component {
         this.handleGetComment = this.handleGetComment.bind(this);
         this.handleCancelComment = this.handleCancelComment.bind(this);
         this.handleBtnDisplayComment = this.handleBtnDisplayComment.bind(this);
+        this.handleDeleteComment = this.handleDeleteComment.bind(this);
+        this.handlePutComment = this.handlePutComment.bind(this);
         // this.refreshComments = this.refreshComments.bind(this);
     }
 
@@ -152,7 +157,7 @@ class Chat extends React.Component {
                                 <p>{element.msg_content}</p>
                             </div>
                             <div className="container_comment_post">
-                                {this.state.replyIndex == index ?
+                                {this.state.replyIndex === index ?
                                     //le balisage permet d'insérer plusieur éléments dans la fonction ternaire
                                     <>
                                         <button value={index} onClick={e => this.handleCancelComment(e, element.msg_id)}>Annuler</button>
@@ -169,16 +174,25 @@ class Chat extends React.Component {
                                     </>
                                     :
                                     <>
-                                        <button value={index} onClick={this.handleFormComment}>Laissez un commentaire</button>
-                                        <button value={index} onClick={e => this.handleBtnDisplayComment(e, index)}>{this.state.txtDisplayComment}</button>
+                                        <button onClick={e => this.handleFormComment(e, index)}>Laissez un commentaire</button>
+                                        {this.state.messageList[index].comments.length > 0 &&
+                                            <button onClick={e => this.handleBtnDisplayComment(e, index)}>
+                                                {!this.state.displayCommentsList.includes(index) ?
+                                                    "Afficher les commentaires"
+                                                    :
+                                                    "Masquer les commentaires"}
+                                            </button>
+                                        }
                                     </>
                                 }
-                                {this.state.replyIndex == index ?
+                                {this.state.replyIndex === index ?
                                     <div value={index}>{this.renderFormComment()}</div>
                                     :
-                                    this.state.btnDisplayComment == true && this.state.replyIndexComment == index ?
+                                    // (this.state.btnDisplayComment == true && this.state.replyIndexComment === index) ?
+                                    // (this.state.btnDisplayComment === true) ?
+                                    this.state.displayCommentsList.includes(index) ?
 
-                                        <div className="container_comments" value={index}>{this.renderComments(element.comments)}</div>
+                                        <div className="container_comments" value={index}>{this.renderComments(element.comments, index)}</div>
                                         :
                                         <div className="container_comments" value={index}></div>
                                 }
@@ -192,20 +206,36 @@ class Chat extends React.Component {
 
     handleBtnDisplayComment(e, index) {
         e.preventDefault();
-        if (this.state.btnDisplayComment === true && this.state.replyIndexComment == index) {
 
-            this.setState({
-                btnDisplayComment: false,
-                txtDisplayComment: "Afficher les commentaires",
-                replyIndexComment: e.target.value,
-            })
+        let displayCommentsList = this.state.displayCommentsList;
+
+        if (!displayCommentsList.includes(index)) {
+            // ajout
+            displayCommentsList.push(index)
         } else {
-            this.setState({
-                btnDisplayComment: true,
-                txtDisplayComment: "Cacher les commentaires",
-                replyIndexComment: e.target.value,
-            })
+            // retirer
+            displayCommentsList = displayCommentsList.filter(value => value !== index);
         }
+        // console.log("displayCommentsList", displayCommentsList);
+
+        this.setState({ displayCommentsList });
+
+
+        // if (this.state.btnDisplayComment === true && this.state.replyIndexComment === index) {
+        //     // if (this.state.btnDisplayComment === true) {
+
+        //     this.setState({
+        //         btnDisplayComment: false,
+        //         txtDisplayComment: "Afficher les commentaires",
+        //         replyIndexComment: e.target.value,
+        //     })
+        // } else {
+        //     this.setState({
+        //         btnDisplayComment: true,
+        //         txtDisplayComment: "Cacher les commentaires",
+        //         replyIndexComment: e.target.value,
+        //     })
+        // }
     }
 
     async handleCancelComment(e, postId) {
@@ -273,11 +303,12 @@ class Chat extends React.Component {
     }
 
 
-    handleFormComment(e) {
+    handleFormComment(e, index) {
         e.preventDefault(e);
         this.setState({
-            replyIndex: e.target.value,
+            replyIndex: index,
         })
+        // console.log(this.state.replyIndex);
     }
 
     renderFormComment() {
@@ -288,19 +319,113 @@ class Chat extends React.Component {
         )
     }
 
-    renderComments(comments) {
+    renderComments(comments, messageIndex) {
         return (
             <div>
                 {comments.map((element, index) => {
+                    console.log(element);
+
+                    // condition if/else avec deux return
+                    // si element.comment_id === this.state.editCommentId (à créer) => return un textarea avec le texte du message (à stocker dans une valeur de state temporaire this.state.editCommentContent)
+                    // sinon, return ce qui est déjà là
+
                     return (
-                        <div className="container_user_comment" key={index}>
-                            <p className="user_comment">commentaire de  {element.users_first_name} {element.users_last_name}</p>
-                            <p className="comment">{element.comment_content}</p>
-                        </div>
+                        <>
+                            <div className="container_user_comment" key={index}>
+                                <div>
+                                    <p className="user_comment">commentaire de {element.users_first_name} {element.users_last_name}</p>
+                                    {/* {this.state} */}
+                                    <p className="comment">{element.comment_content}</p>
+                                </div>
+                                <button className="btn_delete_comment" value={element.comment_id} onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex)}> x </button>
+                                {this.state.changeComment ?
+                                    <button className="btn_change_comment" value={element.comment_id} onClick={e => this.handleChangePutComment(e)}> Envoyer </button>
+                                    :
+                                    <button className="btn_change_comment" value={element.comment_id} onClick={e => this.handlePutComment(e)}> Modifier </button>
+                                }
+                            </div>
+                        </>
                     )
                 })}
             </div>
         )
+    }
+
+    handleChangePutComment(e) {
+        e.preventDefault();
+
+        this.setState({
+            changeComment: false,
+        })
+    }
+
+    async handlePutComment(e) {
+        e.preventDefault();
+
+        // let body = {
+        //     commentId: e.target.value,
+        //     comment: "",
+        //     commentDate: "",
+        // }
+
+        // const result = await appFetch('PUT', '/comment', body);
+        // console.log(result);
+
+        // if (result.status !== 200) {
+        //     if (result.status === 401) {
+        //         this.props.history.replace(`/error?code=${result.status}`);
+
+        //     } else {
+        //         //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+        //         alert(`une erreur est survenue (code: ${result.status})`)
+        //     }
+        //     return;
+        // }
+
+        this.setState({
+            changeComment: true,
+        })
+
+    }
+
+    async handleDeleteComment(e, commentId, postId, messageIndex) {// messageIndex et utilisé pour rafraichir la bonne liste de commentaire
+        e.preventDefault();
+
+
+        const result = await appFetch('DELETE', `/comment/${commentId}`, {});
+        console.log(result);
+
+        if (result.status !== 200) {
+            if (result.status === 401) {
+                this.props.history.replace(`/error?code=${result.status}`);
+
+            } else {
+                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+                alert(`une erreur est survenue (code: ${result.status})`)
+            }
+            return;
+        }
+
+        // Fetcher les commentaires pour les rafraîchir
+        const resultComments = await appFetch('GET', '/message/comments/' + postId);
+
+        console.log("resultComments", resultComments);
+
+        if (resultComments.status === 200) {
+            this.refreshComments(messageIndex, resultComments.data);
+        } else {
+            alert("Un problème est survenu. Veuillez rafraîchir la page.");
+        }
+
+
+        // this.setState({
+        //     // deletePostIndex: null,
+        //     // comment: "",
+        // });
+
+        console.log("OK, pas d'erreur");
+        this.setState({ displayComment: true })
+
     }
 
     handleGetComment(e) {
