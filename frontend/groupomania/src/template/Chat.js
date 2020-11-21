@@ -25,6 +25,7 @@ class Chat extends React.Component {
             // deletePostIndex: null,
             displayCommentsList: [],
             changeBtnComment: [],
+            editCommentContent: "",
 
         }
 
@@ -44,6 +45,7 @@ class Chat extends React.Component {
         this.handleDeleteComment = this.handleDeleteComment.bind(this);
         this.handlePutComment = this.handlePutComment.bind(this);
         this.handleSendPutComment = this.handleSendPutComment.bind(this);
+        this.handleEditCommentContent = this.handleEditCommentContent.bind(this);
 
         // this.refreshComments = this.refreshComments.bind(this);
     }
@@ -370,6 +372,19 @@ class Chat extends React.Component {
             <div>
                 {comments.map((element, index) => {
 
+                    if (this.state.changeBtnComment.includes(element.comment_id)) {
+                        return (
+                            <div className="container_user_comment" key={index}>
+                                <textarea value={this.state.editCommentContent} onChange={e => this.handleEditCommentContent(e)}></textarea>
+                                {this.state.changeBtnComment.includes(element.comment_id) ?
+                                    <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
+                                    :
+                                    <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id)}> Modifier </button>
+                                }
+                            </div>
+                        )
+                    }
+
                     // condition if/else avec deux return
                     // si element.comment_id === this.state.editCommentId (à créer) => return un textarea avec le texte du message (à stocker dans une valeur de state temporaire this.state.editCommentContent)
                     // sinon, return ce qui est déjà là
@@ -396,6 +411,15 @@ class Chat extends React.Component {
         )
     }
 
+    handleEditCommentContent(e) {
+        e.preventDefault();
+
+        this.setState({
+            editCommentContent: e.target.value,
+        })
+
+    }
+
     handlePutComment(e, commentId) {
         e.preventDefault();
 
@@ -412,25 +436,27 @@ class Chat extends React.Component {
     async handleSendPutComment(e, commentId) {
         e.preventDefault();
 
-        // let body = {
-        //     commentId: e.target.value,
-        //     comment: "",
-        //     commentDate: "",
-        // }
+        let body = {
+            commentId: commentId,
+            comment: this.state.editCommentContent,
+        }
 
-        // const result = await appFetch('PUT', '/comment', body);
-        // console.log(result);
+        const token = await JSON.parse(localStorage.getItem('access-token'));
+        const payload = await jwt.decode(token);
 
-        // if (result.status !== 200) {
-        //     if (result.status === 401) {
-        //         this.props.history.replace(`/error?code=${result.status}`);
+        const result = await appFetch('PUT', '/comment/' + payload.userId, body);
+        console.log(result);
 
-        //     } else {
-        //         //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
-        //         alert(`une erreur est survenue (code: ${result.status})`)
-        //     }
-        //     return;
-        // }
+        if (result.status !== 200) {
+            if (result.status === 401) {
+                this.props.history.replace(`/error?code=${result.status}`);
+
+            } else {
+                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+                alert(`une erreur est survenue (code: ${result.status})`)
+            }
+            return;
+        }
 
         let changeBtnComment = this.state.changeBtnComment;
 
