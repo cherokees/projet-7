@@ -426,15 +426,30 @@
             }
 
             .message_post_content{
+                display: flex;
+                flex-direction: column;
 
-                h2{
-                    text-align: left;
-                    margin-left: 1rem;
+                .btn_post_content{
+                    display: flex;
+
+                    h2{
+                        flex-grow: 1;
+                        text-align: left;
+                        margin-left: 1rem;
+                    }
+
+                    button{
+                        margin-top: 1rem;
+                        margin-right: 1rem;
+                        height: 2rem;
+                    }
                 }
+                .element_post_content{
 
-                p{
-                    margin: 1rem;
-                    text-align: left;
+                    p{
+                        margin: 1rem;
+                        text-align: left;
+                    }
                 }
             }
 

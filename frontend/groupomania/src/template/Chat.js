@@ -1,6 +1,7 @@
 import React from 'react';
 import { appFetch } from '../appFetch/appFetch';
 import Layout from './layout';
+import jwt from 'jsonwebtoken';
 
 //Composant de la page du forum
 
@@ -17,20 +18,23 @@ class Chat extends React.Component {
             formMsgContent: "",
             formMsgImage: "",
             messageList: [],
+            messagePut: null,
+            messagePutContent: "",
             comment: "",
             replyIndex: null,
             // deletePostIndex: null,
             displayCommentsList: [],
+            changeBtnComment: [],
 
-            btnDisplayComment: false,
-            txtDisplayComment: "Afficher les commentaires",
-            replyIndexComment: null,
         }
 
         this.handleDisplayMsg = this.handleDisplayMsg.bind(this);
         this.handleFormMsgTitle = this.handleFormMsgTitle.bind(this);
         this.handleFormMsgContent = this.handleFormMsgContent.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handlePutMsg = this.handlePutMsg.bind(this);
+        this.handleMessagePutContent = this.handleMessagePutContent.bind(this);
+        this.handleSubmitPutMsg = this.handleSubmitPutMsg.bind(this);
         this.handleFormComment = this.handleFormComment.bind(this);
         this.renderFormComment = this.renderFormComment.bind(this);
         this.handlePostComment = this.handlePostComment.bind(this);
@@ -39,6 +43,8 @@ class Chat extends React.Component {
         this.handleBtnDisplayComment = this.handleBtnDisplayComment.bind(this);
         this.handleDeleteComment = this.handleDeleteComment.bind(this);
         this.handlePutComment = this.handlePutComment.bind(this);
+        this.handleSendPutComment = this.handleSendPutComment.bind(this);
+
         // this.refreshComments = this.refreshComments.bind(this);
     }
 
@@ -153,8 +159,23 @@ class Chat extends React.Component {
                                 <p className="message_post_date">{element.msg_date}</p>
                             </div>
                             <div className="message_post_content">
-                                <h2>{element.msg_title}</h2>
-                                <p>{element.msg_content}</p>
+                                <div className="btn_post_content">
+                                    <h2>{element.msg_title}</h2>
+                                    {this.state.messagePut !== index ?
+                                        <button onClick={e => this.handlePutMsg(e, index)}>modifier</button>
+                                        :
+                                        <button onClick={e => this.handleSubmitPutMsg(e, element.msg_id)}>envoyer</button>
+                                    }
+                                    {/* <button onClick={e => this.handleDeleteMsg(e)}>supprimer</button> */}
+                                </div>
+                                {this.state.messagePut === index ?
+                                    <div className="element_post_content">
+                                        <textarea value={this.state.messagePutContent} onChange={this.handleMessagePutContent}></textarea>
+                                    </div>
+                                    :
+                                    <div className="element_post_content">
+                                        <p>{element.msg_content}</p>
+                                    </div>}
                             </div>
                             <div className="container_comment_post">
                                 {this.state.replyIndex === index ?
@@ -168,9 +189,7 @@ class Chat extends React.Component {
                                             value={index}
                                             // onClick attend une fonction, donc on lui donne une fonction fléchée pour pouvoir ajouter notre argument en second ensuite
                                             onClick={e => this.handlePostComment(e, element.msg_id)}
-                                        >
-                                            Poster votre commentaire
-                                        </button>
+                                        > Poster votre commentaire </button>
                                     </>
                                     :
                                     <>
@@ -204,6 +223,49 @@ class Chat extends React.Component {
         )
     }
 
+    handleMessagePutContent(e) {
+        this.setState({
+            messagePutContent: e.target.value,
+        })
+    }
+
+    async handleSubmitPutMsg(e, postId) {
+        e.preventDefault();
+
+        let body = {
+            postId: postId,
+            messagePutContent: this.state.messagePutContent,
+        }
+        const token = await JSON.parse(localStorage.getItem('access-token'));
+        const payload = await jwt.decode(token);
+
+        //fetch
+        const result = await appFetch('PUT', '/message/' + payload.userId, body);
+        if (result.status !== 200) {
+            if (result.status === 401) {
+                this.props.history.replace(`/error?code=${result.status}`);
+
+            } else {
+                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+                alert(`une erreur est survenue (code: ${result.status})`)
+            }
+            return;
+        }
+
+        this.setState({
+            messagePut: null,
+        })
+
+    }
+
+    handlePutMsg(e, index) {
+        e.preventDefault();
+
+        this.setState({
+            messagePut: index,
+        })
+    }
+
     handleBtnDisplayComment(e, index) {
         e.preventDefault();
 
@@ -220,22 +282,6 @@ class Chat extends React.Component {
 
         this.setState({ displayCommentsList });
 
-
-        // if (this.state.btnDisplayComment === true && this.state.replyIndexComment === index) {
-        //     // if (this.state.btnDisplayComment === true) {
-
-        //     this.setState({
-        //         btnDisplayComment: false,
-        //         txtDisplayComment: "Afficher les commentaires",
-        //         replyIndexComment: e.target.value,
-        //     })
-        // } else {
-        //     this.setState({
-        //         btnDisplayComment: true,
-        //         txtDisplayComment: "Cacher les commentaires",
-        //         replyIndexComment: e.target.value,
-        //     })
-        // }
     }
 
     async handleCancelComment(e, postId) {
@@ -323,7 +369,6 @@ class Chat extends React.Component {
         return (
             <div>
                 {comments.map((element, index) => {
-                    console.log(element);
 
                     // condition if/else avec deux return
                     // si element.comment_id === this.state.editCommentId (à créer) => return un textarea avec le texte du message (à stocker dans une valeur de state temporaire this.state.editCommentContent)
@@ -338,10 +383,10 @@ class Chat extends React.Component {
                                     <p className="comment">{element.comment_content}</p>
                                 </div>
                                 <button className="btn_delete_comment" value={element.comment_id} onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex)}> x </button>
-                                {this.state.changeComment ?
-                                    <button className="btn_change_comment" value={element.comment_id} onClick={e => this.handleChangePutComment(e)}> Envoyer </button>
+                                {this.state.changeBtnComment.includes(element.comment_id) ?
+                                    <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
                                     :
-                                    <button className="btn_change_comment" value={element.comment_id} onClick={e => this.handlePutComment(e)}> Modifier </button>
+                                    <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id)}> Modifier </button>
                                 }
                             </div>
                         </>
@@ -351,15 +396,20 @@ class Chat extends React.Component {
         )
     }
 
-    handleChangePutComment(e) {
+    handlePutComment(e, commentId) {
         e.preventDefault();
 
-        this.setState({
-            changeComment: false,
-        })
+        let changeBtnComment = this.state.changeBtnComment;
+
+        changeBtnComment.push(commentId);
+
+        this.setState({ changeBtnComment, });
+
+        console.log(changeBtnComment);
+
     }
 
-    async handlePutComment(e) {
+    async handleSendPutComment(e, commentId) {
         e.preventDefault();
 
         // let body = {
@@ -382,8 +432,12 @@ class Chat extends React.Component {
         //     return;
         // }
 
+        let changeBtnComment = this.state.changeBtnComment;
+
+        changeBtnComment = changeBtnComment.filter(value => value !== commentId);
+
         this.setState({
-            changeComment: true,
+            changeBtnComment,
         })
 
     }

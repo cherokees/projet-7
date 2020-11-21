@@ -53,6 +53,15 @@ export async function getAllMessages(returnFields = null) {
     }
 }
 
+export async function putMessageById(postId, messagePutContent) {
+    try {
+        await sqlQuery(`UPDATE ${tableName} SET msg_content = '${messagePutContent}' WHERE msg_id=${postId}`);
+        return true;
+    } catch (err) {
+        throw err;
+    }
+}
+
 // table messages : champ pour id du parent
 // création de message (pas un commentaire) : id parent = 0 par défaut 
 // getAllMessages: ne prendre que les messages où l'id du parent = 0
