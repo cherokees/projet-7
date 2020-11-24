@@ -383,29 +383,27 @@ class Chat extends React.Component {
                                 }
                             </div>
                         )
-                    }
+                    } else
 
-                    // condition if/else avec deux return
-                    // si element.comment_id === this.state.editCommentId (à créer) => return un textarea avec le texte du message (à stocker dans une valeur de state temporaire this.state.editCommentContent)
-                    // sinon, return ce qui est déjà là
-
-                    return (
-                        <>
-                            <div className="container_user_comment" key={index}>
-                                <div>
-                                    <p className="user_comment">commentaire de {element.users_first_name} {element.users_last_name}</p>
-                                    {/* {this.state} */}
-                                    <p className="comment">{element.comment_content}</p>
+                        return (
+                            <>
+                                <div className="container_user_comment" key={index}>
+                                    <div>
+                                        <p className="user_comment">commentaire de {element.users_first_name} {element.users_last_name}</p>
+                                        {/* {this.state} */}
+                                        <p className="comment">{element.comment_content}</p>
+                                    </div>
+                                    <button className="btn_delete_comment"
+                                        value={element.comment_id}
+                                        onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex)}> x </button>
+                                    {this.state.changeBtnComment.includes(element.comment_id) ?
+                                        <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
+                                        :
+                                        <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id)}> Modifier </button>
+                                    }
                                 </div>
-                                <button className="btn_delete_comment" value={element.comment_id} onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex)}> x </button>
-                                {this.state.changeBtnComment.includes(element.comment_id) ?
-                                    <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
-                                    :
-                                    <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id)}> Modifier </button>
-                                }
-                            </div>
-                        </>
-                    )
+                            </>
+                        )
                 })}
             </div>
         )
@@ -520,7 +518,10 @@ class Chat extends React.Component {
                     <Layout auth>
                         <div className="container_chat">
                             <div className="banner_chat">
-                                {this.state.displayMsg ? <button className="button_chat">Votre message</button> : <button onClick={this.handleDisplayMsg} className="button_chat">Poster un nouveaux message</button>}
+                                {this.state.displayMsg ?
+                                    <button className="button_chat">Retour au forum</button>
+                                    :
+                                    <button onClick={this.handleDisplayMsg} className="button_chat">Poster un nouveaux message</button>}
                             </div>
                             <div className="container_message">
                                 {this.state.displayMsg ? this.renderForm() : this.renderMessagesList()}

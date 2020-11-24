@@ -1,14 +1,16 @@
 //modules
-import http from 'http';
 import express from 'express';
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 import cors from 'cors';
 import { router as usersRouter } from './routes/usersRouter';
 import { router as messagesRouter } from './routes/messagesRouter';
 import { router as commentRouter } from './routes/commentRouter';
+import multer from 'multer';
+// import formData from 'express-form-data';
 
 //Mise en place du serveur
 const app = express();
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,8 +19,14 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json()); // pour les corps de requête JSON
-app.use(bodyParser.urlencoded({ extended: false })); // pour les corps de requête x-www-form-url
+// app.use(bodyParser.json()); // pour les corps de requête JSON
+app.use(express.json()); // pour les corps de requête JSON
+// app.use(multer().single("image"));
+// app.use(formData.parse());
+
+
+// app.use(bodyParser.urlencoded({ extended: false })); // pour les corps de requête x-www-form-url
+app.use(express.urlencoded({ extended: false })); // pour les corps de requête x-www-form-url
 app.use(cors());                                  // to support Cross-origin requests
 
 app.use('/user', usersRouter);
@@ -26,7 +34,6 @@ app.use('/message', messagesRouter);
 app.use('/comment', commentRouter);
 
 
-const server = http.createServer(app);
 
 // app.use((req, res) => {
 //     res.json({ message: 'Votre requête a bien été reçue !' });
@@ -34,13 +41,9 @@ const server = http.createServer(app);
 
 
 //Route principale 
-const port = 3000;
-server.listen(process.env.PORT || port);
-server.on('listening', () => {
-    const address = server.address();
-    const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-    console.log('Listening on ' + bind);
-});
+const PORT = 3000;
+app.listen(process.env.PORT || PORT, () => console.log(`Serveur actif sur le port ${PORT}`));
+
 
 // app.use('/user/login', usersRouter);
 // app.use('/api/login', userRouter);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { appFetch } from '../appFetch/appFetch';
+import { appFetch, appFetchFormData } from '../appFetch/appFetch';
 import { Redirect } from 'react-router-dom';
 import Layout from './layout';
 
@@ -19,15 +19,18 @@ class Signup extends React.Component {
             confirm_password: "",
             signupSuccess: false,
             emailError: "",
+            image: null,
         };
 
         // DEBUG
-        this.state.email = "123@gmail.com";
-        this.state.confirm_email = "123@gmail.com";
-        this.state.password = "123";
-        this.state.confirm_password = "123";
-        this.state.firstName = "123";
-        this.state.lastName = "123";
+        // let rd = Math.floor(Math.random() * 30000);
+        let rd = "babybel";
+        this.state.email = rd + "@gmail.com";
+        this.state.confirm_email = rd + "@gmail.com";
+        this.state.password = rd;
+        this.state.confirm_password = rd;
+        this.state.firstName = rd;
+        this.state.lastName = rd;
         //
 
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
@@ -39,6 +42,7 @@ class Signup extends React.Component {
         this.handleChangeConfirmEmail = this.handleChangeConfirmEmail.bind(this);
         this.handleChangeConfirmPassword = this.handleChangeConfirmPassword.bind(this);
         this.handleShowConfirmPassword = this.handleShowConfirmPassword.bind(this);
+        this.handleChangeImage = this.handleChangeImage.bind(this);
 
     }
 
@@ -99,6 +103,21 @@ class Signup extends React.Component {
         this.setState({ showConfirmPassword: !this.state.showConfirmPassword })
     }
 
+    handleChangeImage(e) {
+        e.preventDefault();
+
+        // console.log(e.target.files);
+
+        const file = Array.from(e.target.files)[0];
+        // const formData = new FormData();
+        // formData.append('profileImage', file);
+
+        // console.log(formData.get('profileImage'));
+
+        // this.setState({ image: e.target.value });
+        this.setState({ image: file });
+    }
+
     //fonction asynchrone pour l'envoie d'une requête fetch (inscription au forum)
     async handleSubmit(e) {
         e.preventDefault();
@@ -107,6 +126,16 @@ class Signup extends React.Component {
         try {
 
             // if else
+
+
+            const formData = new FormData()
+
+            formData.append('email', this.state.email);
+            formData.append('password', this.state.password);
+            formData.append('firstName', this.state.firstName);
+            formData.append('lastName', this.state.lastName);
+            formData.append('image', this.state.image);
+
             let body = {
                 email: this.state.email,
                 password: this.state.password,
@@ -114,7 +143,10 @@ class Signup extends React.Component {
                 lastName: this.state.lastName,
             }
 
+            // console.log(body);
+
             const result = await appFetch('POST', '/user/signup', body);
+            // const result = await appFetchFormData('POST', '/user/signup', formData);
             // console.log(result.status);
             // console.log(result);
 
@@ -122,7 +154,7 @@ class Signup extends React.Component {
                 alert("Félicitations, vous êtes enregistré")
                 this.setState({ signupSuccess: true });
             } else if (result.status === 400) {
-                alert("Cette email est déja enregistré")
+                alert(result.message);
             } else {
                 alert("Une erreur s'est produite, veuillez rééssayer plus tard")
             }
@@ -220,6 +252,18 @@ class Signup extends React.Component {
                                 <button className="password_button_form"
                                     onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? "cacher" : "montrer"}
                                 </button>
+                            </div>
+
+                            <div className="container_label">
+                                <label className="img_profil"> Sélectionner une photo de profil</label>
+                                <div className="container_img_profil">
+                                    <input
+                                        className="image_url"
+                                        name="image"
+                                        type="file"
+                                        onChange={this.handleChangeImage}>
+                                    </input>
+                                </div>
                             </div>
                             <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
                         </div>

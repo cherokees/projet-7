@@ -45,3 +45,19 @@ Base de données pour le forum
 
 - table pour les messages posté (post)
 - table pour les commentaires (post)
+
+
+
+CHOSE A FAIRE 
+
+-bouton retour au forum sur la page chat (dans le formulaire)                                               EN COURS                                 
+-bouton retour en arrière pendant la modification du message posté                                          EN COURS
+-le texte du message doit apparaitre dans le texte area quand on modifis celui ci                           EN COURS
+-bouton retour en arrière pendant la modification d'un commentaire posté                                    EN COURS
+-changer les chemins d'effacements des commentaires et messages pour des chemins de modifications           EN COURS
+-sécurisé les chemins de modifications des commentaires et des messages                                     EN COURS
+-créer la recherche avancé dans le forum                                                                    EN COURS
+-créer le profil admin qui à l'autorisation sur toutes les Routes                                           EN COURS
+-insérer le partage de fichiers types images                                                                EN COURS
+-finir le CSS                                                                                               EN COURS
+-faire le responsive                                                                                        EN COURS

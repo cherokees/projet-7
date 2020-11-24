@@ -5,6 +5,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import auth from '../middleware/auth';
 import authUserId from '../middleware/authUserId';
+// import multer from "../middleware/multer";
+import multer from 'multer';
 
 export const router = express.Router();
 
@@ -40,6 +42,11 @@ router.get("/auth", auth, async (req, res, next) => {
     }
 });
 
+//ajout de multer
+
+
+const upload = multer({ dest: 'uploads/' });
+
 router.post("/signup",
     validateFieldsPOST({
 
@@ -50,15 +57,43 @@ router.post("/signup",
         lastName: [VLD_NOT_EMPTY_STRING],
     }),
 
+    // multer(req, res, next, (err) => {
+    //     if (err) throw (err);
+    //     console.log("IN MULTER BODY", req.body);
+    //     next();
+    // }),
+
+    // upload.single('image'),
+
+    // upload(req, res, (err) => {
+    //     if (err) {
+    //       reject(err);
+    //     }
+    //     resolve(req.body);
+    //   });
+
     // Vérification que l'email n'est pas déjà utilisé
+
+
     async (req, res, next) => {
 
-        const isEmailUsed = await getUserByEmail(req.body.email, ['users_id']);
+        try {
+            console.log("req.body", req.body);
+            console.log("req.files", req.files);
 
-        if (isEmailUsed !== null) {
-            res.status(400).json({ data: null, message: "Cet email est déjà utilisé" });
-        } else {
-            next();
+            const isEmailUsed = await getUserByEmail(req.body.email, ['users_id']);
+
+            if (isEmailUsed !== null) {
+
+                console.log(req.body.email, isEmailUsed);
+
+                res.status(400).json({ data: null, message: "Cet email est déjà utilisé" });
+            } else {
+                next();
+            }
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ data: null, message: "Erreur interne du serveur" });
         }
     },
 

@@ -1,11 +1,25 @@
 
 
+
 export async function appFetch(method, url, body) {
+    return await appFetchCore('application/json', method, url, body);
+}
+
+
+export async function appFetchFormData(method, url, body) {
+    // return await appFetchCore('multipart/form-data', method, url, body);
+    return await appFetchCore(undefined, method, url, body);
+}
+
+
+
+
+export async function appFetchCore(contentType, method, url, body) {
     try {
         const options = {
             method,
             headers: {
-                'content-type': 'application/json',
+                'content-type': contentType,
                 'authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access-token'))
             }
         }
@@ -30,3 +44,4 @@ export async function appFetch(method, url, body) {
         throw err;
     }
 }
+
