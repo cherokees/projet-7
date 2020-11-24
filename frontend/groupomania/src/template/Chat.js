@@ -519,7 +519,11 @@ class Chat extends React.Component {
 
     handleChangeSearchMsg(e) {
         e.preventDefault();
-        this.setState({ searchMsg: e.target.value })
+        this.setState({
+            searchMsg: e.target.value,
+            firstName: this.separatorName(this.state.searchMsg)[0],
+            lastName: this.separatorName(this.state.searchMsg)[1],
+        })
     }
 
     separatorName(paraTxt) {
@@ -532,18 +536,19 @@ class Chat extends React.Component {
     async handlePostSearchMsg(e) {
         e.preventDefault();
 
-        //fetch
         let body = {
-            firstName: this.separatorName(this.state.searchMsg)[0],
-            lastName: this.separatorName(this.state.searchMsg)[1],
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
         }
 
         console.log(body);
 
         // const token = await JSON.parse(localStorage.getItem('access-token'));
         // const payload = await jwt.decode(token);
+        body = JSON.stringify(body);
 
         const result = await appFetch('GET', '/user/search', body);
+
         console.log(result);
 
         if (result.status !== 200) {
