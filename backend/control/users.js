@@ -70,6 +70,18 @@ export async function getUserByEmail(email, returnFields = null) {
     }
 }
 
+//fonction getUserByName qui récupère un utilisateur via son nom/prénom
+export async function getUserByName(lastName, firstName, returnFields = null) {
+    try {
+        returnFields = returnFields || defaultReturnFields;
+        console.log(lastName, firstName);
+        const rows = await sqlQuery(`SELECT ${returnFields} FROM ${tableName} WHERE users_last_name = '${lastName}' AND users_first_name = '${firstName}'`);
+        return rows.length > 0 ? rows[0] : null;
+    } catch (err) {
+        throw err;
+    }
+}
+
 //fonction putUserById qui change les champs first_name et/ou last_name
 export async function putUserById(userId, firstName, lastName) {
     try {

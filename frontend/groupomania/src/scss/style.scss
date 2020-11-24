@@ -318,25 +318,66 @@
     flex-direction: column;
     scroll-behavior: smooth;
 
-    .button_chat{
-        height: 3rem;
-        border-radius: 20px;
-        border: none;
-        background-color: rgba(0,84,63, 0.9);
-        box-shadow: inset 1px 1px 20px 0px #00543f;
-        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: white;
-        margin-top: 2rem;
-        margin-left: 30%;
-        margin-right: 30%;
-        
-    }
+    .banner_chat{
+        width: auto;
+        display: flex;
+        background-color: #008362;
+        height: 5rem;
+        justify-content: space-around;
 
-    .button_chat:hover{
-        background-color: #00febe;
-        color: black;
+        .banner_btn_post{
+            margin: auto;
+
+            .button_chat{
+                height: 3rem;
+                border: none;
+                border-radius: 15px;
+                background: linear-gradient(145deg, #008c69, #007658);
+                box-shadow:  4px 4px 7px#006a4f, 
+                -4px -4px 7px#009c75;
+                font-size: 1.3rem;
+                font-weight: bold;
+                color: white;
+                
+            }
+        
+            .button_chat:hover{
+                border-radius: 15px;
+                background: linear-gradient(145deg, #007658, #008c69);
+                box-shadow:  4px 4px 7px #006a4f, 
+                -4px -4px 7px#009c75;
+            }
+        }
+
+        .banner_search{
+            margin: auto;
+
+            button{
+                height: 3rem;
+                border: none;
+                border-radius: 15px;
+                background: linear-gradient(145deg, #008c69, #007658);
+                box-shadow:  4px 4px 7px#006a4f, 
+                -4px -4px 7px#009c75;
+                font-size: 1.3rem;
+                font-weight: bold;
+                color: white;
+                margin-left: 2rem;
+
+            }
+            button:hover{
+                border-radius: 15px;
+                background: linear-gradient(145deg, #007658, #008c69);
+                box-shadow:  4px 4px 7px #006a4f, 
+                -4px -4px 7px#009c75;
+            }
+
+            input{
+                height: 1.5rem;
+                border-radius: 15px;
+                border: none;
+            }
+        }
     }
 
     .container_message{

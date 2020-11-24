@@ -26,6 +26,9 @@ class Chat extends React.Component {
             displayCommentsList: [],
             changeBtnComment: [],
             editCommentContent: "",
+            searchMsg: "",
+            firstName: "",
+            lastName: "",
 
         }
 
@@ -46,6 +49,9 @@ class Chat extends React.Component {
         this.handlePutComment = this.handlePutComment.bind(this);
         this.handleSendPutComment = this.handleSendPutComment.bind(this);
         this.handleEditCommentContent = this.handleEditCommentContent.bind(this);
+        this.handleChangeSearchMsg = this.handleChangeSearchMsg.bind(this);
+        this.handlePostSearchMsg = this.handlePostSearchMsg.bind(this);
+        this.separatorName = this.separatorName.bind(this);
 
         // this.refreshComments = this.refreshComments.bind(this);
     }
@@ -511,6 +517,46 @@ class Chat extends React.Component {
         this.setState({ comment: e.target.value })
     }
 
+    handleChangeSearchMsg(e) {
+        e.preventDefault();
+        this.setState({ searchMsg: e.target.value })
+    }
+
+    separatorName(paraTxt) {
+        paraTxt = paraTxt.split(" ");
+        return paraTxt;
+    }
+
+
+
+    async handlePostSearchMsg(e) {
+        e.preventDefault();
+
+        //fetch
+        let body = {
+            firstName: this.separatorName(this.state.searchMsg)[0],
+            lastName: this.separatorName(this.state.searchMsg)[1],
+        }
+
+        console.log(body);
+
+        // const token = await JSON.parse(localStorage.getItem('access-token'));
+        // const payload = await jwt.decode(token);
+
+        const result = await appFetch('GET', '/user/search', body);
+        console.log(result);
+
+        if (result.status !== 200) {
+            if (result.status === 401) {
+                alert(`l'utilisateur que vous avez séléctionner n'éxiste pas`)
+            } else {
+                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+                alert(`une erreur est survenue (code: ${result.status})`)
+            }
+            return;
+        }
+    }
+
     render() {
         return (
             this.state.display ?
@@ -518,10 +564,16 @@ class Chat extends React.Component {
                     <Layout auth>
                         <div className="container_chat">
                             <div className="banner_chat">
-                                {this.state.displayMsg ?
-                                    <button className="button_chat">Retour au forum</button>
-                                    :
-                                    <button onClick={this.handleDisplayMsg} className="button_chat">Poster un nouveaux message</button>}
+                                <div className="banner_btn_post">
+                                    {this.state.displayMsg ?
+                                        <button className="button_chat">Retour au forum</button>
+                                        :
+                                        <button onClick={this.handleDisplayMsg} className="button_chat">Poster un nouveaux message</button>}
+                                </div>
+                                <div className="banner_search">
+                                    <input value={this.state.searchMsg} onChange={this.handleChangeSearchMsg}></input>
+                                    <button onClick={this.handlePostSearchMsg}>Rechercher</button>
+                                </div>
                             </div>
                             <div className="container_message">
                                 {this.state.displayMsg ? this.renderForm() : this.renderMessagesList()}

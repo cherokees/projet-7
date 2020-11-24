@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllUsers, addUser, getUserByEmail, getUserById, putUserById, disableUserById } from '../control/users';
+import { getAllUsers, addUser, getUserByEmail, getUserById, putUserById, disableUserById, getUserByName } from '../control/users';
 import { validateFieldsPOST, VLD_IS_EMAIL, VLD_NOT_EMPTY_STRING, VLD_NO_SPECIAL_CHARS } from '../utils/validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -178,6 +178,18 @@ router.put('/disable/:id', auth, authUserId, async (req, res, next) => {
     }
 })
 
+router.get('/search', async (req, res, next) => {
+    try {
+        console.log("body dans route", req.body);
+
+        const userId = await getUserByName(req.body.lastName, req.body.firstName);
+        console.log(userId);
+        res.status(200).json({ data: userId, message: "profil trouvé" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ data: null, message: "Erreur interne du serveur" });
+    }
+})
 
 // router.delete('/profil/:id', auth, authUserId, async (req, res, next) => {
 //     try {
