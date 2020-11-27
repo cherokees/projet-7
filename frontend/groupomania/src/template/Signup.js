@@ -1,7 +1,9 @@
 import React from 'react';
-import { appFetch, appFetchFormData } from '../appFetch/appFetch';
+import { appFetch, appFetchFormData } from '../utils/appFetch';
 import { Redirect } from 'react-router-dom';
 import Layout from './layout';
+import axios from 'axios';
+import { uploadFile } from '../utils/upload';
 
 class Signup extends React.Component {
 
@@ -19,7 +21,7 @@ class Signup extends React.Component {
             confirm_password: "",
             signupSuccess: false,
             emailError: "",
-            image: null,
+            image: "",
         };
 
         // DEBUG
@@ -45,6 +47,8 @@ class Signup extends React.Component {
         this.handleChangeImage = this.handleChangeImage.bind(this);
 
     }
+
+
 
     //fonction de vérification de l'email saisie 
     handleChangeEmail(e) {
@@ -103,19 +107,23 @@ class Signup extends React.Component {
         this.setState({ showConfirmPassword: !this.state.showConfirmPassword })
     }
 
-    handleChangeImage(e) {
+    async handleChangeImage(e) {
         e.preventDefault();
 
-        // console.log(e.target.files);
-
         const file = Array.from(e.target.files)[0];
-        // const formData = new FormData();
-        // formData.append('profileImage', file);
+        console.log("111", file);
 
-        // console.log(formData.get('profileImage'));
 
-        // this.setState({ image: e.target.value });
-        this.setState({ image: file });
+        if (file) {
+
+            const result = await uploadFile("/upload/image", file);
+            console.log("upload RES", result);
+            this.setState({ image: result.data });
+        } else {
+
+            this.setState({ image: "" });
+        }
+
     }
 
     //fonction asynchrone pour l'envoie d'une requête fetch (inscription au forum)
@@ -128,27 +136,35 @@ class Signup extends React.Component {
             // if else
 
 
-            const formData = new FormData()
+            // console.log("this.state.image", this.state.image);
 
-            formData.append('email', this.state.email);
-            formData.append('password', this.state.password);
-            formData.append('firstName', this.state.firstName);
-            formData.append('lastName', this.state.lastName);
-            formData.append('image', this.state.image);
+            // React
+            // lastModified: 1598026637520
+            // lastModifiedDate: Fri Aug 21 2020 18:17:17 GMT+0200 (heure d’été d’Europe centrale) {}
+            // name: "indien.jpg"
+            // size: 19782
+            // type: "image/jpeg"
+            // webkitRelativePath: ""
+            // __proto__: File
+
+            // Multer avec postman
+            // fieldname: 'image',
+            // originalname: 'indien.jpg',
+            // encoding: '7bit',
+            // mimetype: 'image/jpeg'
+
 
             let body = {
                 email: this.state.email,
                 password: this.state.password,
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
+                image: this.state.image,
             }
 
             // console.log(body);
 
             const result = await appFetch('POST', '/user/signup', body);
-            // const result = await appFetchFormData('POST', '/user/signup', formData);
-            // console.log(result.status);
-            // console.log(result);
 
             if (result.status === 200) {
                 alert("Félicitations, vous êtes enregistré")
@@ -176,7 +192,7 @@ class Signup extends React.Component {
 
             return (
                 <Layout>
-                    <form className="form_signup">
+                    <form className="form_signup" enctype="multipart/form-data">
                         <div className="container_form">
                             <div className="container_label">
                                 <label>Prénom</label>
@@ -261,6 +277,7 @@ class Signup extends React.Component {
                                         className="image_url"
                                         name="image"
                                         type="file"
+                                        accept=".jpg"
                                         onChange={this.handleChangeImage}>
                                     </input>
                                 </div>

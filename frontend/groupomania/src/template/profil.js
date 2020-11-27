@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from './layout';
-import { appFetch } from '../appFetch/appFetch';
+import { appFetch } from '../utils/appFetch';
 import jwt from 'jsonwebtoken';
 
 class Profil extends React.Component {
@@ -14,6 +14,7 @@ class Profil extends React.Component {
             lastName: "",
             createdDate: "",
             changeName: false,
+            image: "",
 
             // redirection: false,
         }
@@ -57,6 +58,7 @@ class Profil extends React.Component {
             firstName: result.data.users_first_name,
             lastName: result.data.users_last_name,
             createdDate: result.data.users_created_date,
+            image: result.data.users_image,
         });
 
     }
@@ -119,6 +121,8 @@ class Profil extends React.Component {
             email: result.data.users_email,
             firstName: result.data.users_first_name,
             lastName: result.data.users_last_name,
+            image: result.data.users_image,
+
             changeName: false,
         })
 
@@ -132,6 +136,10 @@ class Profil extends React.Component {
                     <Layout auth>
                         <div className="container_profil">
                             <div className="container_profil_img">
+                                {this.state.image !== "" ?
+                                    <img src={'http://localhost:3000/public/uploads/' + this.state.image} />
+                                    :
+                                    <span>pas d'image</span>}
                             </div>
 
                             <div className="container_profil_p">

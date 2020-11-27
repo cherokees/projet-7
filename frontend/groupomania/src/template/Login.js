@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import { appFetch } from '../appFetch/appFetch';
+import { appFetch } from '../utils/appFetch';
 import Layout from './layout';
 
 

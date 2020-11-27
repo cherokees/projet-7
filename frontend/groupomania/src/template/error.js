@@ -1,5 +1,5 @@
 import React from 'react';
-import { appFetch } from '../appFetch/appFetch';
+import { appFetch } from '../utils/appFetch';
 import Layout from './layout';
 
 //fonction getErrorMessage qui liste dans un objet toutes les erreurs répértoriées et affichées dans la page d'erreur 

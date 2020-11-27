@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 //nom de la table dans la bdd
 const tableName = 'users';
 //nom des colonnes dans la table
-const defaultReturnFields = ['users_id', 'users_email', 'users_first_name', 'users_last_name', 'users_created_date'];
+const defaultReturnFields = ['users_id', 'users_email', 'users_first_name', 'users_last_name', 'users_created_date', 'users_image'];
 
 //fonction asynchrone qui récupères tous les utilisateurs dans la bdd
 export async function getAllUsers(returnFields = null) {
@@ -20,7 +20,7 @@ export async function getAllUsers(returnFields = null) {
 //fonction qui ajoute un utilisateur dans la bdd
 
 //on précide en paramètre les champs à ajouté dans la table
-export async function addUser(email, password, firstName, lastName) {
+export async function addUser(email, password, firstName, lastName, image = "") {
     try {
 
         //const qui contient une fonction synchrone, qui utilise le module bcrypt pour hasher le mdp
@@ -29,13 +29,14 @@ export async function addUser(email, password, firstName, lastName) {
         //const qui contient la fonction native pour faire une requête SQL
         //requête qui ajoute les champs entré par l'utilisateur dans la table
         const result = await sqlQuery(`INSERT INTO ${tableName} (
-            users_email, users_password, users_first_name, users_last_name
+            users_email, users_password, users_first_name, users_last_name, users_image
         )
         VALUES (
             '${email}',
             '${passwordHash}',
             '${firstName}',
-            '${lastName}'
+            '${lastName}',
+            '${image}'
 
         )`);
         return result.insertId;

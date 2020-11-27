@@ -35,7 +35,7 @@ export async function getAllMessages(returnFields = null) {
     try {
         returnFields = returnFields || defaultReturnFields;
         const rows = await sqlQuery(
-            `SELECT ${returnFields}, u.users_first_name, u.users_last_name
+            `SELECT ${returnFields}, u.users_first_name, u.users_last_name, u.users_image
             FROM \`messages\` m
             JOIN users u
             ON m.msg_user_id = u.users_id
@@ -57,6 +57,18 @@ export async function putMessageById(postId, messagePutContent) {
     try {
         await sqlQuery(`UPDATE ${tableName} SET msg_content = '${messagePutContent}' WHERE msg_id=${postId}`);
         return true;
+    } catch (err) {
+        throw err;
+    }
+}
+
+export async function getMessageById(postId, returnFields = null) {
+    try {
+        returnFields = returnFields || defaultReturnFields;
+        //requête SQL pour récupérer les champs concérné grace à l'id
+        const rows = await sqlQuery(`SELECT ${returnFields} FROM ${tableName} WHERE msg_id=${postId}`);
+        //retourne tous les champs trouvé si ils ne sont pas égale à null
+        return rows.length > 0 ? rows[0] : null;
     } catch (err) {
         throw err;
     }

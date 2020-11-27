@@ -1,12 +1,12 @@
 //modules
+import path from 'path';
 import express from 'express';
 // import bodyParser from 'body-parser';
 import cors from 'cors';
 import { router as usersRouter } from './routes/usersRouter';
 import { router as messagesRouter } from './routes/messagesRouter';
 import { router as commentRouter } from './routes/commentRouter';
-import multer from 'multer';
-// import formData from 'express-form-data';
+import { router as uploadRouter } from './routes/uploadRouter';
 
 //Mise en place du serveur
 const app = express();
@@ -29,10 +29,13 @@ app.use(express.json()); // pour les corps de requête JSON
 app.use(express.urlencoded({ extended: false })); // pour les corps de requête x-www-form-url
 app.use(cors());                                  // to support Cross-origin requests
 
+// Use the public folder for links
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
 app.use('/user', usersRouter);
 app.use('/message', messagesRouter);
 app.use('/comment', commentRouter);
-
+app.use('/upload', uploadRouter);
 
 
 // app.use((req, res) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { appFetch } from '../appFetch/appFetch';
+import { appFetch } from '../utils/appFetch';
 import Layout from './layout';
 import jwt from 'jsonwebtoken';
 
@@ -29,6 +29,7 @@ class Chat extends React.Component {
             searchMsg: "",
             firstName: "",
             lastName: "",
+            user: "",
 
         }
 
@@ -52,6 +53,7 @@ class Chat extends React.Component {
         this.handleChangeSearchMsg = this.handleChangeSearchMsg.bind(this);
         this.handlePostSearchMsg = this.handlePostSearchMsg.bind(this);
         this.separatorName = this.separatorName.bind(this);
+        this.handleCancelMsg = this.handleCancelMsg.bind(this);
 
         // this.refreshComments = this.refreshComments.bind(this);
     }
@@ -78,11 +80,18 @@ class Chat extends React.Component {
         // Cette partie de code se déclenche si l'utilisateur est connecté
         console.log(result);
 
-        // load msg
-        // state
+        const token = await JSON.parse(localStorage.getItem('access-token'));
+        const payload = await jwt.decode(token);
 
         //si l'utilisateur est autorisé, on affiche le composant chat
-        this.setState({ display: true, messageList: result.data });
+        this.setState({
+            display: true, messageList: result.data,
+            user: payload.userId,
+        });
+
+        console.log(this.state.user);
+
+
     }
 
     //fonction handleFetchErrors qui redirige l'utilisateur vers une page d'erreur, en fonction de la réponse serveur à l'aide de "props.history"
@@ -169,10 +178,16 @@ class Chat extends React.Component {
                             <div className="message_post_content">
                                 <div className="btn_post_content">
                                     <h2>{element.msg_title}</h2>
-                                    {this.state.messagePut !== index ?
-                                        <button onClick={e => this.handlePutMsg(e, index)}>modifier</button>
+                                    {this.state.user === element.msg_user_id ?
+                                        this.state.messagePut !== index ?
+                                            <button onClick={e => this.handlePutMsg(e, index, element.msg_content)}>modifier</button>
+                                            :
+                                            <>
+                                                <button onClick={e => this.handleSubmitPutMsg(e, element.msg_id)}>envoyer</button>
+                                                <button onClick={e => this.handleCancelPutMsg(e)}>retour</button>
+                                            </>
                                         :
-                                        <button onClick={e => this.handleSubmitPutMsg(e, element.msg_id)}>envoyer</button>
+                                        <div></div>
                                     }
                                     {/* <button onClick={e => this.handleDeleteMsg(e)}>supprimer</button> */}
                                 </div>
@@ -231,6 +246,14 @@ class Chat extends React.Component {
         )
     }
 
+    handleCancelPutMsg(e) {
+        e.preventDefault();
+
+        this.setState({
+            messagePut: null,
+        })
+    }
+
     handleMessagePutContent(e) {
         this.setState({
             messagePutContent: e.target.value,
@@ -249,6 +272,7 @@ class Chat extends React.Component {
 
         //fetch
         const result = await appFetch('PUT', '/message/' + payload.userId, body);
+
         if (result.status !== 200) {
             if (result.status === 401) {
                 this.props.history.replace(`/error?code=${result.status}`);
@@ -266,11 +290,12 @@ class Chat extends React.Component {
 
     }
 
-    handlePutMsg(e, index) {
+    handlePutMsg(e, index, message) {
         e.preventDefault();
 
         this.setState({
             messagePut: index,
+            messagePutContent: message,
         })
     }
 
@@ -399,14 +424,22 @@ class Chat extends React.Component {
                                         {/* {this.state} */}
                                         <p className="comment">{element.comment_content}</p>
                                     </div>
-                                    <button className="btn_delete_comment"
-                                        value={element.comment_id}
-                                        onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex)}> x </button>
-                                    {this.state.changeBtnComment.includes(element.comment_id) ?
-                                        <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
+                                    {this.state.user === element.comment_user_id ?
+                                        <>
+                                            <button className="btn_delete_comment"
+                                                value={element.comment_id}
+                                                onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex)}> x </button>
+                                            {this.state.changeBtnComment.includes(element.comment_id) ?
+                                                <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
+                                                :
+                                                <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id, element.comment_content)}> Modifier </button>
+                                            }
+                                        </>
                                         :
-                                        <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id)}> Modifier </button>
+                                        <div></div>
+
                                     }
+
                                 </div>
                             </>
                         )
@@ -424,14 +457,17 @@ class Chat extends React.Component {
 
     }
 
-    handlePutComment(e, commentId) {
+    handlePutComment(e, commentId, commentContent) {
         e.preventDefault();
 
         let changeBtnComment = this.state.changeBtnComment;
 
         changeBtnComment.push(commentId);
 
-        this.setState({ changeBtnComment, });
+        this.setState({
+            changeBtnComment,
+            editCommentContent: commentContent,
+        });
 
         console.log(changeBtnComment);
 
@@ -475,8 +511,15 @@ class Chat extends React.Component {
     async handleDeleteComment(e, commentId, postId, messageIndex) {// messageIndex et utilisé pour rafraichir la bonne liste de commentaire
         e.preventDefault();
 
+        let body = {
+            commentId,
+        }
+        console.log(body);
 
-        const result = await appFetch('DELETE', `/comment/${commentId}`, {});
+        const token = await JSON.parse(localStorage.getItem('access-token'));
+        const payload = await jwt.decode(token);
+
+        const result = await appFetch('PUT', `/comment/disable/` + payload.userId, body);
         console.log(result);
 
         if (result.status !== 200) {
@@ -545,21 +588,26 @@ class Chat extends React.Component {
 
         // const token = await JSON.parse(localStorage.getItem('access-token'));
         // const payload = await jwt.decode(token);
-        body = JSON.stringify(body);
+        // body = JSON.stringify(body);
 
-        const result = await appFetch('GET', '/user/search', body);
+        // const result = await appFetch('GET', '/user/search', body);
 
-        console.log(result);
+        // console.log(result);
 
-        if (result.status !== 200) {
-            if (result.status === 401) {
-                alert(`l'utilisateur que vous avez séléctionner n'éxiste pas`)
-            } else {
-                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
-                alert(`une erreur est survenue (code: ${result.status})`)
-            }
-            return;
-        }
+        // if (result.status !== 200) {
+        //     if (result.status === 401) {
+        //         alert(`l'utilisateur que vous avez séléctionner n'éxiste pas`)
+        //     } else {
+        //         //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+        //         alert(`une erreur est survenue (code: ${result.status})`)
+        //     }
+        //     return;
+        // }
+    }
+
+    handleCancelMsg() {
+
+        this.setState({ displayMsg: false })
     }
 
     render() {
@@ -571,7 +619,7 @@ class Chat extends React.Component {
                             <div className="banner_chat">
                                 <div className="banner_btn_post">
                                     {this.state.displayMsg ?
-                                        <button className="button_chat">Retour au forum</button>
+                                        <button onClick={this.handleCancelMsg} className="button_chat">Retour au forum</button>
                                         :
                                         <button onClick={this.handleDisplayMsg} className="button_chat">Poster un nouveaux message</button>}
                                 </div>
