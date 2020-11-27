@@ -27,8 +27,8 @@ class Chat extends React.Component {
             changeBtnComment: [],
             editCommentContent: "",
             searchMsg: "",
-            firstName: "",
-            lastName: "",
+            // firstName: "",
+            // lastName: "",
             user: "",
 
         }
@@ -52,7 +52,6 @@ class Chat extends React.Component {
         this.handleEditCommentContent = this.handleEditCommentContent.bind(this);
         this.handleChangeSearchMsg = this.handleChangeSearchMsg.bind(this);
         this.handlePostSearchMsg = this.handlePostSearchMsg.bind(this);
-        this.separatorName = this.separatorName.bind(this);
         this.handleCancelMsg = this.handleCancelMsg.bind(this);
 
         // this.refreshComments = this.refreshComments.bind(this);
@@ -422,9 +421,9 @@ class Chat extends React.Component {
                                     <div>
                                         <p className="user_comment">commentaire de {element.users_first_name} {element.users_last_name}</p>
                                         {/* {this.state} */}
-                                        <p className="comment">{element.comment_content}</p>
+                                        <p className="comment">{element.comment_content === null ? "Commentaire supprimé" : element.comment_content}</p>
                                     </div>
-                                    {this.state.user === element.comment_user_id ?
+                                    {(this.state.user === element.comment_user_id && element.comment_content !== null) ?
                                         <>
                                             <button className="btn_delete_comment"
                                                 value={element.comment_id}
@@ -562,26 +561,30 @@ class Chat extends React.Component {
 
     handleChangeSearchMsg(e) {
         e.preventDefault();
+        const split = e.target.value.split(" ");
         this.setState({
             searchMsg: e.target.value,
-            firstName: this.separatorName(this.state.searchMsg)[0],
-            lastName: this.separatorName(this.state.searchMsg)[1],
-        })
-    }
+            firstName: split[0],
+            lastName: split[1],
+        }, () => console.log(this.state.firstName, this.state.lastName))
 
-    separatorName(paraTxt) {
-        paraTxt = paraTxt.split(" ");
-        return paraTxt;
     }
-
 
 
     async handlePostSearchMsg(e) {
         e.preventDefault();
 
+
+        const split = this.state.searchMsg.split(" ");
+
+        if (split.length !== 2) {
+            alert("Veuillez rentrer seulement le nom et prénom de la personne recherchée")
+            return
+        }
+
         let body = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
+            firstName: split[0],
+            lastName: split[1],
         }
 
         console.log(body);
@@ -590,19 +593,19 @@ class Chat extends React.Component {
         // const payload = await jwt.decode(token);
         // body = JSON.stringify(body);
 
-        // const result = await appFetch('GET', '/user/search', body);
+        const result = await appFetch('POST', '/user/search', body);
 
-        // console.log(result);
+        console.log(result);
 
-        // if (result.status !== 200) {
-        //     if (result.status === 401) {
-        //         alert(`l'utilisateur que vous avez séléctionner n'éxiste pas`)
-        //     } else {
-        //         //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
-        //         alert(`une erreur est survenue (code: ${result.status})`)
-        //     }
-        //     return;
-        // }
+        if (result.status !== 200) {
+            if (result.status === 401) {
+                alert(`l'utilisateur que vous avez séléctionner n'éxiste pas`)
+            } else {
+                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+                alert(`une erreur est survenue (code: ${result.status})`)
+            }
+            return;
+        }
     }
 
     handleCancelMsg() {

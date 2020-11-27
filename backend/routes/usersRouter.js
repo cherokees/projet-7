@@ -131,7 +131,7 @@ router.post("/login",
 
 router.put('/profil/:id', auth, authUserId, async (req, res, next) => {
     try {
-        const result = await putUserById(req.params.id, req.body.firstName, req.body.lastName);
+        const result = await putUserById(req.params.id, req.body.firstName, req.body.lastName, req.body.image);
         const user = await getUserById(req.params.id);
         res.status(200).json({ data: user, message: "Profil modifié" });
     } catch (err) {
@@ -151,11 +151,12 @@ router.put('/disable/:id', auth, authUserId, async (req, res, next) => {
     }
 })
 
-router.get('/search', async (req, res, next) => {
+router.post('/search', async (req, res, next) => {
     try {
         console.log("body dans route", req.body);
 
         const userId = await getUserByName(req.body.lastName, req.body.firstName);
+
         console.log(userId);
         res.status(200).json({ data: userId, message: "profil trouvé" });
     } catch (err) {

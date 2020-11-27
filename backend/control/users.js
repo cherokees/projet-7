@@ -76,7 +76,12 @@ export async function getUserByName(lastName, firstName, returnFields = null) {
     try {
         returnFields = returnFields || defaultReturnFields;
         console.log(lastName, firstName);
-        const rows = await sqlQuery(`SELECT ${returnFields} FROM ${tableName} WHERE users_last_name = '${lastName}' AND users_first_name = '${firstName}'`);
+        const rows = await sqlQuery(`
+        SELECT ${returnFields}
+        FROM ${tableName}
+        WHERE users_last_name = '${lastName}'
+        AND users_first_name = '${firstName}'
+        `);
         return rows.length > 0 ? rows[0] : null;
     } catch (err) {
         throw err;
@@ -84,9 +89,12 @@ export async function getUserByName(lastName, firstName, returnFields = null) {
 }
 
 //fonction putUserById qui change les champs first_name et/ou last_name
-export async function putUserById(userId, firstName, lastName) {
+export async function putUserById(userId, firstName, lastName, image) {
     try {
-        await sqlQuery(`UPDATE ${tableName} SET users_first_name = '${firstName}', users_last_name = '${lastName}' WHERE users_id='${userId}'`);
+        await sqlQuery(`
+        UPDATE ${tableName} 
+        SET users_first_name = '${firstName}', users_last_name = '${lastName}', users_image = '${image}' 
+        WHERE users_id='${userId}'`);
         return true;
     } catch (err) {
         throw err;
@@ -118,3 +126,18 @@ export async function disableUserById(userId) {
 
 // Réecriture des données: email/password vide, firtsName lastName à remplacer 
 // '/login': ne pas tenir compte des emails vides 
+
+
+
+
+
+
+
+//fonction de recherche des msg 
+
+//SELECT msg_id FROM message WHERE msg_user_id = 48
+//SELECT comment_post_id FROM `comments` WHERE `comment_user_id`= 48 GROUP BY comment_post_id
+
+// JS : fusionne les deux listes d'id
+// JS : éliminer les doublons => une liste d'id de messages uniques
+// 3e requete SQL en utilisant SELECT ... IN [array]

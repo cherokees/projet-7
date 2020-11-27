@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from './layout';
 import { appFetch } from '../utils/appFetch';
 import jwt from 'jsonwebtoken';
+import { uploadFile } from '../utils/upload';
 
 class Profil extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class Profil extends React.Component {
             createdDate: "",
             changeName: false,
             image: "",
+            userId: "",
 
             // redirection: false,
         }
@@ -24,6 +26,8 @@ class Profil extends React.Component {
         this.handleChangeFirstName = this.handleChangeFirstName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDeleteProfile = this.handleDeleteProfile.bind(this);
+        this.handleChangeImage = this.handleChangeImage.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
     }
 
     async componentDidMount() {
@@ -59,6 +63,7 @@ class Profil extends React.Component {
             lastName: result.data.users_last_name,
             createdDate: result.data.users_created_date,
             image: result.data.users_image,
+            userId: result.data.users_id,
         });
 
     }
@@ -90,6 +95,46 @@ class Profil extends React.Component {
         return;
     }
 
+    async handleChangeImage(e) {
+        e.preventDefault();
+
+        const file = Array.from(e.target.files)[0];
+        console.log("111", file);
+
+
+        if (file) {
+
+            const result = await uploadFile("/upload/image", file);
+            console.log("upload RES", result);
+            this.setState({ image: result.data });
+        } else {
+
+            this.setState({ image: "" });
+        }
+
+    }
+
+    async handleCancel() {
+        this.setState({ changeName: false })
+
+        const result = await appFetch('GET', '/user/profil/' + this.state.userId);
+        console.log(result.data.users_email);
+
+        if (result.status !== 200) {
+            if (result.status === 401) {
+                this.props.history.replace("/Accueil");
+            } else {
+                this.props.history.replace(`/error?code=${result.status}`);
+            }
+            return;
+        }
+
+        this.setState({
+            firstName: result.data.users_first_name,
+            lastName: result.data.users_last_name,
+            image: result.data.users_image,
+        });
+    }
 
     async handleSubmit(e) {
         e.preventDefault();
@@ -97,6 +142,7 @@ class Profil extends React.Component {
         let body = {
             lastName: this.state.lastName,
             firstName: this.state.firstName,
+            image: this.state.image,
         }
 
         const token = JSON.parse(localStorage.getItem('access-token'));
@@ -140,6 +186,14 @@ class Profil extends React.Component {
                                     <img src={'http://localhost:3000/public/uploads/' + this.state.image} />
                                     :
                                     <span>pas d'image</span>}
+                                {this.state.changeName &&
+                                    <input
+                                        className="image_url"
+                                        name="image"
+                                        type="file"
+                                        accept=".jpg"
+                                        onChange={this.handleChangeImage}>
+                                    </input>}
                             </div>
 
                             <div className="container_profil_p">
@@ -159,7 +213,7 @@ class Profil extends React.Component {
                             </div>
                         </div>
                         <div className="container_profil_button">
-                            <button onClick={this.handleDeleteProfile}>Supprimer</button>
+                            {this.state.changeName ? <button onClick={this.handleCancel}>Annuler</button> : <button onClick={this.handleDeleteProfile}>Supprimer</button>}
                             {this.state.changeName ? <button onClick={this.handleSubmit}>Envoyer</button> : <button onClick={this.handleName}>Changer</button>}
                         </div>
                     </Layout>
