@@ -16,7 +16,7 @@ router.post('/', auth, async (req, res, next) => {
         const decodedToken = jwt.decode(token, 'RANDOM_TOKEN_KEY');
 
         console.log("req.body", req.body);
-        const result = await addMessage(decodedToken.userId, req.body.titleMsg, req.body.message);
+        const result = await addMessage(decodedToken.userId, req.body.titleMsg, req.body.message, req.body.image);
         // const user = await getUserById(req.params.id);
         res.status(200).json({ data: result, message: "message posté" });
     } catch (err) {
@@ -38,7 +38,7 @@ router.get("/", auth, async (req, res, next) => {
 
 router.put("/:id", auth, authUserId, async (req, res, next) => {
     try {
-        const rows = await putMessageById(req.body.postId, req.body.messagePutContent);
+        const rows = await putMessageById(req.body.postId, req.body.messagePutContent, req.body.image);
         const refreshMessage = await getMessageById(req.body.postId);
         res.status(200).json({ data: refreshMessage, message: "le rafraichissement c'est fait" });
     } catch (err) {

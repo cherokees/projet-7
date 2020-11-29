@@ -25,15 +25,12 @@ CHOSE A FAIRE
 -changer les chemins d'effacements des commentaires et messages pour des chemins de modifications           REUSSIT
 -créer le rafraichissement des commentaires modifiés                                                        REUSSIT
 -le bouton de modification de message dois apparaître que si le msg est de l'utilisateur                    REUSSIT
+-bouton retour en arrière pour la modification de commentaire                                               REUSSIT
 
+-rafraichissement de la modification de commentaires                                                        EN COURS
 
 -créer la recherche avancé dans le forum                                                                    EN COURS
-    1- affiché les messages dans la vue
-    2- ajuster la requête sql pour afficher l'ensemble des participations
-
-
 -créer le profil admin qui à l'autorisation sur toutes les Routes                                           EN COURS
 -insérer le partage de fichiers types images                                                                EN COURS
-
 -finir le CSS                                                                                               EN COURS
 -faire le responsive                                                                                        EN COURS

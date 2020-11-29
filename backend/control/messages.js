@@ -6,7 +6,7 @@ import { getMessageComments } from './comment';
 //nom de la table dans la bdd
 const tableName = 'messages';
 //nom des colonnes dans la table
-const defaultReturnFields = ['msg_id', 'msg_user_id', 'msg_title', 'msg_content', 'msg_attachment', 'msg_date'];
+const defaultReturnFields = ['msg_id', 'msg_user_id', 'msg_title', 'msg_content', 'msg_attachment', 'msg_date', 'msg_image'];
 
 // MOVE
 function escapeText(paraTxt) {
@@ -15,15 +15,16 @@ function escapeText(paraTxt) {
 
 // console.log(escapeText("c'est la fin"));
 
-export async function addMessage(userId, msgTitle, message) {
+export async function addMessage(userId, msgTitle, message, image) {
     try {
         const result = await sqlQuery(`INSERT INTO ${tableName} (
-        msg_user_id, msg_title, msg_content
+        msg_user_id, msg_title, msg_content, msg_image
     )
     VALUES (
         '${userId}',
         '${msgTitle}',
-        '${escapeText(message)}'
+        '${escapeText(message)}',
+        '${image}'
     )`);
         return result.insertId;
     } catch (err) {
@@ -53,9 +54,12 @@ export async function getAllMessages(returnFields = null) {
     }
 }
 
-export async function putMessageById(postId, messagePutContent) {
+export async function putMessageById(postId, messagePutContent, image) {
     try {
-        await sqlQuery(`UPDATE ${tableName} SET msg_content = '${messagePutContent}' WHERE msg_id=${postId}`);
+        await sqlQuery(`
+        UPDATE ${tableName} 
+        SET msg_content = '${messagePutContent}', msg_image = '${image}'
+        WHERE msg_id=${postId}`);
         return true;
     } catch (err) {
         throw err;
@@ -67,16 +71,12 @@ export async function getMessageById(postId, returnFields = null) {
         returnFields = returnFields || defaultReturnFields;
         //requête SQL pour récupérer les champs concérné grace à l'id
         const rows = await sqlQuery(`SELECT ${returnFields} FROM ${tableName} WHERE msg_id=${postId}`);
-        //retourne tous les champs trouvé si ils ne sont pas égale à null
+        //retourne toutes les premières valeurs des champs trouvé si ils ne sont pas égale à null
         return rows.length > 0 ? rows[0] : null;
     } catch (err) {
         throw err;
     }
 }
-
-// table messages : champ pour id du parent
-// création de message (pas un commentaire) : id parent = 0 par défaut 
-// getAllMessages: ne prendre que les messages où l'id du parent = 0
 
 
 // Appeler getAllMessages et getMessageComments successivement dans la route

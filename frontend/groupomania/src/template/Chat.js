@@ -2,6 +2,8 @@ import React from 'react';
 import { appFetch } from '../utils/appFetch';
 import Layout from './layout';
 import jwt from 'jsonwebtoken';
+import { uploadFile } from '../utils/upload';
+
 
 //Composant de la page du forum
 
@@ -16,7 +18,7 @@ class Chat extends React.Component {
             displayMsg: false,
             formMsgTitle: "",
             formMsgContent: "",
-            formMsgImage: "",
+            image: "",
             messageList: [],
             messagePut: null,
             messagePutContent: "",
@@ -51,7 +53,9 @@ class Chat extends React.Component {
         this.handleChangeSearchMsg = this.handleChangeSearchMsg.bind(this);
         this.handlePostSearchMsg = this.handlePostSearchMsg.bind(this);
         this.handleCancelMsg = this.handleCancelMsg.bind(this);
-        this.renderSearchMessageList = this.renderSearchMessageList.bind(this);
+        this.handleCancelSearchMsg = this.handleCancelSearchMsg.bind(this);
+        this.handleChangeImage = this.handleChangeImage.bind(this);
+
 
         // this.refreshComments = this.refreshComments.bind(this);
     }
@@ -116,10 +120,12 @@ class Chat extends React.Component {
     }
 
     async handleSubmit(e) {
+        e.preventDefault();
 
         let body = {
             titleMsg: this.state.formMsgTitle,
             message: this.state.formMsgContent,
+            image: this.state.image,
         }
 
         //fetch qui envois les infos à la bdd
@@ -153,7 +159,14 @@ class Chat extends React.Component {
                 <div className="message">
                     <label>Votre message</label>
                     <textarea value={this.state.formMsgContent} onChange={this.handleFormMsgContent}></textarea>
-                    <button className="post_img">Choisir une image</button>
+                    {/* <button className="post_img">Choisir une image</button> */}
+                    <input
+                        className="image_url"
+                        name="image"
+                        type="file"
+                        accept=".jpg"
+                        onChange={this.handleChangeImage}>
+                    </input>
                 </div>
                 <button className="Send_message" onClick={this.handleSubmit}>Envoyer</button>
             </div>
@@ -192,10 +205,18 @@ class Chat extends React.Component {
                                 {this.state.messagePut === index ?
                                     <div className="element_post_content">
                                         <textarea value={this.state.messagePutContent} onChange={this.handleMessagePutContent}></textarea>
+                                        <input
+                                            className="image_url"
+                                            name="image"
+                                            type="file"
+                                            accept=".jpg"
+                                            onChange={this.handleChangeImage}>
+                                        </input>
                                     </div>
                                     :
                                     <div className="element_post_content">
                                         <p>{element.msg_content}</p>
+                                        <img src={'http://localhost:3000/public/uploads/' + element.msg_image} />
                                     </div>}
                             </div>
                             <div className="container_comment_post">
@@ -264,6 +285,7 @@ class Chat extends React.Component {
         let body = {
             postId: postId,
             messagePutContent: this.state.messagePutContent,
+            image: this.state.image,
         }
         const token = await JSON.parse(localStorage.getItem('access-token'));
         const payload = await jwt.decode(token);
@@ -335,8 +357,11 @@ class Chat extends React.Component {
         e.preventDefault();
         let body = {
             commentContent: this.state.comment,
+            image: this.state.image,
             postId,
         }
+
+        console.log(body);
 
         //fetch qui envois les infos à la bdd
         const result = await appFetch('POST', '/comment', body);
@@ -392,8 +417,33 @@ class Chat extends React.Component {
         return (
             <div className="container_txt_area_comment">
                 <textarea value={this.state.comment} onChange={this.handleGetComment}></textarea>
+                <input
+                    className="image_url"
+                    name="image"
+                    type="file"
+                    accept=".jpg"
+                    onChange={this.handleChangeImage}>
+                </input>
             </div>
         )
+    }
+
+    async handleChangeImage(e) {
+        e.preventDefault();
+
+        const file = Array.from(e.target.files)[0];
+        console.log("111", file);
+
+
+        if (file) {
+
+            const result = await uploadFile("/upload/image", file);
+            console.log("upload RES", result);
+            this.setState({ image: result.data });
+        } else {
+
+            this.setState({ image: "" });
+        }
     }
 
     renderComments(comments, messageIndex) {
@@ -405,8 +455,18 @@ class Chat extends React.Component {
                         return (
                             <div className="container_user_comment" key={index}>
                                 <textarea value={this.state.editCommentContent} onChange={e => this.handleEditCommentContent(e)}></textarea>
+                                <input
+                                    className="image_url"
+                                    name="image"
+                                    type="file"
+                                    accept=".jpg"
+                                    onChange={this.handleChangeImage}>
+                                </input>
                                 {this.state.changeBtnComment.includes(element.comment_id) ?
-                                    <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
+                                    <>
+                                        <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
+                                        <button onClick={e => this.handleChangePutDisplayComment(e, element.comment_id)}>Retour</button>
+                                    </>
                                     :
                                     <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id)}> Modifier </button>
                                 }
@@ -419,6 +479,10 @@ class Chat extends React.Component {
                                 <div className="container_user_comment" key={index}>
                                     <div>
                                         <p className="user_comment">commentaire de {element.users_first_name} {element.users_last_name}</p>
+                                        {element.comment_image !== "" ?
+                                            <img src={'http://localhost:3000/public/uploads/' + element.comment_image} />
+                                            :
+                                            null}
                                         {/* {this.state} */}
                                         <p className="comment">{element.comment_content === null ? "Commentaire supprimé" : element.comment_content}</p>
                                     </div>
@@ -428,7 +492,9 @@ class Chat extends React.Component {
                                                 value={element.comment_id}
                                                 onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex)}> x </button>
                                             {this.state.changeBtnComment.includes(element.comment_id) ?
-                                                <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
+                                                <>
+                                                    <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
+                                                </>
                                                 :
                                                 <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id, element.comment_content)}> Modifier </button>
                                             }
@@ -444,6 +510,16 @@ class Chat extends React.Component {
                 })}
             </div>
         )
+    }
+
+    handleChangePutDisplayComment(e, commentId) {
+        e.preventDefault();
+
+        let changeBtnComment = this.state.changeBtnComment;
+
+        changeBtnComment = changeBtnComment.filter(value => value !== commentId);
+
+        this.setState({ changeBtnComment, })
     }
 
     handleEditCommentContent(e) {
@@ -477,6 +553,7 @@ class Chat extends React.Component {
         let body = {
             commentId: commentId,
             comment: this.state.editCommentContent,
+            image: this.state.image,
         }
 
         const token = await JSON.parse(localStorage.getItem('access-token'));
@@ -605,13 +682,12 @@ class Chat extends React.Component {
             }
             return;
         }
-        let resultArr = Object.values(result.data);
 
         this.setState({
-            userMessageList: resultArr,
+            messageList: result,
             displaySearch: true,
         });
-        console.log("ici 3", this.state.userMessageList);
+        console.log("ici messageList", this.state.messageList);
     }
 
     handleCancelMsg() {
@@ -619,18 +695,8 @@ class Chat extends React.Component {
         this.setState({ displayMsg: false })
     }
 
-    renderSearchMessageList() {
-        return (
-            <>
-                { this.state.userMessageList.map((element, index) => {
-                    return (
-                        <div className="render_search_msg" key={index}>
-                            <p>{element}</p>
-                        </div>
-                    )
-                })}
-            </>
-        )
+    handleCancelSearchMsg() {
+        this.setState({ displaySearch: false })
     }
 
     render() {
@@ -649,17 +715,15 @@ class Chat extends React.Component {
                                 <div className="banner_search">
                                     <input value={this.state.searchMsg} onChange={this.handleChangeSearchMsg}></input>
                                     <button onClick={this.handlePostSearchMsg}>Rechercher</button>
+                                    {this.state.displaySearch ? <button onClick={this.handleCancelSearchMsg}>Retour</button> : null}
                                 </div>
                             </div>
                             <div className="container_message">
                                 {
-                                    this.state.displaySearch ?
-                                        this.renderSearchMessageList()
+                                    this.state.displayMsg ?
+                                        this.renderForm()
                                         :
-                                        this.state.displayMsg ?
-                                            this.renderForm()
-                                            :
-                                            this.renderMessagesList()
+                                        this.renderMessagesList()
                                 }
                             </div>
                         </div>

@@ -1,5 +1,7 @@
 const { sqlQuery } = require("../database/mysql");
 import bcrypt from 'bcrypt';
+import { getMessageComments } from './comment';
+
 
 //nom de la table dans la bdd
 const tableName = 'users';
@@ -92,15 +94,16 @@ export async function getUserByName(lastName, firstName, returnFields = null) {
 export async function getAllMessagesByUserId(userId) {
     try {
         const rows = await sqlQuery(`
-        SELECT msg_content, comment_content
-        FROM users
-        JOIN messages
-        ON msg_user_id = users_id
-        JOIN comments
-        ON comment_user_id = users_id
-        WHERE users_id = ${userId}
+        SELECT comment_post_id 
+        FROM comments 
+        WHERE comment_user_id = '${userId}' 
+        GROUP BY comment_post_id
         `)
-        return rows.length > 0 ? rows[0] : null;
+
+        for (const message of rows) {
+            message.commentId = await getMessageComments(message[comment_post_id]);
+        }
+        return rows;
     } catch (err) {
         throw err;
     }
@@ -158,13 +161,11 @@ export async function disableUserById(userId) {
 
 // JS : fusionne les deux listes d'id
 // JS : éliminer les doublons => une liste d'id de messages uniques
-// 3e requete SQL en utilisant SELECT ... IN [array]
 
+// messageList = []
+// for postId of [liste d'ids]
+//  const message = await getMessageById(postId) // => message
+//  message.comments = await getMessageComments(postId);
 
-// SELECT msg_content, msg_id, comment_content, users_first_name, users_last_name 
-// FROM users 
-// JOIN messages 
-// ON msg_user_id = users_id 
-// JOIN comments 
-// ON comment_user_id = users_id
-// WHERE users_id = 21
+// renvoi de messageList
+

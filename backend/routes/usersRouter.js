@@ -157,11 +157,9 @@ router.post('/search', async (req, res, next) => {
         console.log("body dans route", req.body);
 
         const userId = await getUserByName(req.body.lastName, req.body.firstName);
-        const message = await getAllMessagesByUserId(userId.users_id);
-        console.log(message);
-
-        console.log(userId);
-        res.status(200).json({ data: message, message: "profil trouvé" });
+        const messages = await getAllMessagesByUserId(userId.users_id);
+        console.log(messages);
+        res.status(200).json({ data: messages, message: "profil trouvé" });
     } catch (err) {
         console.error(err);
         res.status(500).json({ data: null, message: "Erreur interne du serveur" });
