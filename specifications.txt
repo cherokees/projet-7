@@ -10,44 +10,9 @@ Fonctionnalités à prévoir :
 
 - l’accès à un forum où les salariés publient des textes doit être présent ;                                            REUSSIT
 - les utilisateurs doivent pouvoir facilement repérer les dernières participations des employés ;                       REUSSIT
-- le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre                            EN COURS
+- le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre employés                   EN COURS
 - le ou la chargé-e de communication Groupomania doit pouvoir afficher les dernières participations des employés        EN COURS
 
-
-Routes à prévoir pour le forum :
-
-- Création d'un post par utilisateur
-- Récupération des posts par mots clés
-- Récupération des posts par son utilisateur
-- Récuperer tout les posts créez
-- Supprimer un post
-
-Route à prévoir pour les commentaires dans le forum :
-
-- Création d'un commentaire par l'utilisateur (post)
-- Récupération du commentaire par l'utilisateur (get)
-- Changement du commentaire par l'utilisateur (put)
-- Suppression d'un commentaire par l'utilisateur (delete)
-
-Route à prévoire pour l'admin :
-
-- Création d'un profile ADMIN (post)
-- Création de commentaires admin (post)
-- Création de posts admin (post)
-- Récupération d'un profile (get)
-- Changement d'un profile (put)
-- Suppression d'un profile (delete)
-- Récupération d'un post utilisateur (get)
-- Changement d'un post utilisateur (put)
-- Suppression d'un post utilisateur (delete)
-- Récupération d'un commentaire utilisateur (get)
-- Changement d'un commentaire utilisateur (put)
-- Suppression d'un commentaire utilisateur (delete)
-
-Base de données pour le forum 
-
-- table pour les messages posté (post)
-- table pour les commentaires (post)
 
 
 
@@ -61,7 +26,12 @@ CHOSE A FAIRE
 -créer le rafraichissement des commentaires modifiés                                                        REUSSIT
 -le bouton de modification de message dois apparaître que si le msg est de l'utilisateur                    REUSSIT
 
+
 -créer la recherche avancé dans le forum                                                                    EN COURS
+    1- affiché les messages dans la vue
+    2- ajuster la requête sql pour afficher l'ensemble des participations
+
+
 -créer le profil admin qui à l'autorisation sur toutes les Routes                                           EN COURS
 -insérer le partage de fichiers types images                                                                EN COURS
 

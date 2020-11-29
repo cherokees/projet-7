@@ -380,6 +380,10 @@
         }
     }
 
+    .render_search_msg{
+        background-color: white;
+    }
+
     .container_message{
         margin-top: 2rem;
         height: 45rem;
@@ -549,12 +553,6 @@
             }
 
         }
-        // .message_post:nth-child(even){
-        //     margin-left: 30%;
-        // }
-        // .message_post:nth-child(2n+1){
-        //     margin-right: 30%;
-        // }
     }
     
     ::-webkit-scrollbar {

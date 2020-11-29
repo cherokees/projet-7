@@ -1,10 +1,11 @@
 import express from 'express';
-import { getAllUsers, addUser, getUserByEmail, getUserById, putUserById, disableUserById, getUserByName } from '../control/users';
+import { getAllUsers, addUser, getUserByEmail, getUserById, putUserById, disableUserById, getUserByName, getAllMessagesByUserId } from '../control/users';
 import { validateFieldsPOST, VLD_IS_EMAIL, VLD_NOT_EMPTY_STRING, VLD_NO_SPECIAL_CHARS } from '../utils/validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import auth from '../middleware/auth';
 import authUserId from '../middleware/authUserId';
+import { getAllMessages } from '../control/messages';
 // import multer from "../middleware/multer";
 
 export const router = express.Router();
@@ -156,9 +157,11 @@ router.post('/search', async (req, res, next) => {
         console.log("body dans route", req.body);
 
         const userId = await getUserByName(req.body.lastName, req.body.firstName);
+        const message = await getAllMessagesByUserId(userId.users_id);
+        console.log(message);
 
         console.log(userId);
-        res.status(200).json({ data: userId, message: "profil trouvé" });
+        res.status(200).json({ data: message, message: "profil trouvé" });
     } catch (err) {
         console.error(err);
         res.status(500).json({ data: null, message: "Erreur interne du serveur" });

@@ -22,15 +22,13 @@ class Chat extends React.Component {
             messagePutContent: "",
             comment: "",
             replyIndex: null,
-            // deletePostIndex: null,
             displayCommentsList: [],
             changeBtnComment: [],
             editCommentContent: "",
-            searchMsg: "",
-            // firstName: "",
-            // lastName: "",
+            searchMsg: "manu payet",
             user: "",
-
+            userMessageList: [],
+            displaySearch: false,
         }
 
         this.handleDisplayMsg = this.handleDisplayMsg.bind(this);
@@ -53,6 +51,7 @@ class Chat extends React.Component {
         this.handleChangeSearchMsg = this.handleChangeSearchMsg.bind(this);
         this.handlePostSearchMsg = this.handlePostSearchMsg.bind(this);
         this.handleCancelMsg = this.handleCancelMsg.bind(this);
+        this.renderSearchMessageList = this.renderSearchMessageList.bind(this);
 
         // this.refreshComments = this.refreshComments.bind(this);
     }
@@ -606,11 +605,32 @@ class Chat extends React.Component {
             }
             return;
         }
+        let resultArr = Object.values(result.data);
+
+        this.setState({
+            userMessageList: resultArr,
+            displaySearch: true,
+        });
+        console.log("ici 3", this.state.userMessageList);
     }
 
     handleCancelMsg() {
 
         this.setState({ displayMsg: false })
+    }
+
+    renderSearchMessageList() {
+        return (
+            <>
+                { this.state.userMessageList.map((element, index) => {
+                    return (
+                        <div className="render_search_msg" key={index}>
+                            <p>{element}</p>
+                        </div>
+                    )
+                })}
+            </>
+        )
     }
 
     render() {
@@ -632,7 +652,15 @@ class Chat extends React.Component {
                                 </div>
                             </div>
                             <div className="container_message">
-                                {this.state.displayMsg ? this.renderForm() : this.renderMessagesList()}
+                                {
+                                    this.state.displaySearch ?
+                                        this.renderSearchMessageList()
+                                        :
+                                        this.state.displayMsg ?
+                                            this.renderForm()
+                                            :
+                                            this.renderMessagesList()
+                                }
                             </div>
                         </div>
                     </Layout>

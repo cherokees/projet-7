@@ -81,3 +81,7 @@ export async function getMessageById(postId, returnFields = null) {
 
 // Appeler getAllMessages et getMessageComments successivement dans la route
 // ajouter une clé comments dans le message, et y coller la liste (rows) obtenue par getMessageComments
+
+
+
+

@@ -88,6 +88,24 @@ export async function getUserByName(lastName, firstName, returnFields = null) {
     }
 }
 
+//fonction qui permet de récupérer tous les messages posté par un utilisateur
+export async function getAllMessagesByUserId(userId) {
+    try {
+        const rows = await sqlQuery(`
+        SELECT msg_content, comment_content
+        FROM users
+        JOIN messages
+        ON msg_user_id = users_id
+        JOIN comments
+        ON comment_user_id = users_id
+        WHERE users_id = ${userId}
+        `)
+        return rows.length > 0 ? rows[0] : null;
+    } catch (err) {
+        throw err;
+    }
+}
+
 //fonction putUserById qui change les champs first_name et/ou last_name
 export async function putUserById(userId, firstName, lastName, image) {
     try {
@@ -141,3 +159,12 @@ export async function disableUserById(userId) {
 // JS : fusionne les deux listes d'id
 // JS : éliminer les doublons => une liste d'id de messages uniques
 // 3e requete SQL en utilisant SELECT ... IN [array]
+
+
+// SELECT msg_content, msg_id, comment_content, users_first_name, users_last_name 
+// FROM users 
+// JOIN messages 
+// ON msg_user_id = users_id 
+// JOIN comments 
+// ON comment_user_id = users_id
+// WHERE users_id = 21
