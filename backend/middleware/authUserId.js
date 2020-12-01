@@ -14,6 +14,10 @@ module.exports = (req, res, next) => {
 
         if (decodedToken.userId === parseInt(req.params.id, 10)) { //on compare l'id du token avec celui de l'url
             next();
+
+        } else if (decodedToken.role === 1) { //si l'id du token n'est pas égale avec celui de l'url on vérifie si c'est l'admin avec le role dans le token 
+            next();
+
         } else {
             throw new Error('Erreur d\'accès')
         }

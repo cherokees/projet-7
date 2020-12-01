@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllUsers, addUser, getUserByEmail, getUserById, putUserById, disableUserById, getUserByName, getAllMessagesByUserId } from '../control/users';
+import { getAllUsers, addUser, getUserByEmail, getUserById, putUserById, disableUserById, getUserByName, getCommentPostId } from '../control/users';
 import { validateFieldsPOST, VLD_IS_EMAIL, VLD_NOT_EMPTY_STRING, VLD_NO_SPECIAL_CHARS } from '../utils/validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -98,7 +98,7 @@ router.post("/login",
 
             // vérif existence email, et récupération de l'id et du mdp
 
-            const user = await getUserByEmail(req.body.email, ['users_id', 'users_password']);
+            const user = await getUserByEmail(req.body.email, ['users_id', 'users_password', 'users_admin']);
             // console.log(user)
 
             if (user === null) { // si l'utilisateur n'éxiste pas on renvois un msg d'erreur
@@ -111,7 +111,7 @@ router.post("/login",
                     res.status(200).json({
                         userId: user.users_id,
                         token: jwt.sign(
-                            { userId: user.users_id },
+                            { userId: user.users_id, role: user.users_admin },
                             'RANDOM_TOKEN_KEY',
                             { expiresIn: '24h' }
                         )
@@ -154,11 +154,13 @@ router.put('/disable/:id', auth, authUserId, async (req, res, next) => {
 
 router.post('/search', async (req, res, next) => {
     try {
-        console.log("body dans route", req.body);
 
         const userId = await getUserByName(req.body.lastName, req.body.firstName);
-        const messages = await getAllMessagesByUserId(userId.users_id);
+        console.log(userId);
+
+        const messages = await getCommentPostId(userId.users_id);
         console.log(messages);
+
         res.status(200).json({ data: messages, message: "profil trouvé" });
     } catch (err) {
         console.error(err);

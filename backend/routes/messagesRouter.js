@@ -16,8 +16,8 @@ router.post('/', auth, async (req, res, next) => {
         const decodedToken = jwt.decode(token, 'RANDOM_TOKEN_KEY');
 
         console.log("req.body", req.body);
-        const result = await addMessage(decodedToken.userId, req.body.titleMsg, req.body.message, req.body.image);
-        // const user = await getUserById(req.params.id);
+        const insertId = await addMessage(decodedToken.userId, req.body.titleMsg, req.body.message, req.body.image);
+        const result = await getAllMessages();
         res.status(200).json({ data: result, message: "message posté" });
     } catch (err) {
         console.error(err);

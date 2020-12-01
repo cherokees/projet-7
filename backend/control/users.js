@@ -90,25 +90,6 @@ export async function getUserByName(lastName, firstName, returnFields = null) {
     }
 }
 
-//fonction qui permet de récupérer tous les messages posté par un utilisateur
-export async function getAllMessagesByUserId(userId) {
-    try {
-        const rows = await sqlQuery(`
-        SELECT comment_post_id 
-        FROM comments 
-        WHERE comment_user_id = '${userId}' 
-        GROUP BY comment_post_id
-        `)
-
-        for (const message of rows) {
-            message.commentId = await getMessageComments(message[comment_post_id]);
-        }
-        return rows;
-    } catch (err) {
-        throw err;
-    }
-}
-
 //fonction putUserById qui change les champs first_name et/ou last_name
 export async function putUserById(userId, firstName, lastName, image) {
     try {
@@ -134,6 +115,60 @@ export async function disableUserById(userId) {
     }
 }
 
+//fonction qui permet de récupérer tous les messages posté par un utilisateur
+export async function getCommentPostId(userId) {
+    try {
+        let rows;
+
+        rows = await sqlQuery(`
+            SELECT msg_id
+            FROM messages
+            WHERE msg_user_id = '${userId}'
+        `)
+
+        let idList = rows.map(message => message.msg_id);
+        console.log(idList);
+
+        rows = await sqlQuery(`
+        SELECT comment_post_id 
+        FROM comments 
+        WHERE comment_user_id = '${userId}' 
+        GROUP BY comment_post_id
+        `)
+
+        console.log("resultat de getCommentPostId", rows);
+
+        // let resultArr = [];
+
+        let idList2 = rows.map(message => message.comment_post_id)
+
+        idList2 = idList2.filter(element => !idList.includes(element));
+        // const idMerge = idList.concat(idList2);  //Méthode A : concatène les deux tableau
+        const idMerge = [...idList, ...idList2];    //Méthode B : concatène les deux tableau (les "..." signifie les valeurs du tableau sans le tableau)
+
+        console.log(idMerge);
+
+        rows = await sqlQuery(
+            `SELECT m.*, u.users_first_name, u.users_last_name, u.users_image
+            FROM messages m
+            JOIN users u
+            ON m.msg_user_id = u.users_id
+            WHERE m.msg_id IN (${idMerge})
+            ORDER BY m.msg_date DESC`);
+
+        //on fait appelle à une boucle forof pour itérer sur chaque message et y ajouter les commentaires posté.
+
+        for (const message of rows) {
+            message.comments = await getMessageComments(message.msg_id);
+        }
+
+        console.log(rows);
+
+        return rows;
+    } catch (err) {
+        throw err;
+    }
+}
 
 
 // export async function deleteUserById(userId) {

@@ -5,13 +5,13 @@ Fonctionnalités à prévoir :
 - le profil doit contenir très peu d’informations pour que sa complétion soit rapide ;                                  REUSSIT
 - la suppression du compte doit être possible ;                                                                         REUSSIT
 
-- l’accès à un forum où les salariés publient des contenus multimédias doit être présent ;                              EN COURS
+- l’accès à un forum où les salariés publient des contenus multimédias doit être présent ;                              REUSSIT
     --> fonctionalitées implémenté, mais non présente dans toutes les routes.
 
 - l’accès à un forum où les salariés publient des textes doit être présent ;                                            REUSSIT
 - les utilisateurs doivent pouvoir facilement repérer les dernières participations des employés ;                       REUSSIT
-- le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre employés                   EN COURS
-- le ou la chargé-e de communication Groupomania doit pouvoir afficher les dernières participations des employés        EN COURS
+- le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre employés                   REUSSIT
+- le ou la chargé-e de communication Groupomania doit pouvoir afficher les dernières participations des employés        REUSSIT
 
 
 
@@ -29,8 +29,30 @@ CHOSE A FAIRE
 
 -rafraichissement de la modification de commentaires                                                        EN COURS
 
--créer la recherche avancé dans le forum                                                                    EN COURS
--créer le profil admin qui à l'autorisation sur toutes les Routes                                           EN COURS
--insérer le partage de fichiers types images                                                                EN COURS
+-créer la recherche avancé dans le forum                                                                    REUSSIT
+-créer le profil admin qui à l'autorisation sur toutes les Routes                                           REUSSIT
+-insérer le partage de fichiers types images                                                                REUSSIT
 -finir le CSS                                                                                               EN COURS
 -faire le responsive                                                                                        EN COURS
+
+
+
+TODOLIST BUG
+
+-rafraichire le state images 
+    --> pour les routes de modifications, le state img doit s'effacer si on modifie un message différent !
+
+
+-configurer multer sur la taille des fichiers acceptables
+    --> option fileSize et fieldSize pas prisent en compte
+
+-mettre la suppression de message
+-mettre la moderation sur la suppression des messages et suppression/modification des commentaires
+-liens trop long depasse de la div 
+-les apostrophes dans les textarea provoquent des erreurs
+-telecharger les icons pour les bouton sur fontawesome
+-mettre les img de profil dans la page chat
+
+
+
+ ! verification global ! 

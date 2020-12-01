@@ -3,6 +3,7 @@ import { appFetch } from '../utils/appFetch';
 import Layout from './layout';
 import jwt from 'jsonwebtoken';
 import { uploadFile } from '../utils/upload';
+import Linkify from 'react-linkify';
 
 
 //Composant de la page du forum
@@ -55,6 +56,8 @@ class Chat extends React.Component {
         this.handleCancelMsg = this.handleCancelMsg.bind(this);
         this.handleCancelSearchMsg = this.handleCancelSearchMsg.bind(this);
         this.handleChangeImage = this.handleChangeImage.bind(this);
+        this.checkIdentity = this.checkIdentity.bind(this);
+        this.handleDeleteMsg = this.handleDeleteMsg.bind(this);
 
 
         // this.refreshComments = this.refreshComments.bind(this);
@@ -87,11 +90,14 @@ class Chat extends React.Component {
 
         //si l'utilisateur est autorisé, on affiche le composant chat
         this.setState({
-            display: true, messageList: result.data,
+            display: true,
+            messageList: result.data,
             user: payload.userId,
+            userRole: payload.role,
         });
 
         console.log(this.state.user);
+        console.log(this.state.userRole);
 
 
     }
@@ -105,6 +111,11 @@ class Chat extends React.Component {
             case 200: break;
             default: this.props.history.replace('/error?code=500'); break;
         }
+    }
+
+    checkIdentity(checkId) {
+        return (this.state.user === checkId || this.state.userRole === 1)
+
     }
 
     handleDisplayMsg() {
@@ -143,10 +154,16 @@ class Chat extends React.Component {
             }
             return;
         }
+        // console.log("OK, pas d'erreur");
 
-        console.log("OK, pas d'erreur");
         //si l'utilisateur est autorisé, on affiche le composant chat
-        this.setState({ displayMsg: false });
+        this.setState({
+            messageList: result.data,
+            displayMsg: false,
+            image: "",
+            titleMsg: "",
+            message: "",
+        });
     }
 
     renderForm() {
@@ -189,16 +206,20 @@ class Chat extends React.Component {
                             <div className="message_post_content">
                                 <div className="btn_post_content">
                                     <h2>{element.msg_title}</h2>
-                                    {this.state.user === element.msg_user_id ?
+                                    {/* {this.state.user === element.msg_user_id ? */}
+                                    {this.checkIdentity(element.msg_user_id) ?
                                         this.state.messagePut !== index ?
-                                            <button onClick={e => this.handlePutMsg(e, index, element.msg_content)}>modifier</button>
+                                            <>
+                                                <button onClick={e => this.handlePutMsg(e, index, element.msg_content)}>modifier</button>
+                                                <button onClick={e => this.handleDeleteMsg(e, index, element.msg_user_id)}>supprimer</button>
+                                            </>
                                             :
                                             <>
-                                                <button onClick={e => this.handleSubmitPutMsg(e, element.msg_id)}>envoyer</button>
+                                                <button onClick={e => this.handleSubmitPutMsg(e, element.msg_id, element.msg_user_id, index)}>envoyer</button>
                                                 <button onClick={e => this.handleCancelPutMsg(e)}>retour</button>
                                             </>
                                         :
-                                        <div></div>
+                                        null
                                     }
                                     {/* <button onClick={e => this.handleDeleteMsg(e)}>supprimer</button> */}
                                 </div>
@@ -215,8 +236,11 @@ class Chat extends React.Component {
                                     </div>
                                     :
                                     <div className="element_post_content">
-                                        <p>{element.msg_content}</p>
-                                        <img src={'http://localhost:3000/public/uploads/' + element.msg_image} />
+                                        <Linkify>
+                                            <p>{element.msg_content}</p>
+                                        </Linkify>
+                                        {element.msg_image &&
+                                            <img src={'http://localhost:3000/public/uploads/' + element.msg_image} />}
                                     </div>}
                             </div>
                             <div className="container_comment_post">
@@ -265,6 +289,12 @@ class Chat extends React.Component {
         )
     }
 
+    handleDeleteMsg(e, index, msgContent) {
+        e.preventDefault();
+
+
+    }
+
     handleCancelPutMsg(e) {
         e.preventDefault();
 
@@ -279,7 +309,7 @@ class Chat extends React.Component {
         })
     }
 
-    async handleSubmitPutMsg(e, postId) {
+    async handleSubmitPutMsg(e, postId, postUserId, postIndex) {
         e.preventDefault();
 
         let body = {
@@ -291,7 +321,7 @@ class Chat extends React.Component {
         const payload = await jwt.decode(token);
 
         //fetch
-        const result = await appFetch('PUT', '/message/' + payload.userId, body);
+        const result = await appFetch('PUT', '/message/' + postUserId, body);
 
         if (result.status !== 200) {
             if (result.status === 401) {
@@ -303,6 +333,8 @@ class Chat extends React.Component {
             }
             return;
         }
+
+        this.refreshMessage(postIndex, result.data);
 
         this.setState({
             messagePut: null,
@@ -391,6 +423,7 @@ class Chat extends React.Component {
         this.setState({
             replyIndex: null,
             comment: "",
+            image: "",
         });
 
         console.log("OK, pas d'erreur");
@@ -398,9 +431,17 @@ class Chat extends React.Component {
 
     }
 
-    refreshComments(postId, newComments) {
+    refreshMessage(postIndex, newMessage) {
         const messageList = this.state.messageList;
-        messageList[postId].comments = newComments;
+        const oldComments = messageList[postIndex].comments;
+        messageList[postIndex] = newMessage;
+        messageList[postIndex].comments = oldComments;
+        this.setState({ messageList });
+    }
+
+    refreshComments(postIndex, newComments) {
+        const messageList = this.state.messageList;
+        messageList[postIndex].comments = newComments;
         this.setState({ messageList });
     }
 
@@ -464,7 +505,7 @@ class Chat extends React.Component {
                                 </input>
                                 {this.state.changeBtnComment.includes(element.comment_id) ?
                                     <>
-                                        <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
+                                        <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id, element.comment_user_id)}> Envoyer </button>
                                         <button onClick={e => this.handleChangePutDisplayComment(e, element.comment_id)}>Retour</button>
                                     </>
                                     :
@@ -479,14 +520,15 @@ class Chat extends React.Component {
                                 <div className="container_user_comment" key={index}>
                                     <div>
                                         <p className="user_comment">commentaire de {element.users_first_name} {element.users_last_name}</p>
-                                        {element.comment_image !== "" ?
+                                        {element.comment_image &&
                                             <img src={'http://localhost:3000/public/uploads/' + element.comment_image} />
-                                            :
-                                            null}
-                                        {/* {this.state} */}
-                                        <p className="comment">{element.comment_content === null ? "Commentaire supprimé" : element.comment_content}</p>
+                                        }
+                                        <Linkify>
+                                            <p className="comment">{element.comment_content === null ? "Commentaire supprimé" : element.comment_content}</p>
+                                        </Linkify>
                                     </div>
-                                    {(this.state.user === element.comment_user_id && element.comment_content !== null) ?
+                                    {(this.state.user === element.comment_user_id || this.checkIdentity(element.msg_user_id) && element.comment_content !== null) ?
+                                        // {(this.state.user === element.comment_user_id && element.comment_content !== null) ?
                                         <>
                                             <button className="btn_delete_comment"
                                                 value={element.comment_id}
@@ -547,7 +589,7 @@ class Chat extends React.Component {
 
     }
 
-    async handleSendPutComment(e, commentId) {
+    async handleSendPutComment(e, commentId, commentUserId) {
         e.preventDefault();
 
         let body = {
@@ -556,10 +598,10 @@ class Chat extends React.Component {
             image: this.state.image,
         }
 
-        const token = await JSON.parse(localStorage.getItem('access-token'));
-        const payload = await jwt.decode(token);
+        // const token = await JSON.parse(localStorage.getItem('access-token'));
+        // const payload = await jwt.decode(token);
 
-        const result = await appFetch('PUT', '/comment/' + payload.userId, body);
+        const result = await appFetch('PUT', '/comment/' + commentUserId, body);
         console.log(result);
 
         if (result.status !== 200) {
@@ -579,6 +621,7 @@ class Chat extends React.Component {
 
         this.setState({
             changeBtnComment,
+            image: "",
         })
 
     }
@@ -662,16 +705,11 @@ class Chat extends React.Component {
             firstName: split[0],
             lastName: split[1],
         }
-
-        console.log(body);
-
         // const token = await JSON.parse(localStorage.getItem('access-token'));
         // const payload = await jwt.decode(token);
         // body = JSON.stringify(body);
 
         const result = await appFetch('POST', '/user/search', body);
-
-        console.log(result);
 
         if (result.status !== 200) {
             if (result.status === 401) {
@@ -684,7 +722,7 @@ class Chat extends React.Component {
         }
 
         this.setState({
-            messageList: result,
+            messageList: result.data,
             displaySearch: true,
         });
         console.log("ici messageList", this.state.messageList);
@@ -696,7 +734,7 @@ class Chat extends React.Component {
     }
 
     handleCancelSearchMsg() {
-        this.setState({ displaySearch: false })
+        // this.setState({ displaySearch: false })
     }
 
     render() {
@@ -715,7 +753,7 @@ class Chat extends React.Component {
                                 <div className="banner_search">
                                     <input value={this.state.searchMsg} onChange={this.handleChangeSearchMsg}></input>
                                     <button onClick={this.handlePostSearchMsg}>Rechercher</button>
-                                    {this.state.displaySearch ? <button onClick={this.handleCancelSearchMsg}>Retour</button> : null}
+                                    {/* {this.state.displaySearch ? <button onClick={this.handleCancelSearchMsg}>Retour</button> : null} */}
                                 </div>
                             </div>
                             <div className="container_message">
