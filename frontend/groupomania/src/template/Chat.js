@@ -58,6 +58,7 @@ class Chat extends React.Component {
         this.handleChangeImage = this.handleChangeImage.bind(this);
         this.checkIdentity = this.checkIdentity.bind(this);
         this.handleDeleteMsg = this.handleDeleteMsg.bind(this);
+        this.handleFetchImage = this.handleFetchImage.bind(this);
 
 
         // this.refreshComments = this.refreshComments.bind(this);
@@ -199,6 +200,8 @@ class Chat extends React.Component {
                         <div className="message_post" key={index}>
 
                             <div className="message_post_user">
+                                {/* {element.msg_content !== null && <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.msg_image} />} */}
+                                {/* {element.msg_content !== null && this.handleFetchImage()} */}
                                 <p>{element.users_first_name}</p>
                                 <p>{element.users_last_name}</p>
                                 <p className="message_post_date">{element.msg_date}</p>
@@ -206,8 +209,8 @@ class Chat extends React.Component {
                             <div className="message_post_content">
                                 <div className="btn_post_content">
                                     <h2>{element.msg_title}</h2>
-                                    {/* {this.state.user === element.msg_user_id ? */}
-                                    {this.checkIdentity(element.msg_user_id) ?
+                                    {/* {this.checkIdentity(element.msg_user_id) ? */}
+                                    {(this.checkIdentity(element.msg_user_id) && element.msg_content !== null) ?
                                         this.state.messagePut !== index ?
                                             <>
                                                 <button onClick={e => this.handlePutMsg(e, index, element.msg_content)}>modifier</button>
@@ -287,6 +290,34 @@ class Chat extends React.Component {
                 })}
             </>
         )
+    }
+
+    async handleFetchImage(e) {
+        e.preventDefault();
+
+        const result = await appFetch('GET', `/users/`);
+
+        console.log('ici getAllUsers', result);
+
+        if (result.status !== 200) {
+            if (result.status === 401) {
+                this.props.history.replace(`/error?code=${result.status}`);
+
+            } else {
+                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+                alert(`une erreur est survenue (code: ${result.status})`)
+            }
+            return
+                // (
+                // result.data.map((element, index) => {
+                //     <div key={index} >
+                //         <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.users_image} />
+                //     </div>
+                // })
+                // )
+                ;
+        }
+
     }
 
     async handleDeleteMsg(e, postId, userId, postIndex) {
@@ -434,6 +465,9 @@ class Chat extends React.Component {
 
         // Fetcher les commentaires pour les rafraîchir
         const resultComments = await appFetch('GET', '/message/comments/' + postId);
+
+        console.log('resultat de resultComment', resultComments);
+
         if (resultComments.status === 200) {
             this.refreshComments(this.state.replyIndex, resultComments.data);
         } else {
@@ -526,7 +560,7 @@ class Chat extends React.Component {
                                 </input>
                                 {this.state.changeBtnComment.includes(element.comment_id) ?
                                     <>
-                                        <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id, element.comment_user_id)}> Envoyer </button>
+                                        <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id, element.comment_user_id, element.comment_post_id, messageIndex)}> Envoyer </button>
                                         <button onClick={e => this.handleChangePutDisplayComment(e, element.comment_id)}>Retour</button>
                                     </>
                                     :
@@ -548,7 +582,8 @@ class Chat extends React.Component {
                                             <p className="comment">{element.comment_content === null ? "Commentaire supprimé" : element.comment_content}</p>
                                         </Linkify>
                                     </div>
-                                    {(this.state.user === element.comment_user_id || this.checkIdentity(element.msg_user_id) && element.comment_content !== null) ?
+                                    {/* {(this.state.user === element.comment_user_id || this.checkIdentity(element.msg_user_id) && element.comment_content !== null) ? */}
+                                    {(this.checkIdentity(element.msg_user_id) && element.comment_content !== null) ?
                                         // {(this.state.user === element.comment_user_id && element.comment_content !== null) ?
                                         <>
                                             <button className="btn_delete_comment"
@@ -610,7 +645,7 @@ class Chat extends React.Component {
 
     }
 
-    async handleSendPutComment(e, commentId, commentUserId) {
+    async handleSendPutComment(e, commentId, commentUserId, postId, messageIndex) {
         e.preventDefault();
 
         let body = {
@@ -634,6 +669,16 @@ class Chat extends React.Component {
                 alert(`une erreur est survenue (code: ${result.status})`)
             }
             return;
+        }
+
+        const resultComments = await appFetch('GET', '/message/comments/' + postId);
+
+        console.log('resultat de resultComment', resultComments);
+        console.log(messageIndex);
+        if (resultComments.status === 200) {
+            this.refreshComments(messageIndex, resultComments.data);
+        } else {
+            alert("Un problème est survenu. Veuillez rafraîchir la page.");
         }
 
         let changeBtnComment = this.state.changeBtnComment;

@@ -27,7 +27,7 @@ CHOSE A FAIRE
 -le bouton de modification de message dois apparaître que si le msg est de l'utilisateur                    REUSSIT
 -bouton retour en arrière pour la modification de commentaire                                               REUSSIT
 
--rafraichissement de la modification de commentaires                                                        EN COURS
+-rafraichissement de la modification de commentaires                                                        REUSSIT
 
 -créer la recherche avancé dans le forum                                                                    REUSSIT
 -créer le profil admin qui à l'autorisation sur toutes les Routes                                           REUSSIT
@@ -45,15 +45,13 @@ TODOLIST BUG
 -configurer multer sur la taille des fichiers acceptables
     --> option fileSize et fieldSize pas prisent en compte
 
--une fois les commentaires supprimés il doit être impossible pour l'utilisateur et l'admin de pouvoir y avoir accès de nouveaux
 -dans la recherche avancée, gérer les erreurs
-
--mettre la suppression de message
--mettre la moderation sur la suppression des messages et suppression/modification des commentaires
+-vérifier que dans postman on ne peut pas changer un message/commentaire éffacé
 -liens trop long depasse de la div 
 -les apostrophes dans les textarea provoquent des erreurs
 -telecharger les icons pour les bouton sur fontawesome
 -mettre les img de profil dans la page chat
+    --> dans le render messageList, amener users_image 
 
 
 

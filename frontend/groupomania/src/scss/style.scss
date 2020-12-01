@@ -1,3 +1,11 @@
+//DEBUT GENERALE
+
+button{
+    outline: none;
+}
+
+//DEBUT GENERALE
+
 //HEADER
 
 .container_header{
@@ -459,6 +467,14 @@
                 border-top-right-radius: 15px;
                 display: flex;
                 background-color: rgb(0,190,142);
+                height: 4rem;
+
+                .img_profil{
+                    padding: 0.5rem;
+                    max-width: 3rem;
+                    max-height: 3rem;
+                    border-radius: 50%; ;
+                }
                 p{
                     margin-left: 1rem;
                     // text-align: right;
