@@ -42,9 +42,11 @@ TODOLIST BUG
 -rafraichire le state images 
     --> pour les routes de modifications, le state img doit s'effacer si on modifie un message différent !
 
-
 -configurer multer sur la taille des fichiers acceptables
     --> option fileSize et fieldSize pas prisent en compte
+
+-une fois les commentaires supprimés il doit être impossible pour l'utilisateur et l'admin de pouvoir y avoir accès de nouveaux
+-dans la recherche avancée, gérer les erreurs
 
 -mettre la suppression de message
 -mettre la moderation sur la suppression des messages et suppression/modification des commentaires

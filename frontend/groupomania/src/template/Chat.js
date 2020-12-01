@@ -211,7 +211,7 @@ class Chat extends React.Component {
                                         this.state.messagePut !== index ?
                                             <>
                                                 <button onClick={e => this.handlePutMsg(e, index, element.msg_content)}>modifier</button>
-                                                <button onClick={e => this.handleDeleteMsg(e, index, element.msg_user_id)}>supprimer</button>
+                                                <button onClick={e => this.handleDeleteMsg(e, element.msg_id, element.msg_user_id, index)}>supprimer</button>
                                             </>
                                             :
                                             <>
@@ -237,7 +237,7 @@ class Chat extends React.Component {
                                     :
                                     <div className="element_post_content">
                                         <Linkify>
-                                            <p>{element.msg_content}</p>
+                                            <p>{element.msg_content === null ? "Message supprimé" : element.msg_content}</p>
                                         </Linkify>
                                         {element.msg_image &&
                                             <img src={'http://localhost:3000/public/uploads/' + element.msg_image} />}
@@ -289,9 +289,30 @@ class Chat extends React.Component {
         )
     }
 
-    handleDeleteMsg(e, index, msgContent) {
+    async handleDeleteMsg(e, postId, userId, postIndex) {
         e.preventDefault();
 
+        let body = {
+            postId,
+        }
+
+        console.log(body);
+
+        const result = await appFetch('PUT', `/message/disable/` + userId, body);
+        console.log(result);
+
+        if (result.status !== 200) {
+            if (result.status === 401) {
+                this.props.history.replace(`/error?code=${result.status}`);
+
+            } else {
+                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+                alert(`une erreur est survenue (code: ${result.status})`)
+            }
+            return;
+        }
+
+        this.refreshMessage(postIndex, result.data);
 
     }
 
@@ -317,8 +338,8 @@ class Chat extends React.Component {
             messagePutContent: this.state.messagePutContent,
             image: this.state.image,
         }
-        const token = await JSON.parse(localStorage.getItem('access-token'));
-        const payload = await jwt.decode(token);
+        // const token = await JSON.parse(localStorage.getItem('access-token'));
+        // const payload = await jwt.decode(token);
 
         //fetch
         const result = await appFetch('PUT', '/message/' + postUserId, body);
@@ -532,7 +553,7 @@ class Chat extends React.Component {
                                         <>
                                             <button className="btn_delete_comment"
                                                 value={element.comment_id}
-                                                onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex)}> x </button>
+                                                onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex, element.comment_user_id)}> x </button>
                                             {this.state.changeBtnComment.includes(element.comment_id) ?
                                                 <>
                                                     <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
@@ -626,7 +647,7 @@ class Chat extends React.Component {
 
     }
 
-    async handleDeleteComment(e, commentId, postId, messageIndex) {// messageIndex et utilisé pour rafraichir la bonne liste de commentaire
+    async handleDeleteComment(e, commentId, postId, messageIndex, userId) {// messageIndex et utilisé pour rafraichir la bonne liste de commentaire
         e.preventDefault();
 
         let body = {
@@ -634,10 +655,7 @@ class Chat extends React.Component {
         }
         console.log(body);
 
-        const token = await JSON.parse(localStorage.getItem('access-token'));
-        const payload = await jwt.decode(token);
-
-        const result = await appFetch('PUT', `/comment/disable/` + payload.userId, body);
+        const result = await appFetch('PUT', `/comment/disable/` + userId, body);
         console.log(result);
 
         if (result.status !== 200) {

@@ -78,6 +78,18 @@ export async function getMessageById(postId, returnFields = null) {
     }
 }
 
+export async function disableMessageById(postId) {
+    try {
+        await sqlQuery(`
+        UPDATE ${tableName} 
+        SET msg_content = ${null}, msg_image = ${null}
+        WHERE msg_id=${postId}`);
+        return true;
+    } catch (err) {
+        throw (err)
+    }
+}
+
 
 // Appeler getAllMessages et getMessageComments successivement dans la route
 // ajouter une clé comments dans le message, et y coller la liste (rows) obtenue par getMessageComments
