@@ -1,6 +1,8 @@
+@import "./utils.scss";
+
 //DEBUT GENERALE
 
-button{
+button, input{
     outline: none;
 }
 
@@ -9,9 +11,10 @@ button{
 //HEADER
 
 .container_header{
-    background-color: rgb(0,190,142);
+    // background-color: rgb(0,190,142);
+    background-color: $lightGreen;
     justify-content: space-between;
-    box-shadow: 0px 2px 8px 0px #000000;
+    box-shadow: $naturalShadow2;
     position: fixed;
     z-index: 1;
 
@@ -31,18 +34,13 @@ button{
                 height: 80%;
                 width: 5rem;
                 border-radius: 15px;
-                background: linear-gradient(145deg, #00cc99, #00ac81);
-                box-shadow:  4px 4px 7px #00a27a, 
-                -4px -4px 7px #00dca4;
-                border: none;
+                @include neumorphismeButtonlight;
+
             }
 
             button:hover{
                 border-radius: 15px;
-                background: linear-gradient(145deg, #00ac81, #00cc99);
-                box-shadow:  4px 4px 7px #00a27a, 
-                -4px -4px 7px #00dca4;
-                border: none;
+                @include neumorphismeHoverButtonlight;
             }
 
             p{
@@ -59,7 +57,7 @@ button{
 //DEBUT FOOTER
 
 .container_footer {
-    background-color: rgb(0,48,36);
+    background-color: $darkGreen;
     display: flex;
     justify-content: space-around;s
 
@@ -77,13 +75,6 @@ button{
 
 //FIN FOOTER
 
-//DEBUT LAYOUT
-
-// .container_bg_img{
-//     z-index: 1;
-// }
-
-//FIN LAYOUT
 
 //DEBUT PAGE ACCUEIL
 
@@ -100,8 +91,8 @@ button{
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: rgba(0,84,63, 0.7);
-    box-shadow: inset 1px 1px 20px 0px #00543f;
+        background-color: $mediumGreenShadowLowIntensity;
+        box-shadow: $shadowgreenMediumInset;
 
         p{
             color: white;
@@ -129,41 +120,41 @@ button{
 
     .container_form{
         border-radius: 5%;
-        width: 35rem;
-        height: 30rem;
+        width: 33rem;
+        height: 30.3rem;
         text-align: left;
         align-items: left;
         border-radius: 15px;
-        background: #008362;
-        box-shadow: 0px 0px 8px 0px #000000;
+        background: $lightMediumGreen;
+        box-shadow: $naturalHightShadow;
 
         .container_form_style{
+
             padding: 1rem;
+            margin: 1.5rem;
             margin-left: 3rem;
             margin-right: 3rem;
             display: flex;
             flex-direction: column;
-            border-radius: 15px;
+            @include neumorphismeContainerLogin;
 
             label{
+                color: white;
                 font-size: 2rem;
                 border-radius: 15px;
-                background: #008362;
-                box-shadow:  4px 4px 9px #006f53, 
-                -4px -4px 9px #009771;
+                background: $lightMediumGreen;
                 width: auto;
-                padding-left: 1rem;
+                padding-left: 0rem;
             }
     
             input{
-                margin-top: 2rem;
+                margin-top: 1rem;
                 width: 15rem;
                 height: 2rem;
                 border: none;
                 border-radius: 15px;
                 background: white;
-                box-shadow:  4px 4px 9px #006f53, 
-                -4px -4px 9px #009771;
+                box-shadow: $shadowgreenMediumOutside;
 
             }
 
@@ -180,16 +171,11 @@ button{
                 font-size: 19px;
                 margin-left: 3rem;
                 border-radius: 15px;
-                background: linear-gradient(145deg, #008c69, #007658);
-                box-shadow:  2px 2px 4px #006f53, 
-                -2px -2px 4px #009771;
-                border: none;
+                @include neumorphismeButtonMedium;
 
                 &:hover{
                     border-radius: 15px;
-                    background: linear-gradient(145deg, #007658, #008c69);
-                    box-shadow:  2px 2px 4px #006f53, 
-                    -2px -2px 4px #009771;
+                    @include neumorphismeHoverButtonMedium;
                 }
             }
     
@@ -200,16 +186,11 @@ button{
                 height: 5rem;
                 width: 8rem;
                 border-radius: 15px;
-                background: linear-gradient(145deg, #008c69, #007658);
-                box-shadow:  2px 2px 4px #006f53, 
-                -2px -2px 4px #009771;
-                border: none;
+                @include neumorphismeButtonMedium;
 
                 &:hover{
                     border-radius: 15px;
-                    background: linear-gradient(145deg, #007658, #008c69);
-                    box-shadow:  2px 2px 4px #006f53, 
-                    -2px -2px 4px #009771;
+                    @include neumorphismeHoverButtonMedium;
                 }
             }
         }
@@ -222,7 +203,7 @@ button{
 //DEBUT FORM SIGNUP
 
 .form_signup{
-    top: 15%;
+    top: 10%;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -233,79 +214,115 @@ button{
     .container_form{
         display: flex;
         flex-direction: column;
-        width: 70%;
-        padding: 3rem;
+        // width: auto;
         border-radius: 15px;
-        background: #008362;
-        box-shadow: 0px 0px 8px 0px #000000;
+        background: $lightMediumGreen;
+        box-shadow: $naturalHightShadow;
+        padding: 1rem;
 
-        .container_label{
-            display: flex;
-            justify-content: space-around;
-            border-radius: 15px;
-            background: #008362;
-            box-shadow:  2px 2px 4px #006f53, 
-            -2px -2px 4px #009771;
-            margin-bottom: 1rem;
+        .container_form_style{
+            // padding: 0.5rem;
+            @include neumorphismeContainerLogin;
 
-            label{
-                height: 2rem;
-                font-size: 1.4rem;
-                padding: 1.5rem;
-                flex-grow: 1;
-                text-align: left;                
+            .container_label{
+                display: flex;
+                margin-bottom: 1rem;
+    
+                label{
+                    color: white;
+                    height: 2rem;
+                    font-size: 1.4rem;
+                    padding: 1.5rem;
+                    // flex-grow: 1;
+                    text-align: left;       
+                    width: 20rem;         
+                }
+    
+                input{
+                    margin: 1rem;
+                    width: 15rem;
+                    border-radius: 15px;
+                    background: white;
+                    box-shadow:  4px 4px 9px #006f53, 
+                    -4px -4px 9px #009771;
+                    border: none;
+                }
+    
+    
+                input{
+                    margin: 1rem;
+                    width: 15rem;
+                    border-radius: 15px;
+                    background: white;
+                    box-shadow:  4px 4px 9px #006f53, 
+                    -4px -4px 9px #009771;
+                    border: none;
+                    justify-content: right;
+                    align-items: right;
+                    vertical-align: center;
+
+                }
+
+                .label-file {
+                    border-radius: 15px;
+                    @include neumorphismeButtonMedium;
+                    cursor: pointer;
+                    color: white;
+                    font-weight: bold;
+                    width: auto;
+                    margin-left: 5rem;
+                }
+                .label-file:hover {
+                    @include neumorphismeHoverButtonMedium;
+                    color: white;
+                }
+                
+                // et on masque le input
+                .input-file {
+                    display: none;
+                }
+        
+                .password_input_form{
+                    height: 3rem;
+                }
+        
+                .password_button_form{
+                    margin: 0.5rem;
+                    font-size: 19px;
+                    border-radius: 15px;
+                    background: linear-gradient(145deg, #008c69, #007658);
+                    box-shadow:  2px 2px 4px #006f53, 
+                    -2px -2px 4px #009771;
+                    border: none;
+        
+                    &:hover{
+                        border-radius: 15px;
+                        background: linear-gradient(145deg, #007658, #008c69);
+                        box-shadow:  2px 2px 4px #006f53, 
+                        -2px -2px 4px #009771;
+                    }
+                }
             }
-
-            input{
-                margin: 1rem;
-                width: 15rem;
-                border-radius: 15px;
-                background: white;
-                box-shadow:  4px 4px 9px #006f53, 
-                -4px -4px 9px #009771;
-                border: none;
-            }
-
-            .password_input_form{
-                height: 3rem;
-            }
-
-            .password_button_form{
-                margin: 0.5rem;
-                font-size: 19px;
+    
+            .button_form_submit{
+                margin: auto;
+                margin-top: 0.5rem;
+                margin-bottom: 1rem;
+                height: 4rem;
+                font-size: 24px;
+                padding: 1rem;
                 border-radius: 15px;
                 background: linear-gradient(145deg, #008c69, #007658);
                 box-shadow:  2px 2px 4px #006f53, 
                 -2px -2px 4px #009771;
                 border: none;
-
+                
                 &:hover{
                     border-radius: 15px;
                     background: linear-gradient(145deg, #007658, #008c69);
                     box-shadow:  2px 2px 4px #006f53, 
                     -2px -2px 4px #009771;
                 }
-            }
-            
-        }
-
-        .button_form_submit{
-            margin: auto;
-            margin-top: 2rem;
-            height: 4rem;
-            font-size: 24px;
-            padding: 1rem;
-            border-radius: 15px;
-            background: linear-gradient(145deg, #008c69, #007658);
-            box-shadow:  2px 2px 4px #006f53, 
-            -2px -2px 4px #009771;
-            border: none;
-            
-            &:hover{
-                border-radius: 15px;
-                background: linear-gradient(145deg, #007658, #008c69);
-                box-shadow:  2px 2px 4px #006f53, 
-                -2px -2px 4px #009771;
             }
         }
     }

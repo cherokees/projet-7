@@ -4,6 +4,11 @@ import Layout from './layout';
 import jwt from 'jsonwebtoken';
 import { uploadFile } from '../utils/upload';
 import Linkify from 'react-linkify';
+import { FaPen } from "react-icons/fa";
+import { BiMailSend } from "react-icons/bi";
+import { BsBackspace } from "react-icons/bs";
+import { MdDelete } from "react-icons/md";
+
 
 
 //Composant de la page du forum
@@ -58,10 +63,6 @@ class Chat extends React.Component {
         this.handleChangeImage = this.handleChangeImage.bind(this);
         this.checkIdentity = this.checkIdentity.bind(this);
         this.handleDeleteMsg = this.handleDeleteMsg.bind(this);
-        this.handleFetchImage = this.handleFetchImage.bind(this);
-
-
-        // this.refreshComments = this.refreshComments.bind(this);
     }
 
     //Dans la fonction componentDidMount(fonction native react pour le cycle de vie) 
@@ -70,7 +71,7 @@ class Chat extends React.Component {
         // const result = await appFetch('GET', '/user/auth');
 
         const result = await appFetch('GET', '/message');
-
+        // const resultImage = await appFetch('POST', '/user/')
 
         if (result.status !== 200) {
             if (result.status === 401) {
@@ -84,7 +85,7 @@ class Chat extends React.Component {
         }
 
         // Cette partie de code se déclenche si l'utilisateur est connecté
-        console.log(result);
+        // console.log(result);
 
         const token = await JSON.parse(localStorage.getItem('access-token'));
         const payload = await jwt.decode(token);
@@ -96,11 +97,6 @@ class Chat extends React.Component {
             user: payload.userId,
             userRole: payload.role,
         });
-
-        console.log(this.state.user);
-        console.log(this.state.userRole);
-
-
     }
 
     //fonction handleFetchErrors qui redirige l'utilisateur vers une page d'erreur, en fonction de la réponse serveur à l'aide de "props.history"
@@ -191,6 +187,26 @@ class Chat extends React.Component {
         )
     }
 
+    convertDate(paraStr) {
+        paraStr = paraStr.split("T");
+        let date = paraStr[0];
+        let horaire = paraStr[1].split(".");
+        horaire = horaire[0];
+
+        horaire = horaire.split(":");
+        let time = horaire[0];
+        let minute = horaire[1];
+        let second = horaire[2];
+
+        date = date.split("-");
+        let year = date[0];
+        let month = date[1];
+        let day = date[2];
+
+        return ("posté le " + day + " " + month + " " + year + " " + "à " + time + "h " + minute + "mn " + second + "s");
+    };
+
+
     renderMessagesList() {
         return (
             <>
@@ -200,26 +216,23 @@ class Chat extends React.Component {
                         <div className="message_post" key={index}>
 
                             <div className="message_post_user">
-                                {/* {element.msg_content !== null && <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.msg_image} />} */}
-                                {/* {element.msg_content !== null && this.handleFetchImage()} */}
-                                <p>{element.users_first_name}</p>
-                                <p>{element.users_last_name}</p>
-                                <p className="message_post_date">{element.msg_date}</p>
+                                <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.users_image} />
+                                <p>{element.users_first_name} {element.users_last_name}</p>
+                                <p className="message_post_date">{this.convertDate(element.msg_date)}</p>
                             </div>
                             <div className="message_post_content">
                                 <div className="btn_post_content">
                                     <h2>{element.msg_title}</h2>
-                                    {/* {this.checkIdentity(element.msg_user_id) ? */}
                                     {(this.checkIdentity(element.msg_user_id) && element.msg_content !== null) ?
                                         this.state.messagePut !== index ?
                                             <>
-                                                <button onClick={e => this.handlePutMsg(e, index, element.msg_content)}>modifier</button>
-                                                <button onClick={e => this.handleDeleteMsg(e, element.msg_id, element.msg_user_id, index)}>supprimer</button>
+                                                <button onClick={e => this.handlePutMsg(e, index, element.msg_content, element.msg_image)}><FaPen /></button>
+                                                <button onClick={e => this.handleDeleteMsg(e, element.msg_id, element.msg_user_id, index)}><MdDelete /></button>
                                             </>
                                             :
                                             <>
-                                                <button onClick={e => this.handleSubmitPutMsg(e, element.msg_id, element.msg_user_id, index)}>envoyer</button>
-                                                <button onClick={e => this.handleCancelPutMsg(e)}>retour</button>
+                                                <button onClick={e => this.handleSubmitPutMsg(e, element.msg_id, element.msg_user_id, index)}><BiMailSend /></button>
+                                                <button onClick={e => this.handleCancelPutMsg(e)}><BsBackspace /></button>
                                             </>
                                         :
                                         null
@@ -228,6 +241,7 @@ class Chat extends React.Component {
                                 </div>
                                 {this.state.messagePut === index ?
                                     <div className="element_post_content">
+                                        {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                                         <textarea value={this.state.messagePutContent} onChange={this.handleMessagePutContent}></textarea>
                                         <input
                                             className="image_url"
@@ -250,7 +264,7 @@ class Chat extends React.Component {
                                 {this.state.replyIndex === index ?
                                     //le balisage permet d'insérer plusieur éléments dans la fonction ternaire
                                     <>
-                                        <button value={index} onClick={e => this.handleCancelComment(e, element.msg_id)}>Annuler</button>
+                                        <button value={index} onClick={e => this.handleCancelComment(e, element.msg_id)}><BsBackspace /></button>
                                         <button
                                             className={this.state.comment === "" ? "btn-disabled" : ""}
                                             //disabled = propriétée booleénne, on peut me mettre une condition qui retourne un boolean
@@ -290,34 +304,6 @@ class Chat extends React.Component {
                 })}
             </>
         )
-    }
-
-    async handleFetchImage(e) {
-        e.preventDefault();
-
-        const result = await appFetch('GET', `/users/`);
-
-        console.log('ici getAllUsers', result);
-
-        if (result.status !== 200) {
-            if (result.status === 401) {
-                this.props.history.replace(`/error?code=${result.status}`);
-
-            } else {
-                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
-                alert(`une erreur est survenue (code: ${result.status})`)
-            }
-            return
-                // (
-                // result.data.map((element, index) => {
-                //     <div key={index} >
-                //         <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.users_image} />
-                //     </div>
-                // })
-                // )
-                ;
-        }
-
     }
 
     async handleDeleteMsg(e, postId, userId, postIndex) {
@@ -394,12 +380,13 @@ class Chat extends React.Component {
 
     }
 
-    handlePutMsg(e, index, message) {
+    handlePutMsg(e, index, message, image) {
         e.preventDefault();
 
         this.setState({
             messagePut: index,
             messagePutContent: message,
+            image: image,
         })
     }
 
@@ -537,8 +524,9 @@ class Chat extends React.Component {
             console.log("upload RES", result);
             this.setState({ image: result.data });
         } else {
+            console.log("PAS DIMAGE");
 
-            this.setState({ image: "" });
+            this.setState({ image: "" }); // ELEVER LE ELSE ET UTILISER CETTE LIGNE DANS UN handeDeleteImage
         }
     }
 
@@ -550,6 +538,7 @@ class Chat extends React.Component {
                     if (this.state.changeBtnComment.includes(element.comment_id)) {
                         return (
                             <div className="container_user_comment" key={index}>
+                                {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                                 <textarea value={this.state.editCommentContent} onChange={e => this.handleEditCommentContent(e)}></textarea>
                                 <input
                                     className="image_url"
@@ -560,11 +549,11 @@ class Chat extends React.Component {
                                 </input>
                                 {this.state.changeBtnComment.includes(element.comment_id) ?
                                     <>
-                                        <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id, element.comment_user_id, element.comment_post_id, messageIndex)}> Envoyer </button>
-                                        <button onClick={e => this.handleChangePutDisplayComment(e, element.comment_id)}>Retour</button>
+                                        <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id, element.comment_user_id, element.comment_post_id, messageIndex)}><BiMailSend /></button>
+                                        <button onClick={e => this.handleChangePutDisplayComment(e, element.comment_id)}><BsBackspace /></button>
                                     </>
                                     :
-                                    <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id)}> Modifier </button>
+                                    <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id)}><FaPen /> </button>
                                 }
                             </div>
                         )
@@ -583,18 +572,18 @@ class Chat extends React.Component {
                                         </Linkify>
                                     </div>
                                     {/* {(this.state.user === element.comment_user_id || this.checkIdentity(element.msg_user_id) && element.comment_content !== null) ? */}
-                                    {(this.checkIdentity(element.msg_user_id) && element.comment_content !== null) ?
+                                    {(this.checkIdentity(element.comment_user_id) && element.comment_content !== null) ?
                                         // {(this.state.user === element.comment_user_id && element.comment_content !== null) ?
                                         <>
                                             <button className="btn_delete_comment"
                                                 value={element.comment_id}
-                                                onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex, element.comment_user_id)}> x </button>
+                                                onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex, element.comment_user_id)}><MdDelete /> </button>
                                             {this.state.changeBtnComment.includes(element.comment_id) ?
                                                 <>
-                                                    <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}> Envoyer </button>
+                                                    <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}><BiMailSend /></button>
                                                 </>
                                                 :
-                                                <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id, element.comment_content)}> Modifier </button>
+                                                <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id, element.comment_content, element.comment_image)}><FaPen /></button>
                                             }
                                         </>
                                         :
@@ -629,7 +618,7 @@ class Chat extends React.Component {
 
     }
 
-    handlePutComment(e, commentId, commentContent) {
+    handlePutComment(e, commentId, commentContent, commentImage) {
         e.preventDefault();
 
         let changeBtnComment = this.state.changeBtnComment;
@@ -639,6 +628,7 @@ class Chat extends React.Component {
         this.setState({
             changeBtnComment,
             editCommentContent: commentContent,
+            image: commentImage,
         });
 
         console.log(changeBtnComment);

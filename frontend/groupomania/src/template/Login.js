@@ -17,8 +17,8 @@ class Login extends React.Component {
         };
 
         // DEBUG
-        this.state.email = "ggg@gmail.com";
-        this.state.password = "ggg";
+        this.state.email = "johndoe@gmail.com";
+        this.state.password = "johndoe";
 
 
         this.handleChangeEmail = this.handleChangeEmail.bind(this);

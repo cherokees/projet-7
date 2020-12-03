@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import Layout from './layout';
 import axios from 'axios';
 import { uploadFile } from '../utils/upload';
+import { validateSubmit, VLD_IS_EMAIL, VLD_NOT_EMPTY_STRING } from '../utils/frontValidator';
 
 class Signup extends React.Component {
 
@@ -22,6 +23,7 @@ class Signup extends React.Component {
             signupSuccess: false,
             emailError: "",
             image: "",
+            validationReport: {},
         };
 
         // DEBUG
@@ -162,18 +164,39 @@ class Signup extends React.Component {
                 image: this.state.image,
             }
 
+
+            const validationReport = validateSubmit(body, {
+                email: [VLD_IS_EMAIL],
+                password: [VLD_NOT_EMPTY_STRING],
+                firstName: [VLD_NOT_EMPTY_STRING],
+                lastName: [VLD_NOT_EMPTY_STRING],
+            })
+
             // console.log(body);
 
-            const result = await appFetch('POST', '/user/signup', body);
+            // vérifier object.keys  taille = 0
 
-            if (result.status === 200) {
-                alert("Félicitations, vous êtes enregistré")
-                this.setState({ signupSuccess: true });
-            } else if (result.status === 400) {
-                alert(result.message);
+
+            if (Object.keys(validationReport).length === 0) {
+
+                // DANS IF (rapport vide)
+                const result = await appFetch('POST', '/user/signup', body);
+
+                if (result.status === 200) {
+                    alert("Félicitations, vous êtes enregistré")
+                    this.setState({ signupSuccess: true });
+                } else if (result.status === 400) {
+                    alert(result.message);
+                } else {
+                    alert("Une erreur s'est produite, veuillez rééssayer plus tard")
+                }
             } else {
-                alert("Une erreur s'est produite, veuillez rééssayer plus tard")
+                console.log("validationReport", validationReport);
+
+                this.setState({ validationReport })
             }
+
+            // ELSE (erreurs validation front)
 
 
         } catch (err) {
@@ -194,53 +217,54 @@ class Signup extends React.Component {
                 <Layout>
                     <form className="form_signup" enctype="multipart/form-data">
                         <div className="container_form">
-                            <div className="container_label">
-                                <label>Prénom</label>
-                                <input
-                                    type="text"
-                                    value={this.state.firstName}
-                                    onChange={this.handleChangeFirstName}
-                                    placeholder="Entrer votre prénom">
-                                </input>
-                            </div>
-
-                            <div className="container_label">
-                                <label>Nom</label>
-                                <input
-                                    type="text"
-                                    value={this.state.lastName}
-                                    onChange={this.handleChangeLastName}
-                                    placeholder="Entrer votre nom">
-                                </input>
-                            </div>
-                            <div className="container_label">
-                                <label className="email_label_form"> Email</label>
-                                <input
-                                    className="email_input_form"
-                                    type="email"
-                                    value={this.state.email}
-                                    onChange={this.handleChangeEmail}
-                                    placeholder="Entrer votre Email">
-                                </input>
-                                <div style={{ fontSize: 12, color: "red" }}>
-                                    {this.state.emailError}
+                            <div className="container_form_style">
+                                <div className="container_label">
+                                    <label>Prénom</label>
+                                    <input
+                                        type="text"
+                                        value={this.state.firstName}
+                                        onChange={this.handleChangeFirstName}
+                                        placeholder="Entrer votre prénom">
+                                    </input>
                                 </div>
-                            </div>
 
-                            <div className="container_label">
-                                <label className="confirm_email_label_form"> Confirmer votre email</label>
-                                <input
-                                    className="confirm_email_input_form"
-                                    type="email"
-                                    value={this.state.confirm_email}
-                                    onChange={this.handleChangeConfirmEmail}
-                                    placeholder="Confirmer votre Email">
-                                </input>
-                            </div>
+                                <div className="container_label">
+                                    <label>Nom</label>
+                                    <input
+                                        type="text"
+                                        value={this.state.lastName}
+                                        onChange={this.handleChangeLastName}
+                                        placeholder="Entrer votre nom">
+                                    </input>
+                                </div>
+                                <div className="container_label">
+                                    <label className="email_label_form"> Email</label>
+                                    <input
+                                        className="email_input_form"
+                                        type="email"
+                                        value={this.state.email}
+                                        onChange={this.handleChangeEmail}
+                                        placeholder="Entrer votre Email">
+                                    </input>
+                                    <div style={{ fontSize: 12, color: "red" }}>
+                                        {/* {this.state.emailError} */}
+                                        {this.state.validationReport.email && this.state.validationReport.email}
+                                    </div>
+                                </div>
 
-                            <div className="container_label">
-                                <label className="password_label_form"> Mot de passe</label>
-                                <div className="container_mdp_form_style">
+                                <div className="container_label">
+                                    <label className="confirm_email_label_form"> Confirmer votre email</label>
+                                    <input
+                                        className="confirm_email_input_form"
+                                        type="email"
+                                        value={this.state.confirm_email}
+                                        onChange={this.handleChangeConfirmEmail}
+                                        placeholder="Confirmer votre Email">
+                                    </input>
+                                </div>
+
+                                <div className="container_label">
+                                    <label className="password_label_form"> Mot de passe</label>
                                     <input
                                         className="password_input_form"
                                         type={this.state.showPassword ? "text" : "password"}
@@ -248,15 +272,13 @@ class Signup extends React.Component {
                                         onChange={this.handleChangePassword}
                                         placeholder="Entrer votre mot de passe">
                                     </input>
+                                    <button className="password_button_form"
+                                        onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}
+                                    </button>
                                 </div>
-                                <button className="password_button_form"
-                                    onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}
-                                </button>
-                            </div>
 
-                            <div className="container_label">
-                                <label className="confirm_password_label_form"> Confirmer votre de passe</label>
-                                <div className="container_mdp_form_style">
+                                <div className="container_label">
+                                    <label className="confirm_password_label_form"> Confirmer votre de passe</label>
                                     <input
                                         className="password_input_form"
                                         type={this.state.showConfirmPassword ? "text" : "password"}
@@ -264,25 +286,17 @@ class Signup extends React.Component {
                                         onChange={this.handleChangeConfirmPassword}
                                         placeholder="Confirmer votre mot de passe">
                                     </input>
+                                    <button className="password_button_form"
+                                        onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? "cacher" : "montrer"}
+                                    </button>
                                 </div>
-                                <button className="password_button_form"
-                                    onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? "cacher" : "montrer"}
-                                </button>
-                            </div>
 
-                            <div className="container_label">
-                                <label className="img_profil"> Sélectionner une photo de profil</label>
-                                <div className="container_img_profil">
-                                    <input
-                                        className="image_url"
-                                        name="image"
-                                        type="file"
-                                        accept=".jpg"
-                                        onChange={this.handleChangeImage}>
-                                    </input>
+                                <div className="container_label">
+                                    <label for="file" class="label-file">Choisir une image</label>
+                                    <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
                                 </div>
+                                <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
                             </div>
-                            <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
                         </div>
                     </form>
                 </Layout>

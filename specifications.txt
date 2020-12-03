@@ -39,20 +39,18 @@ CHOSE A FAIRE
 
 TODOLIST BUG
 
--rafraichire le state images 
-    --> pour les routes de modifications, le state img doit s'effacer si on modifie un message différent !
-
 -configurer multer sur la taille des fichiers acceptables
     --> option fileSize et fieldSize pas prisent en compte
 
--dans la recherche avancée, gérer les erreurs
--vérifier que dans postman on ne peut pas changer un message/commentaire éffacé
+-mettre un bouton de suppression d'images
 -liens trop long depasse de la div 
--les apostrophes dans les textarea provoquent des erreurs
--telecharger les icons pour les bouton sur fontawesome
--mettre les img de profil dans la page chat
-    --> dans le render messageList, amener users_image 
 
+-gérer les champs de textes saisies valide/non valide
+-dans la recherche avancée, gérer les erreurs
 
+-Demander a JF pour la limit mo de multer 
 
  ! verification global ! 
+
+
+

@@ -1,5 +1,6 @@
 const { sqlQuery } = require("../database/mysql");
-import multer from 'multer';
+// import multer from 'multer';
+import { escapeText } from '../utils/escape';
 
 import { getMessageComments } from './comment';
 
@@ -8,10 +9,7 @@ const tableName = 'messages';
 //nom des colonnes dans la table
 const defaultReturnFields = ['msg_id', 'msg_user_id', 'msg_title', 'msg_content', 'msg_attachment', 'msg_date', 'msg_image'];
 
-// MOVE
-function escapeText(paraTxt) {
-    return paraTxt.split("'").join("\\'");
-}//fin fct
+
 
 // console.log(escapeText("c'est la fin"));
 
@@ -37,7 +35,7 @@ export async function getAllMessages(returnFields = null) {
         returnFields = returnFields || defaultReturnFields;
         const rows = await sqlQuery(
             `SELECT ${returnFields}, u.users_first_name, u.users_last_name, u.users_image
-            FROM \`messages\` m
+            FROM ${tableName} m
             JOIN users u
             ON m.msg_user_id = u.users_id
             ORDER BY m.msg_date DESC`);
@@ -54,25 +52,31 @@ export async function getAllMessages(returnFields = null) {
     }
 }
 
-export async function putMessageById(postId, messagePutContent, image) {
+export async function getMessageById(postId, returnFields = null) {
     try {
-        await sqlQuery(`
-        UPDATE ${tableName} 
-        SET msg_content = '${messagePutContent}', msg_image = '${image}'
-        WHERE msg_id=${postId}`);
-        return true;
+        returnFields = returnFields || defaultReturnFields;
+        //requête SQL pour récupérer les champs concérné grace à l'id
+        const rows = await sqlQuery(`
+        SELECT ${returnFields}, u.users_first_name, u.users_last_name, u.users_image
+        FROM ${tableName} m
+        JOIN users u
+        ON m.msg_user_id = u.users_id
+        WHERE msg_id=${postId}
+        `);
+        //retourne toutes les premières valeurs des champs trouvé si ils ne sont pas égale à null
+        return rows.length > 0 ? rows[0] : null;
     } catch (err) {
         throw err;
     }
 }
 
-export async function getMessageById(postId, returnFields = null) {
+export async function putMessageById(postId, messagePutContent, image) {
     try {
-        returnFields = returnFields || defaultReturnFields;
-        //requête SQL pour récupérer les champs concérné grace à l'id
-        const rows = await sqlQuery(`SELECT ${returnFields} FROM ${tableName} WHERE msg_id=${postId}`);
-        //retourne toutes les premières valeurs des champs trouvé si ils ne sont pas égale à null
-        return rows.length > 0 ? rows[0] : null;
+        await sqlQuery(`
+        UPDATE ${tableName} 
+        SET msg_content = '${escapeText(messagePutContent)}', msg_image = '${image}'
+        WHERE msg_id=${postId}`);
+        return true;
     } catch (err) {
         throw err;
     }
