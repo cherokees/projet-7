@@ -123,7 +123,7 @@ class Signup extends React.Component {
             this.setState({ image: result.data });
         } else {
 
-            this.setState({ image: "" });
+            this.setState({ image: e.target.value });
         }
 
     }
@@ -294,6 +294,7 @@ class Signup extends React.Component {
                                 <div className="container_label">
                                     <label for="file" class="label-file">Choisir une image</label>
                                     <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                                    {this.state.image && <img className="img_file" src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                                 </div>
                                 <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
                             </div>
@@ -302,7 +303,6 @@ class Signup extends React.Component {
                 </Layout>
             )
         }
-
     }
 }
 

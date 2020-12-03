@@ -226,8 +226,7 @@ button, input{
 
             .container_label{
                 display: flex;
-                margin-bottom: 1rem;
-    
+
                 label{
                     color: white;
                     height: 2rem;
@@ -270,23 +269,31 @@ button, input{
                     color: white;
                     font-weight: bold;
                     width: auto;
-                    margin-left: 5rem;
+                    margin-left: 2rem;
+                    margin-top: 3rem;
                 }
                 .label-file:hover {
                     @include neumorphismeHoverButtonMedium;
                     color: white;
                 }
                 
-                // et on masque le input
                 .input-file {
                     display: none;
                 }
         
+                .img_file{
+                    max-width: 15rem;
+                    margin-left: 7.3rem;
+                    border-radius: 15px;
+                    margin-top: 1.5rem;
+                }
+
                 .password_input_form{
                     height: 3rem;
                 }
         
                 .password_button_form{
+                    color: white;
                     margin: 0.5rem;
                     font-size: 19px;
                     border-radius: 15px;
@@ -305,8 +312,9 @@ button, input{
             }
     
             .button_form_submit{
+                color: white;
                 margin: auto;
-                margin-top: 0.5rem;
+                margin-top: 2rem;
                 margin-bottom: 1rem;
                 height: 4rem;
                 font-size: 24px;
