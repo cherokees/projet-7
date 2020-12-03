@@ -173,14 +173,11 @@ class Chat extends React.Component {
                 <div className="message">
                     <label>Votre message</label>
                     <textarea value={this.state.formMsgContent} onChange={this.handleFormMsgContent}></textarea>
-                    {/* <button className="post_img">Choisir une image</button> */}
-                    <input
-                        className="image_url"
-                        name="image"
-                        type="file"
-                        accept=".jpg"
-                        onChange={this.handleChangeImage}>
-                    </input>
+                    <div className="message_style">
+                        <label for="file" class="label-file">Choisir une image</label>
+                        <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                        {this.state.image && <img className="img_file" src={'http://localhost:3000/public/uploads/' + this.state.image} />}
+                    </div>
                 </div>
                 <button className="Send_message" onClick={this.handleSubmit}>Envoyer</button>
             </div>
@@ -203,7 +200,7 @@ class Chat extends React.Component {
         let month = date[1];
         let day = date[2];
 
-        return ("posté le " + day + " " + month + " " + year + " " + "à " + time + "h " + minute + "mn " + second + "s");
+        return ("posté le " + day + "-" + month + "-" + year + " " + "à " + time + "h " + minute + "mn ");
     };
 
 
@@ -217,7 +214,7 @@ class Chat extends React.Component {
 
                             <div className="message_post_user">
                                 <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.users_image} />
-                                <p>{element.users_first_name} {element.users_last_name}</p>
+                                <p className="message_post_name">{element.users_first_name} {element.users_last_name}</p>
                                 <p className="message_post_date">{this.convertDate(element.msg_date)}</p>
                             </div>
                             <div className="message_post_content">
@@ -500,13 +497,11 @@ class Chat extends React.Component {
         return (
             <div className="container_txt_area_comment">
                 <textarea value={this.state.comment} onChange={this.handleGetComment}></textarea>
-                <input
-                    className="image_url"
-                    name="image"
-                    type="file"
-                    accept=".jpg"
-                    onChange={this.handleChangeImage}>
-                </input>
+                <div className="container_flex_comment_img">
+                    <label for="file" class="label-file">Choisir une image</label>
+                    <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                    {this.state.image && <img className="img_file" src={'http://localhost:3000/public/uploads/' + this.state.image} />}
+                </div>
             </div>
         )
     }
@@ -550,7 +545,7 @@ class Chat extends React.Component {
                                 {this.state.changeBtnComment.includes(element.comment_id) ?
                                     <>
                                         <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id, element.comment_user_id, element.comment_post_id, messageIndex)}><BiMailSend /></button>
-                                        <button onClick={e => this.handleChangePutDisplayComment(e, element.comment_id)}><BsBackspace /></button>
+                                        <button className="btn_cancel_display_comment" onClick={e => this.handleChangePutDisplayComment(e, element.comment_id)}><BsBackspace /></button>
                                     </>
                                     :
                                     <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id)}><FaPen /> </button>
@@ -563,7 +558,7 @@ class Chat extends React.Component {
                             <>
                                 <div className="container_user_comment" key={index}>
                                     <div>
-                                        <p className="user_comment">commentaire de {element.users_first_name} {element.users_last_name}</p>
+                                        <p className="user_comment">{element.users_first_name} {element.users_last_name}</p>
                                         {element.comment_image &&
                                             <img src={'http://localhost:3000/public/uploads/' + element.comment_image} />
                                         }
@@ -571,25 +566,27 @@ class Chat extends React.Component {
                                             <p className="comment">{element.comment_content === null ? "Commentaire supprimé" : element.comment_content}</p>
                                         </Linkify>
                                     </div>
-                                    {/* {(this.state.user === element.comment_user_id || this.checkIdentity(element.msg_user_id) && element.comment_content !== null) ? */}
-                                    {(this.checkIdentity(element.comment_user_id) && element.comment_content !== null) ?
-                                        // {(this.state.user === element.comment_user_id && element.comment_content !== null) ?
-                                        <>
-                                            <button className="btn_delete_comment"
-                                                value={element.comment_id}
-                                                onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex, element.comment_user_id)}><MdDelete /> </button>
-                                            {this.state.changeBtnComment.includes(element.comment_id) ?
-                                                <>
-                                                    <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}><BiMailSend /></button>
-                                                </>
-                                                :
-                                                <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id, element.comment_content, element.comment_image)}><FaPen /></button>
-                                            }
-                                        </>
-                                        :
-                                        <div></div>
+                                    <div className="container_btn_style">
+                                        {/* {(this.state.user === element.comment_user_id || this.checkIdentity(element.msg_user_id) && element.comment_content !== null) ? */}
+                                        {(this.checkIdentity(element.comment_user_id) && element.comment_content !== null) ?
+                                            // {(this.state.user === element.comment_user_id && element.comment_content !== null) ?
+                                            <>
+                                                <button className="btn_delete_comment"
+                                                    value={element.comment_id}
+                                                    onClick={e => this.handleDeleteComment(e, element.comment_id, element.comment_post_id, messageIndex, element.comment_user_id)}><MdDelete /> </button>
+                                                {this.state.changeBtnComment.includes(element.comment_id) ?
+                                                    <>
+                                                        <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id)}><BiMailSend /></button>
+                                                    </>
+                                                    :
+                                                    <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id, element.comment_content, element.comment_image)}><FaPen /></button>
+                                                }
+                                            </>
+                                            :
+                                            <div></div>
 
-                                    }
+                                        }
+                                    </div>
 
                                 </div>
                             </>
@@ -738,8 +735,7 @@ class Chat extends React.Component {
             searchMsg: e.target.value,
             firstName: split[0],
             lastName: split[1],
-        }, () => console.log(this.state.firstName, this.state.lastName))
-
+        })
     }
 
 
@@ -809,7 +805,7 @@ class Chat extends React.Component {
                                     {/* {this.state.displaySearch ? <button onClick={this.handleCancelSearchMsg}>Retour</button> : null} */}
                                 </div>
                             </div>
-                            <div className="container_message">
+                            <div className={this.state.displayMsg ? "container_post_message" : "container_message"}>
                                 {
                                     this.state.displayMsg ?
                                         this.renderForm()
