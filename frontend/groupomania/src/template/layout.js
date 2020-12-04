@@ -1,4 +1,5 @@
 import React from 'react';
+import { MdGpsFixed } from 'react-icons/md';
 import Footer from './footer';
 import Header from './header';
 
@@ -6,8 +7,9 @@ const style_accueil = {
     container: {
         backgroundImage: 'url("./images/city-ravi-patel.jpg")',
         opacity: '0.6',
-        height: '60rem',
+        height: '100vh',
         width: '100%',
+        position: "fixed",
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',

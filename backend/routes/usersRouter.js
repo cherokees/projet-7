@@ -154,14 +154,21 @@ router.post('/search', async (req, res, next) => {
     try {
 
         const userId = await getUserByName(req.body.lastName, req.body.firstName);
+        console.log("userId", userId);
 
-        const messages = await getCommentPostId(userId.users_id);
+        if (userId === null) {
+            res.status(200).json({ data: [], message: "aucun utilisateur trouvé" })
+        } else {
+            const messages = await getCommentPostId(userId.users_id);
 
-        res.status(200).json({ data: messages, message: "profil trouvé" });
+            res.status(200).json({ data: messages, message: "profil trouvé" });
+
+        }
     } catch (err) {
         console.error(err);
         res.status(500).json({ data: null, message: "Erreur interne du serveur" });
     }
+
 })
 
 // router.delete('/profil/:id', auth, authUserId, async (req, res, next) => {

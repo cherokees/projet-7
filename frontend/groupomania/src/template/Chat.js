@@ -8,6 +8,8 @@ import { FaPen } from "react-icons/fa";
 import { BiMailSend } from "react-icons/bi";
 import { BsBackspace } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
+import Scrollbars from 'react-scrollbars-custom';
+import { AutoSizer } from "react-virtualized";
 
 
 
@@ -203,102 +205,123 @@ class Chat extends React.Component {
 
 
     renderMessagesList() {
-        return (
-            <>
-                {/* <a id="section1" href="#section2" className="button_bas_page">Bas de page</a> */}
-                {this.state.messageList.map((element, index) => {
-                    return (
-                        <div className="message_post" key={index}>
 
-                            <div className="message_post_user">
-                                <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.users_image} />
-                                <p className="message_post_name">{element.users_first_name} {element.users_last_name}</p>
-                                <p className="message_post_date">{this.convertDate(element.msg_date)}</p>
-                            </div>
-                            <div className="message_post_content">
-                                <div className="btn_post_content">
-                                    <h2>{element.msg_title}</h2>
-                                    {(this.checkIdentity(element.msg_user_id) && element.msg_content !== null) ?
-                                        this.state.messagePut !== index ?
-                                            <>
-                                                <button onClick={e => this.handlePutMsg(e, index, element.msg_content, element.msg_image)}><FaPen /></button>
-                                                <button onClick={e => this.handleDeleteMsg(e, element.msg_id, element.msg_user_id, index)}><MdDelete /></button>
-                                            </>
-                                            :
-                                            <>
-                                                <button onClick={e => this.handleSubmitPutMsg(e, element.msg_id, element.msg_user_id, index)}><BiMailSend /></button>
-                                                <button onClick={e => this.handleCancelPutMsg(e)}><BsBackspace /></button>
-                                            </>
-                                        :
-                                        null
-                                    }
-                                    {/* <button onClick={e => this.handleDeleteMsg(e)}>supprimer</button> */}
-                                </div>
-                                {this.state.messagePut === index ?
-                                    <div className="element_post_content">
-                                        {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
-                                        <textarea value={this.state.messagePutContent} onChange={this.handleMessagePutContent}></textarea>
-                                        <input
-                                            className="image_url"
-                                            name="image"
-                                            type="file"
-                                            accept=".jpg"
-                                            onChange={this.handleChangeImage}>
-                                        </input>
-                                    </div>
-                                    :
-                                    <div className="element_post_content">
-                                        <Linkify>
-                                            <p>{element.msg_content === null ? "Message supprimé" : element.msg_content}</p>
-                                        </Linkify>
-                                        {element.msg_image &&
-                                            <img src={'http://localhost:3000/public/uploads/' + element.msg_image} />}
-                                    </div>}
-                            </div>
-                            <div className="container_comment_post">
-                                {this.state.replyIndex === index ?
-                                    //le balisage permet d'insérer plusieur éléments dans la fonction ternaire
-                                    <>
-                                        <button value={index} onClick={e => this.handleCancelComment(e, element.msg_id)}><BsBackspace /></button>
-                                        <button
-                                            className={this.state.comment === "" ? "btn-disabled" : ""}
-                                            //disabled = propriétée booleénne, on peut me mettre une condition qui retourne un boolean
-                                            disabled={this.state.comment === ""}
-                                            value={index}
-                                            // onClick attend une fonction, donc on lui donne une fonction fléchée pour pouvoir ajouter notre argument en second ensuite
-                                            onClick={e => this.handlePostComment(e, element.msg_id)}
-                                        > Poster votre commentaire </button>
-                                    </>
-                                    :
-                                    <>
-                                        <button onClick={e => this.handleFormComment(e, index)}>Laissez un commentaire</button>
-                                        {this.state.messageList[index].comments.length > 0 &&
-                                            <button onClick={e => this.handleBtnDisplayComment(e, index)}>
-                                                {!this.state.displayCommentsList.includes(index) ?
-                                                    "Afficher les commentaires"
-                                                    :
-                                                    "Masquer les commentaires"}
-                                            </button>
-                                        }
-                                    </>
-                                }
-                                {this.state.replyIndex === index ?
-                                    <div value={index}>{this.renderFormComment()}</div>
-                                    :
-                                    // (this.state.btnDisplayComment == true && this.state.replyIndexComment === index) ?
-                                    // (this.state.btnDisplayComment === true) ?
-                                    this.state.displayCommentsList.includes(index) ?
+        if (this.state.messageList.length === 0) {
+            return (
+                <p>Aucun résultat trouvé</p>
+            );
+        } else {
 
-                                        <div className="container_comments" value={index}>{this.renderComments(element.comments, index)}</div>
-                                        :
-                                        <div className="container_comments" value={index}></div>
-                                }
-                            </div>
-                        </div>
-                    );
-                })}
-            </>
-        )
+            return (
+                <>
+                    <AutoSizer>
+                        {({ width, height }) => {
+                            return (
+                                <Scrollbars style={{ width, height }}>
+
+                                    {/* <a id="section1" href="#section2" className="button_bas_page">Bas de page</a> */}
+                                    {this.state.messageList.map((element, index) => {
+                                        return (
+                                            <div className="message_post" key={index}>
+
+                                                <div className="message_post_user">
+                                                    <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.users_image} />
+                                                    <p className="message_post_name">{element.users_first_name} {element.users_last_name}</p>
+                                                    <p className="message_post_date">{this.convertDate(element.msg_date)}</p>
+                                                </div>
+                                                <div className="message_post_content">
+                                                    <div className="btn_post_content">
+                                                        <h2>{element.msg_title}</h2>
+                                                        {(this.checkIdentity(element.msg_user_id) && element.msg_content !== null) ?
+                                                            this.state.messagePut !== index ?
+                                                                <>
+                                                                    <button onClick={e => this.handlePutMsg(e, index, element.msg_content, element.msg_image)}><FaPen /></button>
+                                                                    <button onClick={e => this.handleDeleteMsg(e, element.msg_id, element.msg_user_id, index)}><MdDelete /></button>
+                                                                </>
+                                                                :
+                                                                <>
+                                                                    <button onClick={e => this.handleSubmitPutMsg(e, element.msg_id, element.msg_user_id, index)}><BiMailSend /></button>
+                                                                    <button onClick={e => this.handleCancelPutMsg(e)}><BsBackspace /></button>
+                                                                </>
+                                                            :
+                                                            null
+                                                        }
+                                                        {/* <button onClick={e => this.handleDeleteMsg(e)}>supprimer</button> */}
+                                                    </div>
+                                                    {this.state.messagePut === index ?
+                                                        <div className="element_post_content">
+                                                            {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
+                                                            <textarea value={this.state.messagePutContent} onChange={this.handleMessagePutContent}></textarea>
+                                                            <input
+                                                                className="image_url"
+                                                                name="image"
+                                                                type="file"
+                                                                accept=".jpg"
+                                                                onChange={this.handleChangeImage}>
+                                                            </input>
+                                                        </div>
+                                                        :
+                                                        <div className="element_post_content">
+                                                            <Linkify>
+                                                                <p>{element.msg_content === null ? "Message supprimé" : element.msg_content}</p>
+                                                            </Linkify>
+                                                            {element.msg_image &&
+                                                                <img src={'http://localhost:3000/public/uploads/' + element.msg_image} />}
+                                                        </div>}
+                                                </div>
+                                                <div className="container_comment_post">
+                                                    {this.state.replyIndex === index ?
+                                                        //le balisage permet d'insérer plusieur éléments dans la fonction ternaire
+                                                        <>
+                                                            <button value={index} onClick={e => this.handleCancelComment(e, element.msg_id)}><BsBackspace /></button>
+                                                            <button
+                                                                className={this.state.comment === "" ? "btn-disabled" : ""}
+                                                                //disabled = propriétée booleénne, on peut me mettre une condition qui retourne un boolean
+                                                                disabled={this.state.comment === ""}
+                                                                value={index}
+                                                                // onClick attend une fonction, donc on lui donne une fonction fléchée pour pouvoir ajouter notre argument en second ensuite
+                                                                onClick={e => this.handlePostComment(e, element.msg_id)}
+                                                            > Poster votre commentaire </button>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <button onClick={e => this.handleFormComment(e, index)}>Laissez un commentaire</button>
+                                                            {this.state.messageList[index].comments.length > 0 &&
+                                                                <button onClick={e => this.handleBtnDisplayComment(e, index)}>
+                                                                    {!this.state.displayCommentsList.includes(index) ?
+                                                                        "Afficher les commentaires"
+                                                                        :
+                                                                        "Masquer les commentaires"}
+                                                                </button>
+                                                            }
+                                                        </>
+                                                    }
+                                                    {this.state.replyIndex === index ?
+                                                        <div value={index}>{this.renderFormComment()}</div>
+                                                        :
+                                                        // (this.state.btnDisplayComment == true && this.state.replyIndexComment === index) ?
+                                                        // (this.state.btnDisplayComment === true) ?
+                                                        this.state.displayCommentsList.includes(index) ?
+
+                                                            <div className="container_comments" value={index}>{this.renderComments(element.comments, index)}</div>
+                                                            :
+                                                            <div className="container_comments" value={index}></div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </Scrollbars>
+                            );
+                        }}
+                    </AutoSizer>
+                </>
+            )
+        }
+
+
+
+
     }
 
     async handleDeleteMsg(e, postId, userId, postIndex) {
@@ -452,7 +475,7 @@ class Chat extends React.Component {
             image: "",
         });
 
-        // this.setState({ displayComment: true })
+        // this.setState({displayComment: true })
 
     }
 

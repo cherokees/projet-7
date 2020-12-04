@@ -6,7 +6,6 @@ import jurisdiction from './jurisdiction';
 const styles_footer = {
     container: {
         width: '100%',
-        height: '10%',
         bottom: '0',
     }
 }
@@ -30,12 +29,8 @@ class Footer extends React.Component {
     render() {
         return (
             <div className="container_footer" style={styles_footer.container}>
-                <div className="date_footer">
-                    <p>Date : {getCurrentDate('-')}</p>
-                </div>
-                <div className="juridiction_footer">
-                    <a href={"http://localhost:3001/jurisdiction"}>Juridiction</a>
-                </div>
+                <p>Date : {getCurrentDate('-')}</p>
+                <a href={"http://localhost:3001/jurisdiction"}>Juridiction</a>
             </div>
         )
     }
