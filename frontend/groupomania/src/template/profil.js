@@ -33,19 +33,9 @@ class Profil extends React.Component {
     async componentDidMount() {
         const token = JSON.parse(localStorage.getItem('access-token'));
         const payload = await jwt.decode(token);
-        console.log("111", payload)
-        console.log("222", payload.userId)
 
 
         const result = await appFetch('GET', '/user/profil/' + payload.userId);
-        console.log(result.data.users_email);
-
-
-        // users_created_date: "2020-10-30T13:44:12.000Z"
-        // users_email: "ggg@gmail.com"
-        // users_first_name: "ggg"
-        // users_last_name: "ggg"
-
 
         if (result.status !== 200) {
             if (result.status === 401) {
@@ -99,13 +89,10 @@ class Profil extends React.Component {
         e.preventDefault();
 
         const file = Array.from(e.target.files)[0];
-        console.log("111", file);
-
 
         if (file) {
 
             const result = await uploadFile("/upload/image", file);
-            console.log("upload RES", result);
             this.setState({ image: result.data });
         } else {
 
@@ -118,7 +105,6 @@ class Profil extends React.Component {
         this.setState({ changeName: false })
 
         const result = await appFetch('GET', '/user/profil/' + this.state.userId);
-        console.log(result.data.users_email);
 
         if (result.status !== 200) {
             if (result.status === 401) {
@@ -148,11 +134,6 @@ class Profil extends React.Component {
         const token = JSON.parse(localStorage.getItem('access-token'));
         const payload = await jwt.decode(token);
         const result = await appFetch('PUT', '/user/profil/' + payload.userId, body);
-        // const result = await appFetch('PUT', '/user/profil/1', body);
-
-
-        console.log(result);
-
 
         if (result.status !== 200) {
             if (result.status === 401) {
@@ -204,17 +185,16 @@ class Profil extends React.Component {
                                     {this.state.changeName ? <input value={this.state.lastName} onChange={this.handleChangeLastName}></input> : <p>Nom de famille : {this.state.lastName}</p>}
                                 </div>
                                 <div className="profil_p">
-                                    {this.state.changeName ? <input value={this.state.firstName} onChange={this.handleChangeFirstName}></input> : <p>Prénom : {this.state.firstName}</p>}
+                                    {this.state.changeName ? <input value={this.state.firstName} onChange={this.handleChangeFirstName}></input> : <p>Prénom : {this.state.firstName} </p>}
                                 </div>
                                 <div className="profil_p">
-                                    <p> Date de création du profil : </p>
-                                    <p>{this.state.createdDate}</p>
+                                    <p> Date de création du profil : {this.state.createdDate}</p>
                                 </div>
                             </div>
-                        </div>
-                        <div className="container_profil_button">
-                            {this.state.changeName ? <button onClick={this.handleCancel}>Annuler</button> : <button onClick={this.handleDeleteProfile}>Supprimer</button>}
-                            {this.state.changeName ? <button onClick={this.handleSubmit}>Envoyer</button> : <button onClick={this.handleName}>Changer</button>}
+                            <div className="container_profil_button">
+                                {this.state.changeName ? <button onClick={this.handleCancel}>Annuler</button> : <button onClick={this.handleDeleteProfile}>Supprimer</button>}
+                                {this.state.changeName ? <button onClick={this.handleSubmit}>Envoyer</button> : <button onClick={this.handleName}>Changer</button>}
+                            </div>
                         </div>
                     </Layout>
                 ) : null
@@ -222,15 +202,4 @@ class Profil extends React.Component {
     }
 }
 export default Profil;
-
-
-// dans didMount, setState où on met email, firstName, etc... 
-// dans render, afficher les valeurs
-//      email et createdDate en lecture
-//      firstName et lastName : input
-// bouton modifier => handleSubmit
-
-// route put, AUTH!!!, avec :id en paramètre
-// composer une requête SQL UPDATE pour changer firstName et lastName
-// gérer les réponses (alerte)
 

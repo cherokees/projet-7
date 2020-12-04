@@ -113,13 +113,10 @@ class Signup extends React.Component {
         e.preventDefault();
 
         const file = Array.from(e.target.files)[0];
-        console.log("111", file);
-
 
         if (file) {
 
             const result = await uploadFile("/upload/image", file);
-            console.log("upload RES", result);
             this.setState({ image: result.data });
         } else {
 
@@ -134,28 +131,6 @@ class Signup extends React.Component {
 
 
         try {
-
-            // if else
-
-
-            // console.log("this.state.image", this.state.image);
-
-            // React
-            // lastModified: 1598026637520
-            // lastModifiedDate: Fri Aug 21 2020 18:17:17 GMT+0200 (heure d’été d’Europe centrale) {}
-            // name: "indien.jpg"
-            // size: 19782
-            // type: "image/jpeg"
-            // webkitRelativePath: ""
-            // __proto__: File
-
-            // Multer avec postman
-            // fieldname: 'image',
-            // originalname: 'indien.jpg',
-            // encoding: '7bit',
-            // mimetype: 'image/jpeg'
-
-
             let body = {
                 email: this.state.email,
                 password: this.state.password,
@@ -171,11 +146,6 @@ class Signup extends React.Component {
                 firstName: [VLD_NOT_EMPTY_STRING],
                 lastName: [VLD_NOT_EMPTY_STRING],
             })
-
-            // console.log(body);
-
-            // vérifier object.keys  taille = 0
-
 
             if (Object.keys(validationReport).length === 0) {
 

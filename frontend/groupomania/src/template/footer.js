@@ -1,4 +1,5 @@
 import React from 'react';
+import jurisdiction from './jurisdiction';
 
 //const/objet qui contient le CSS permanent au composant footer
 
@@ -33,7 +34,7 @@ class Footer extends React.Component {
                     <p>Date : {getCurrentDate('-')}</p>
                 </div>
                 <div className="juridiction_footer">
-                    <p>Juridiction</p>
+                    <a href={"http://localhost:3001/jurisdiction"}>Juridiction</a>
                 </div>
             </div>
         )

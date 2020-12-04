@@ -33,7 +33,7 @@ class Chat extends React.Component {
             displayCommentsList: [],
             changeBtnComment: [],
             editCommentContent: "",
-            searchMsg: "manu payet",
+            searchMsg: "john doe",
             user: "",
             userMessageList: [],
             displaySearch: false,
@@ -85,7 +85,6 @@ class Chat extends React.Component {
         }
 
         // Cette partie de code se déclenche si l'utilisateur est connecté
-        // console.log(result);
 
         const token = await JSON.parse(localStorage.getItem('access-token'));
         const payload = await jwt.decode(token);
@@ -151,7 +150,6 @@ class Chat extends React.Component {
             }
             return;
         }
-        // console.log("OK, pas d'erreur");
 
         //si l'utilisateur est autorisé, on affiche le composant chat
         this.setState({
@@ -310,10 +308,7 @@ class Chat extends React.Component {
             postId,
         }
 
-        console.log(body);
-
         const result = await appFetch('PUT', `/message/disable/` + userId, body);
-        console.log(result);
 
         if (result.status !== 200) {
             if (result.status === 401) {
@@ -399,7 +394,6 @@ class Chat extends React.Component {
             // retirer
             displayCommentsList = displayCommentsList.filter(value => value !== index);
         }
-        // console.log("displayCommentsList", displayCommentsList);
 
         this.setState({ displayCommentsList });
 
@@ -412,8 +406,6 @@ class Chat extends React.Component {
         if (result.status === 200) {
             this.refreshComments(this.state.replyIndex, result.data);
         }
-
-        // console.log("after console", result);
 
         this.setState({
             replyIndex: null,
@@ -429,11 +421,8 @@ class Chat extends React.Component {
             postId,
         }
 
-        console.log(body);
-
         //fetch qui envois les infos à la bdd
         const result = await appFetch('POST', '/comment', body);
-        console.log(result);
 
         if (result.status !== 200) {
             if (result.status === 401) {
@@ -450,8 +439,6 @@ class Chat extends React.Component {
         // Fetcher les commentaires pour les rafraîchir
         const resultComments = await appFetch('GET', '/message/comments/' + postId);
 
-        console.log('resultat de resultComment', resultComments);
-
         if (resultComments.status === 200) {
             this.refreshComments(this.state.replyIndex, resultComments.data);
         } else {
@@ -465,7 +452,6 @@ class Chat extends React.Component {
             image: "",
         });
 
-        console.log("OK, pas d'erreur");
         // this.setState({ displayComment: true })
 
     }
@@ -490,7 +476,6 @@ class Chat extends React.Component {
         this.setState({
             replyIndex: index,
         })
-        // console.log(this.state.replyIndex);
     }
 
     renderFormComment() {
@@ -510,17 +495,13 @@ class Chat extends React.Component {
         e.preventDefault();
 
         const file = Array.from(e.target.files)[0];
-        console.log("111", file);
-
 
         if (file) {
 
             const result = await uploadFile("/upload/image", file);
-            console.log("upload RES", result);
             this.setState({ image: result.data });
         } else {
             console.log("PAS DIMAGE");
-
             this.setState({ image: "" }); // ELEVER LE ELSE ET UTILISER CETTE LIGNE DANS UN handeDeleteImage
         }
     }
@@ -627,9 +608,6 @@ class Chat extends React.Component {
             editCommentContent: commentContent,
             image: commentImage,
         });
-
-        console.log(changeBtnComment);
-
     }
 
     async handleSendPutComment(e, commentId, commentUserId, postId, messageIndex) {
@@ -645,7 +623,6 @@ class Chat extends React.Component {
         // const payload = await jwt.decode(token);
 
         const result = await appFetch('PUT', '/comment/' + commentUserId, body);
-        console.log(result);
 
         if (result.status !== 200) {
             if (result.status === 401) {
@@ -660,8 +637,6 @@ class Chat extends React.Component {
 
         const resultComments = await appFetch('GET', '/message/comments/' + postId);
 
-        console.log('resultat de resultComment', resultComments);
-        console.log(messageIndex);
         if (resultComments.status === 200) {
             this.refreshComments(messageIndex, resultComments.data);
         } else {
@@ -685,10 +660,8 @@ class Chat extends React.Component {
         let body = {
             commentId,
         }
-        console.log(body);
 
         const result = await appFetch('PUT', `/comment/disable/` + userId, body);
-        console.log(result);
 
         if (result.status !== 200) {
             if (result.status === 401) {
@@ -704,8 +677,6 @@ class Chat extends React.Component {
         // Fetcher les commentaires pour les rafraîchir
         const resultComments = await appFetch('GET', '/message/comments/' + postId);
 
-        console.log("resultComments", resultComments);
-
         if (resultComments.status === 200) {
             this.refreshComments(messageIndex, resultComments.data);
         } else {
@@ -718,7 +689,6 @@ class Chat extends React.Component {
         //     // comment: "",
         // });
 
-        console.log("OK, pas d'erreur");
         this.setState({ displayComment: true })
 
     }
@@ -774,16 +744,43 @@ class Chat extends React.Component {
             messageList: result.data,
             displaySearch: true,
         });
-        console.log("ici messageList", this.state.messageList);
     }
 
-    handleCancelMsg() {
+    async handleCancelMsg(e) {
+        e.preventDefault();
 
         this.setState({ displayMsg: false })
+
     }
 
-    handleCancelSearchMsg() {
-        // this.setState({ displaySearch: false })
+    async handleCancelSearchMsg() {
+
+        const result = await appFetch('GET', '/message');
+        // const resultImage = await appFetch('POST', '/user/')
+
+        if (result.status !== 200) {
+            if (result.status === 401) {
+                //en cas d'erreur 401 on renvois l'utilisateur vers l'accueil
+                this.props.history.replace("/Accueil");
+            } else {
+                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
+                this.props.history.replace(`/error?code=${result.status}`);
+            }
+            return;
+        }
+
+        const token = await JSON.parse(localStorage.getItem('access-token'));
+        const payload = await jwt.decode(token);
+
+        //si l'utilisateur est autorisé, on affiche le composant chat
+        this.setState({
+            display: true,
+            messageList: result.data,
+            user: payload.userId,
+            userRole: payload.role,
+        });
+
+        this.setState({ displaySearch: false })
     }
 
     render() {
@@ -802,7 +799,7 @@ class Chat extends React.Component {
                                 <div className="banner_search">
                                     <input value={this.state.searchMsg} onChange={this.handleChangeSearchMsg}></input>
                                     <button onClick={this.handlePostSearchMsg}>Rechercher</button>
-                                    {/* {this.state.displaySearch ? <button onClick={this.handleCancelSearchMsg}>Retour</button> : null} */}
+                                    {this.state.displaySearch ? <button onClick={this.handleCancelSearchMsg}>Retour</button> : null}
                                 </div>
                             </div>
                             <div className={this.state.displayMsg ? "container_post_message" : "container_message"}>

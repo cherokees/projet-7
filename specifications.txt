@@ -44,6 +44,8 @@ TODOLIST BUG
 
 -mettre le bouton "laisser un commentaire" en haut ou en bas de la liste de commentaire en fonction du bouton "afficher les commentaires" 
 -mettre un bouton de suppression d'images
+-faire la page de juridiction
+-finir le css sur la page chat, style de modification de commentaire/message à mettre à jour
 -liens trop long depasse de la div 
 
 -gérer les champs de textes saisies valide/non valide

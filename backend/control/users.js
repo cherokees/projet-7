@@ -77,7 +77,6 @@ export async function getUserByEmail(email, returnFields = null) {
 export async function getUserByName(lastName, firstName, returnFields = null) {
     try {
         returnFields = returnFields || defaultReturnFields;
-        console.log(lastName, firstName);
         const rows = await sqlQuery(`
         SELECT ${returnFields}
         FROM ${tableName}
@@ -127,7 +126,6 @@ export async function getCommentPostId(userId) {
         `)
 
         let idList = rows.map(message => message.msg_id);
-        console.log(idList);
 
         rows = await sqlQuery(`
         SELECT comment_post_id 
@@ -136,8 +134,6 @@ export async function getCommentPostId(userId) {
         GROUP BY comment_post_id
         `)
 
-        console.log("resultat de getCommentPostId", rows);
-
         // let resultArr = [];
 
         let idList2 = rows.map(message => message.comment_post_id)
@@ -145,8 +141,6 @@ export async function getCommentPostId(userId) {
         idList2 = idList2.filter(element => !idList.includes(element));
         // const idMerge = idList.concat(idList2);  //Méthode A : concatène les deux tableau
         const idMerge = [...idList, ...idList2];    //Méthode B : concatène les deux tableau (les "..." signifie les valeurs du tableau sans le tableau)
-
-        console.log(idMerge);
 
         rows = await sqlQuery(
             `SELECT m.*, u.users_first_name, u.users_last_name, u.users_image
@@ -161,8 +155,6 @@ export async function getCommentPostId(userId) {
         for (const message of rows) {
             message.comments = await getMessageComments(message.msg_id);
         }
-
-        console.log(rows);
 
         return rows;
     } catch (err) {

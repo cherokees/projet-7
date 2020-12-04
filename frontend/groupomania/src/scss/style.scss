@@ -741,24 +741,22 @@ button, input{
     position: absolute;
     border-radius: 15px;
     padding: 0;
-    width: 80%;
+    width: 50rem;
     display: flex;
+    flex-direction: column;
     background-color: #008362;
     box-shadow: 0px 0px 10px 0px #000000;
     
     .container_profil_img{
         border-radius: 15px;
         margin: auto;
-        margin-top: 5%;
-        margin-bottom: 5%;
-        margin-left: 1%;
-        margin-right: 1%;
-        width: 25rem;
-        height: 30rem;
-        background-color: rgb(255, 255, 255);
-
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        width: auto;
         img{
-            width: 100%;
+            max-width: 25rem;
+            border-radius: 15px;
+            box-shadow: $shadowgreenMediumOutside;
         }
         
     }
@@ -767,24 +765,14 @@ button, input{
         margin-top: 1.5rem;
         flex-grow: 1;
         margin: 1rem;
-        border-radius: 15px;
-        background: #008362;
-        box-shadow:  10px 10px 20px #006f53, 
-        -10px -10px 20px #009771;
+        @include neumorphismeContainer;
 
 
         .profil_p{
             text-align: left;
             margin-top: 1.5rem;
             margin-left: 2rem;
-            margin-right: 2rem;
             width: auto;
-            padding-top: 0.1rem;
-            padding-bottom: 0.1rem;
-            border-radius: 15px;
-            background: #008362;
-            box-shadow: inset 2px 2px 4px #006f53, 
-            inset -2px -2px 4px #009771;
     
             p{
                 font-size: 1.5rem;
@@ -799,10 +787,8 @@ button, input{
     left: 0;
     right: 0;
     bottom: 10%;
-    position: absolute;
     display: flex;
     justify-content: center;
-    margin: 1rem;
             
     button{
         margin: 2rem;
@@ -810,16 +796,11 @@ button, input{
         height: 4rem;
         border-radius: 30px;
         font-size: 1.5rem;
-        background-color: #00543f;
-        border: none;
-        color: white;
-        transition: all 200ms ease-in;
-        box-shadow: 0px 0px 10px 0px #000000;
+        @include neumorphismeButtonMedium
     }
     
     button:hover{
-        background-color: #00febe;
-        color: black;
+        @include neumorphismeHoverButtonMedium;
     }
 }
 
@@ -845,3 +826,38 @@ button, input{
 }
 
 //FIN PAGE ERROR
+
+//DEBUT PAGE JURISDICTION
+
+.container_jurisdiction{
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    height: 60rem;
+    scroll-behavior: smooth;
+
+    .container_style_jurisdiction{
+        overflow-y: scroll;
+        margin-left: 15%;
+        margin-right: 15%;
+        color: white;
+        background-color: $lightMediumGreen;
+        box-shadow: 0px 1px 29px -3px rgba(0,0,0,0.72);
+        a{
+            color: white;
+            // text-decoration: none;
+            font-weight: 700;
+
+        }
+                a:hover{
+                    color: $lightGreen;
+                }
+
+    }
+}
+
+//FIN PAGE JURISDICTION

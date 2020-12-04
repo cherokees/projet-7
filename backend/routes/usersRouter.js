@@ -22,10 +22,8 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/profil/:id", auth, authUserId, async (req, res, next) => {
-    console.log(req.params.id);
     try {
         const result = await getUserById(req.params.id);
-        console.log(result);
         res.status(200).json({ data: result });
     } catch (err) {
         console.error(err);
@@ -156,10 +154,8 @@ router.post('/search', async (req, res, next) => {
     try {
 
         const userId = await getUserByName(req.body.lastName, req.body.firstName);
-        console.log(userId);
 
         const messages = await getCommentPostId(userId.users_id);
-        console.log(messages);
 
         res.status(200).json({ data: messages, message: "profil trouvé" });
     } catch (err) {

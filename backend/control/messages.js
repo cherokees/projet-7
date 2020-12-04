@@ -9,10 +9,6 @@ const tableName = 'messages';
 //nom des colonnes dans la table
 const defaultReturnFields = ['msg_id', 'msg_user_id', 'msg_title', 'msg_content', 'msg_attachment', 'msg_date', 'msg_image'];
 
-
-
-// console.log(escapeText("c'est la fin"));
-
 export async function addMessage(userId, msgTitle, message, image) {
     try {
         const result = await sqlQuery(`INSERT INTO ${tableName} (

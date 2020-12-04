@@ -53,8 +53,6 @@ class Login extends React.Component {
             }
 
             const result = await appFetch('POST', '/user/login', body);
-            console.log(result);
-
 
             if (result.status === 200) {
                 // localStorage.setItem("user-id", JSON.stringify(result.userId));
