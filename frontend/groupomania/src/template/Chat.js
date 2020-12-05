@@ -252,13 +252,6 @@ class Chat extends React.Component {
                                                         <div className="element_post_content">
                                                             {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                                                             <div className="container_style_post_img">
-                                                                {/* <input
-                                                                    className="image_url"
-                                                                    name="image"
-                                                                    type="file"
-                                                                    accept=".jpg"
-                                                                    onChange={this.handleChangeImage}>
-                                                                </input> */}
                                                                 <label for="file" class="label-file">Choisir une image</label>
                                                                 <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
                                                                 <textarea value={this.state.messagePutContent} onChange={this.handleMessagePutContent}></textarea>

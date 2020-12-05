@@ -168,13 +168,11 @@ class Profil extends React.Component {
                                     :
                                     <span>pas d'image</span>}
                                 {this.state.changeName &&
-                                    <input
-                                        className="image_url"
-                                        name="image"
-                                        type="file"
-                                        accept=".jpg"
-                                        onChange={this.handleChangeImage}>
-                                    </input>}
+                                    <>
+                                        <label for="file" class="label-file">Choisir une image</label>
+                                        <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                                    </>
+                                }
                             </div>
 
                             <div className="container_profil_p">

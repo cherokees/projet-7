@@ -87,7 +87,7 @@ class Login extends React.Component {
                                 <input className="email_input_form" type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder="Entrer votre Email"></input>
 
                                 <label className="password_label_form"> Mot de passe</label>
-                                <div>
+                                <div className="container_style_input_form_login">
                                     <input className="password_input_form" type={this.state.showPassword ? "text" : "password"} value={this.state.password} onChange={this.handleChangePassword} placeholder="Entrer votre mot de passe"></input>
                                     <button className="password_button_form" onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}</button>
                                 </div>
