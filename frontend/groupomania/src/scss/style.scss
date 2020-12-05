@@ -16,6 +16,23 @@ button, input{
     justify-content: space-between;
     position: fixed;
     z-index: 2;
+    width: 100%;
+    height: 4rem;
+    display: flex;
+
+    @media screen and (max-width: 780px) {
+        height: 3.5rem;
+    }
+
+    .logo{
+        width: 4rem;
+        height: 4rem;
+
+        @media screen and (max-width: 780px) {
+            width: 3.5rem;
+            height: 3.5rem;
+        }
+    }
 
     .header_container_login{
         width: 12rem;
@@ -26,14 +43,27 @@ button, input{
             height: 100%;
             width: 5rem;
             margin-right: 1rem;
-            padding-top: 0.4rem;
+            padding-top: 0.5rem;
+
+            @media screen and (max-width: 780px) {
+                margin-right: 0.5rem;
+            }
 
             button{
-                font-size: 17px;
-                height: 80%;
+                padding-top: 0.5rem;
+                font-size: 28px;
+                height: 3rem;
                 width: 5rem;
                 border-radius: 15px;
                 @include neumorphismeButtonlight;
+
+                @media screen and (max-width: 780px) {
+                    margin-top: 0.3rem;
+                    height: 2rem;
+                    width: 4rem;
+                    padding-top: 0.4rem;
+                    font-size: 22px;
+                }
 
             }
 
@@ -42,11 +72,6 @@ button, input{
                 @include neumorphismeHoverButtonlight;
             }
 
-            p{
-                text-align: center;
-                font-size: 1.2rem;
-  
-            }
         }
     }
 }
@@ -261,13 +286,18 @@ button, input{
 //DEBUT FORM SIGNUP
 
 .form_signup{
-    top: 10%;
+    top: 6rem;
     left: 0;
     right: 0;
     margin: 0 auto;
     position: absolute;
     display: flex;
     justify-content: center;
+
+    @media screen and (max-width: 900px) {
+        margin-bottom: 10rem;
+        // height: 100vh;
+    }
 
     .container_form{
         display: flex;
@@ -276,6 +306,16 @@ button, input{
         background: $lightMediumGreen;
         box-shadow: $naturalHightShadow;
         padding: 1rem;
+      
+    @media screen and (max-width: 900px) {
+        align-items: center;
+        // margin-bottom: 16.4rem;
+    }
+
+    @media screen and (max-width: 780px) {
+        align-items: center;
+        // margin-bottom: 6rem;
+    }
 
         .container_form_style{
             @include neumorphismeContainer;
@@ -283,36 +323,40 @@ button, input{
             .container_label{
                 display: flex;
 
+                @media screen and (max-width: 780px) {
+                    flex-direction: column;
+                }
+
                 label{
                     color: white;
                     height: 2rem;
                     font-size: 1.4rem;
                     padding: 1.5rem;
                     text-align: left;       
-                    width: 20rem;         
-                }
-    
-                input{
-                    margin: 1rem;
-                    width: 15rem;
-                    border-radius: 15px;
-                    background: white;
-                    box-shadow: $shadowgreenMediumOutside;
-                    border: none;
-                }
-    
-    
-                input{
-                    margin: 1rem;
-                    width: 15rem;
-                    border-radius: 15px;
-                    background: white;
-                    box-shadow: $shadowgreenMediumOutside;
-                    border: none;
-                    justify-content: right;
-                    align-items: right;
-                    vertical-align: center;
+                    width: 20rem; 
+                    
+                    @media screen and (max-width: 780px) {
+                        height: 0rem;
+                    }
 
+                    @media screen and (max-width: 450px) {
+                        width: auto;
+                    }
+                }
+    
+                input{
+                    margin: 1rem;
+                    width: 15rem;
+                    border-radius: 15px;
+                    background: white;
+                    box-shadow: $shadowgreenMediumOutside;
+                    border: none;
+                    // height: 2rem;
+
+                    @media screen and (max-width: 780px) {
+                        height: 1.5rem;
+                        margin-bottom: 0.5rem;
+                    }
                 }
 
                 .label-file {
@@ -324,7 +368,17 @@ button, input{
                     width: auto;
                     margin-left: 2rem;
                     margin-top: 3rem;
+
+                    @media screen and (max-width: 780px) {
+                        width: 10rem;
+                        height: 1rem;
+                        font-size: 18px;
+                        padding-top: 0.8rem;
+                        margin: auto;
+                        margin-top: 1.2rem;
+                    }
                 }
+
                 .label-file:hover {
                     @include neumorphismeHoverButtonMedium;
                     color: white;
@@ -339,10 +393,21 @@ button, input{
                     margin-left: 7.3rem;
                     border-radius: 15px;
                     margin-top: 1.5rem;
+
+                    @media screen and (max-width: 780px) {
+                        max-width: 14rem;
+                        margin-top: 1rem !important;
+                        margin: auto;
+                    }
                 }
 
                 .password_input_form{
                     height: 3rem;
+
+                    @media screen and (max-width: 780px) {
+                        height: 1.5rem;
+                        margin-bottom: 0.8rem;
+                    }
                 }
         
                 .password_button_form{
@@ -350,6 +415,13 @@ button, input{
                     margin: 0.5rem;
                     font-size: 19px;
                     @include neumorphismeButtonMedium;
+
+                    @media screen and (max-width: 780px) {
+                        width: 7rem;
+                        margin-left: 1rem;
+                        height: 2rem;
+                        // margin: auto;
+                    }
         
                     &:hover{
                         @include neumorphismeHoverButtonMedium;
@@ -404,16 +476,29 @@ button, input{
         z-index: 1;
         position: fixed;
 
+        @media screen and (max-width: 780px) {
+            // flex-direction: column;
+            top: 3.5rem;
+            height: 3rem;
+        }
+
         .banner_btn_post{
             margin: auto;
 
             .button_chat{
+                padding-left: 1rem;
+                padding-right: 1rem;
                 height: 3rem;
                 border: none;
                 @include neumorphismeButtonMedium;
-                font-size: 1.3rem;
+                font-size: 22px;
                 font-weight: bold;
                 color: white;
+
+                @media screen and (max-width: 780px) {
+                    font-size: 14px;
+                    height: 2rem;
+                }
                 
             }
         
@@ -426,6 +511,8 @@ button, input{
             margin: auto;
 
             button{
+                padding-left: 1rem;
+                padding-right: 1rem;
                 height: 3rem;
                 border: none;
                 @include neumorphismeButtonMedium;
@@ -434,16 +521,31 @@ button, input{
                 color: white;
                 margin-left: 2rem;
 
+                @media screen and (max-width: 780px) {
+                    font-size: 14px;
+                    height: 2rem;
+                    margin-left: 0.5rem;
+                    
+                }
             }
+
             button:hover{
                 @include neumorphismeHoverButtonMedium;
             }
 
             input{
+                padding-left:1rem ;
                 height: 2.5rem;
                 border-radius: 15px;
                 border: none;
                 font-size: 16px;
+
+                @media screen and (max-width: 780px) {
+                    height: 1.5rem;
+                    font-size: 14px;
+                    width: 8rem;
+
+                }
             }
         }
     }
@@ -566,6 +668,10 @@ button, input{
         overflow-y: scroll;
         height: calc(100vh - 4rem - 5rem - 5rem);
 
+        @media screen and (max-width:780px) {
+            margin-top: 3rem;
+        }
+
         .message_post{
             background-color: white;
             display: flex;
@@ -578,6 +684,11 @@ button, input{
             height: auto;
             box-shadow: 0 0 5px 5px rgba(0,0,0,0.25);
 
+            @media screen and (max-width:780px) {
+                margin-left: 5%;
+                margin-right: 5%; 
+            }
+
             .message_post_user{
                 border-top-left-radius: 15px;
                 border-top-right-radius: 15px;
@@ -585,21 +696,37 @@ button, input{
                 background-color: rgb(0,190,142);
                 height: 4rem;
 
-                .img_profil{
-                    padding: 0.5rem;
-                    max-width: 3rem;
-                    max-height: 3rem;
-                    border-radius: 50%; ;
+                @media screen and (max-width:780px) {
+                    flex-direction: column;
+                    height: auto;
+                    
                 }
-                .message_post_name{
-                    margin-top: 1.2rem;
-                    margin-left: 0.5rem;
-                    font-weight: 700;
+
+                .container_style_post_user{
+                    display: flex;
+
+                    .img_profil{
+                        padding: 0.5rem;
+                        max-width: 3rem;
+                        max-height: 3rem;
+                        border-radius: 50%; ;
+                    }
+                    .message_post_name{
+                        margin-top: 1.2rem;
+                        margin-left: 0.5rem;
+                        font-weight: 700;
+                    }
                 }
+
                 .message_post_date{
                     margin-top: 1.2rem;
                     margin-left: auto;
                     margin-right: 1rem;
+
+                    @media screen and (max-width: 780px){
+                        text-align: left;
+                        margin-left: 1rem;
+                    }
                 }
 
             }
@@ -646,19 +773,27 @@ button, input{
 
                     img{
                         border-radius: 15px;
-                        max-width: 13rem;
+                        max-width: 30rem;
                         margin: 1rem;
+
+                        @media screen and (max-width:1000px){
+                            max-width: 20rem;
+                        }
+
+                        @media screen and (max-width:450px){
+                            max-width: 15rem;
+                        }
                     }
 
                     .container_style_post_img{
                         display: flex;
                         flex-direction: column;
-
+                        justify-content: right;
                         .label-file {
-                            text-align: center;
-                            width: 7.2rem;
+                            justify-content: right;
+                            width: 3rem;
                             font-size: 14px;
-                            margin: 1rem;
+                            margin: auto;
                             background-color:$mediumGreenShadowLowIntensity;
                             color: white;
                             border-radius: 15px;
@@ -669,7 +804,6 @@ button, input{
                             transition: 0.3s;
                             padding-top: 0.5rem;
                             cursor: pointer;
-                            
                         }
 
                         .label-file:hover{
@@ -843,25 +977,26 @@ button, input{
 
                     .container_flex_comment_img{
                         display: flex;
+                        flex-direction: column;
+                        justify-content: center;
 
                         .label-file {
-                        width: 10rem;
-                        text-align: center;
-                        margin-left: 2rem;
-                        margin-bottom: 1rem;
-                        margin-top: 1rem;
-                        background-color:$mediumGreenShadowLowIntensity;
-                        color: white;
-                        border-radius: 15px;
-                        border: none;
-                        padding-top: 0.5rem;
-                        padding-bottom: 0.5rem;
-                        padding-left: 1rem;
-                        padding-right: 1rem;
-                        transition: 0.3s;
-                        max-height: 1.5rem;
-                            
+                            margin: auto;
+                            margin-bottom: 1rem;
+                            width: 3rem;
+                            text-align: center;
+                            background-color:$mediumGreenShadowLowIntensity;
+                            color: rgb(255, 255, 255) ;
+                            border-radius: 15px;
+                            border: none;
+                            padding-top: 0.5rem;
+                            padding-bottom: 0.5rem;
+                            padding-left: 1rem;
+                            padding-right: 1rem;
+                            transition: 0.3s;
+                            max-height: 1.5rem;
                         }
+
                         .label-file:hover {
                             background-color:#00febe;
                             color: black;
@@ -875,10 +1010,16 @@ button, input{
                             max-width: 15rem;
                             max-height: 10rem;
                             border-radius: 15px;
-                            margin-top: 1rem;
-                            display: flex;
-                            margin-left: 4rem;
+                            margin: auto;
+                            align-items: center;
+                            text-align: center;
+                            justify-content: center;
                             margin-bottom: 1rem;
+
+                            @media screen and (max-width: 550px) {
+                                max-width: 10rem;
+                                
+                            }
                         }
                     }
 

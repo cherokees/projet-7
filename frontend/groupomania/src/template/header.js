@@ -1,21 +1,26 @@
 import React from 'react';
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import { appHistory } from '../App';
+import { RiLogoutCircleLine } from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
+import { MdForum } from "react-icons/md";
+import { RiLoginCircleLine } from "react-icons/ri";
+import { GrAddCircle } from "react-icons/gr";
 
 //const/objet qui contient le CSS permanent au composant
-const styles = {
-    container: {
-        width: '100%',
-        height: '4rem',
-        display: 'flex',
-    },
-    logo: {
-        backgroundImage: 'url("./images/logo-groupomania.png")',
-        backgroundSize: 'contain',
-        width: '4rem',
-        height: '4rem',
-    },
-}
+// const styles = {
+//     container: {
+//         width: '100%',
+//         height: '4rem',
+//         display: 'flex',
+//     },
+// logo: {
+//     backgroundImage: 'url("./images/logo-groupomania.png")',
+//     backgroundSize: 'contain',
+//     width: '4rem',
+//     height: '4rem',
+// },
+// }
 
 // Profile (priorité 1)
 // (Afficher le lien seulement si token)
@@ -61,12 +66,12 @@ class Header extends React.Component {
             <>
                 <Link to='/Login'>
                     <div className="login">
-                        <button>Login</button>
+                        <button><RiLoginCircleLine /></button>
                     </div>
                 </Link>
                 <Link to='/Signup'>
                     <div className="signup">
-                        <button>Signup</button>
+                        <button><GrAddCircle /></button>
                     </div>
                 </Link>
             </>
@@ -79,17 +84,17 @@ class Header extends React.Component {
             <>
                 <Link to='/'>
                     <div className="logout">
-                        <button onClick={this.handleLogoutClick}>Logout</button>
+                        <button onClick={this.handleLogoutClick}><RiLogoutCircleLine /></button>
                     </div>
                 </Link>
                 <Link to='/profil'>
                     <div className="profil">
-                        <button>profil</button>
+                        <button><CgProfile /></button>
                     </div>
                 </Link>
                 <Link to='/chat'>
                     <div className="forum">
-                        <button>Forum</button>
+                        <button><MdForum /></button>
                     </div>
                 </Link>
             </>
@@ -102,9 +107,9 @@ class Header extends React.Component {
 
         if (boolLogin === true) {
             return (
-                <div className='container_header' style={styles.container}>
+                <div className='container_header'>
                     <Link to='/'>
-                        <div className="logo" style={styles.logo}></div>
+                        <img src="./images/logo-groupomania.png" className="logo" />
                     </Link>
                     <div className='header_container_login'>
                         {this.renderHeaderChat()}
@@ -113,9 +118,9 @@ class Header extends React.Component {
             )
         } else {
             return (
-                <div className='container_header' style={styles.container}>
+                <div className='container_header'>
                     <Link to='/'>
-                        <div className="logo" style={styles.logo}></div>
+                        <img src="./images/logo-groupomania.png" className="logo" />
                     </Link>
                     <div className='header_container_login'>
                         {this.renderHeaderAccueil()}

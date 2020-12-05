@@ -4,12 +4,15 @@ import Layout from './layout';
 import jwt from 'jsonwebtoken';
 import { uploadFile } from '../utils/upload';
 import Linkify from 'react-linkify';
+import Scrollbars from 'react-scrollbars-custom';
+import { AutoSizer } from "react-virtualized";
 import { FaPen } from "react-icons/fa";
 import { BiMailSend } from "react-icons/bi";
 import { BsBackspace } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
-import Scrollbars from 'react-scrollbars-custom';
-import { AutoSizer } from "react-virtualized";
+import { BsSearch } from "react-icons/bs";
+import { GrImage } from "react-icons/gr";
+import { BiCommentAdd } from "react-icons/bi";
 
 
 
@@ -225,8 +228,10 @@ class Chat extends React.Component {
                                             <div className="message_post" key={index}>
 
                                                 <div className="message_post_user">
-                                                    <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.users_image} />
-                                                    <p className="message_post_name">{element.users_first_name} {element.users_last_name}</p>
+                                                    <div className="container_style_post_user">
+                                                        <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.users_image} />
+                                                        <p className="message_post_name">{element.users_first_name} {element.users_last_name}</p>
+                                                    </div>
                                                     <p className="message_post_date">{this.convertDate(element.msg_date)}</p>
                                                 </div>
                                                 <div className="message_post_content">
@@ -252,7 +257,7 @@ class Chat extends React.Component {
                                                         <div className="element_post_content">
                                                             {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                                                             <div className="container_style_post_img">
-                                                                <label for="file" class="label-file">Choisir une image</label>
+                                                                <label for="file" class="label-file"><GrImage /></label>
                                                                 <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
                                                                 <textarea value={this.state.messagePutContent} onChange={this.handleMessagePutContent}></textarea>
                                                             </div>
@@ -278,11 +283,11 @@ class Chat extends React.Component {
                                                                 value={index}
                                                                 // onClick attend une fonction, donc on lui donne une fonction fléchée pour pouvoir ajouter notre argument en second ensuite
                                                                 onClick={e => this.handlePostComment(e, element.msg_id)}
-                                                            > Poster votre commentaire </button>
+                                                            > <BiMailSend /> </button>
                                                         </>
                                                         :
                                                         <>
-                                                            <button onClick={e => this.handleFormComment(e, index)}>Laissez un commentaire</button>
+                                                            <button onClick={e => this.handleFormComment(e, index)}><BiCommentAdd /></button>
                                                             {this.state.messageList[index].comments.length > 0 &&
                                                                 <button onClick={e => this.handleBtnDisplayComment(e, index)}>
                                                                     {!this.state.displayCommentsList.includes(index) ?
@@ -503,7 +508,7 @@ class Chat extends React.Component {
             <div className="container_txt_area_comment">
                 <textarea value={this.state.comment} onChange={this.handleGetComment}></textarea>
                 <div className="container_flex_comment_img">
-                    <label for="file" class="label-file">Choisir une image</label>
+                    <label for="file" class="label-file"><GrImage /></label>
                     <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
                     {this.state.image && <img className="img_file" src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                 </div>
@@ -536,14 +541,7 @@ class Chat extends React.Component {
                             <div className="container_user_comment" key={index}>
                                 <div className="container_style_img_comment">
                                     {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
-                                    {/* <input
-                                    className="image_url"
-                                    name="image"
-                                    type="file"
-                                    accept=".jpg"
-                                    onChange={this.handleChangeImage}>
-                                </input> */}
-                                    <label for="file" class="label-file">Choisir une image</label>
+                                    <label for="file" class="label-file"><GrImage /></label>
                                     <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
                                 </div>
                                 <textarea value={this.state.editCommentContent} onChange={e => this.handleEditCommentContent(e)}></textarea>
@@ -816,14 +814,14 @@ class Chat extends React.Component {
                             <div className="banner_chat">
                                 <div className="banner_btn_post">
                                     {this.state.displayMsg ?
-                                        <button onClick={this.handleCancelMsg} className="button_chat">Retour au forum</button>
+                                        <button onClick={this.handleCancelMsg} className="button_chat"><BsBackspace /></button>
                                         :
-                                        <button onClick={this.handleDisplayMsg} className="button_chat">Poster un nouveaux message</button>}
+                                        <button onClick={this.handleDisplayMsg} className="button_chat"><BiMailSend /></button>}
                                 </div>
                                 <div className="banner_search">
                                     <input value={this.state.searchMsg} onChange={this.handleChangeSearchMsg}></input>
-                                    <button onClick={this.handlePostSearchMsg}>Rechercher</button>
-                                    {this.state.displaySearch ? <button onClick={this.handleCancelSearchMsg}>Retour</button> : null}
+                                    <button onClick={this.handlePostSearchMsg}><BsSearch /></button>
+                                    {this.state.displaySearch ? <button onClick={this.handleCancelSearchMsg}><BsBackspace /></button> : null}
                                 </div>
                             </div>
                             <div className={this.state.displayMsg ? "container_post_message" : "container_message"}>
