@@ -251,14 +251,18 @@ class Chat extends React.Component {
                                                     {this.state.messagePut === index ?
                                                         <div className="element_post_content">
                                                             {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
-                                                            <textarea value={this.state.messagePutContent} onChange={this.handleMessagePutContent}></textarea>
-                                                            <input
-                                                                className="image_url"
-                                                                name="image"
-                                                                type="file"
-                                                                accept=".jpg"
-                                                                onChange={this.handleChangeImage}>
-                                                            </input>
+                                                            <div className="container_style_post_img">
+                                                                {/* <input
+                                                                    className="image_url"
+                                                                    name="image"
+                                                                    type="file"
+                                                                    accept=".jpg"
+                                                                    onChange={this.handleChangeImage}>
+                                                                </input> */}
+                                                                <label for="file" class="label-file">Choisir une image</label>
+                                                                <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                                                                <textarea value={this.state.messagePutContent} onChange={this.handleMessagePutContent}></textarea>
+                                                            </div>
                                                         </div>
                                                         :
                                                         <div className="element_post_content">
@@ -537,20 +541,24 @@ class Chat extends React.Component {
                     if (this.state.changeBtnComment.includes(element.comment_id)) {
                         return (
                             <div className="container_user_comment" key={index}>
-                                {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
-                                <textarea value={this.state.editCommentContent} onChange={e => this.handleEditCommentContent(e)}></textarea>
-                                <input
+                                <div className="container_style_img_comment">
+                                    {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
+                                    {/* <input
                                     className="image_url"
                                     name="image"
                                     type="file"
                                     accept=".jpg"
                                     onChange={this.handleChangeImage}>
-                                </input>
+                                </input> */}
+                                    <label for="file" class="label-file">Choisir une image</label>
+                                    <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                                </div>
+                                <textarea value={this.state.editCommentContent} onChange={e => this.handleEditCommentContent(e)}></textarea>
                                 {this.state.changeBtnComment.includes(element.comment_id) ?
-                                    <>
+                                    <div className="container_btn_change_comment">
                                         <button className="btn_change_comment" onClick={e => this.handleSendPutComment(e, element.comment_id, element.comment_user_id, element.comment_post_id, messageIndex)}><BiMailSend /></button>
                                         <button className="btn_cancel_display_comment" onClick={e => this.handleChangePutDisplayComment(e, element.comment_id)}><BsBackspace /></button>
-                                    </>
+                                    </div>
                                     :
                                     <button className="btn_change_comment" onClick={e => this.handlePutComment(e, element.comment_id)}><FaPen /> </button>
                                 }

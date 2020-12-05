@@ -591,13 +591,50 @@ button, input{
                     p{
                         margin-bottom: 1rem;
                         margin-left: 1.5rem;
-                        // margin: 1rem;
                         text-align: left;
                     }
 
                     img{
                         max-width: 13rem;
                         margin: 1rem;
+                    }
+
+                    .container_style_post_img{
+                        display: flex;
+                        flex-direction: column;
+
+                        .label-file {
+                            text-align: center;
+                            width: 7.2rem;
+                            font-size: 14px;
+                            margin: 1rem;
+                            background-color:$mediumGreenShadowLowIntensity;
+                            color: white;
+                            border-radius: 15px;
+                            height: 2rem;
+                            border: none;
+                            padding-left: 1rem;
+                            padding-right: 1rem;
+                            transition: 0.3s;
+                            padding-top: 0.5rem;
+                            cursor: pointer;
+                            
+                        }
+
+                        .label-file:hover{
+
+                            background-color: #00febe;
+                            color: black !important;
+                        } 
+                        
+                        .input-file {
+                            display: none;
+                        }
+
+                        textarea{
+                            margin: 1rem;
+                            height: 4rem;
+                        }
                     }
                 }
             }
@@ -647,10 +684,79 @@ button, input{
                             margin-left: 0.5rem;
                         }
 
-                        img{
-                            max-width: 13rem;
-                            margin-left: 1rem;
+                        .container_style_img_comment{
+                            display: flex;
 
+                            img{
+                                border-radius: 15px;
+                                margin-top: 1rem;
+                                max-width: 13rem;
+                                margin-left: 1rem;
+    
+                            }
+    
+                            .label-file {
+                                width: 7.2rem;
+                                font-size: 14px;
+                                margin: 1rem;
+                                margin-top: 5rem;
+                                margin-left: 4rem;
+                                background-color:$mediumGreenShadowLowIntensity;
+                                color: white;
+                                border-radius: 15px;
+                                height: 2rem;
+                                border: none;
+                                text-align: center;
+                                padding-left: 1rem;
+                                padding-right: 1rem;
+                                transition: 0.3s;
+                                padding-top: 0.5rem;
+                                cursor: pointer;
+                                
+                            }
+    
+                            .label-file:hover{
+    
+                                background-color: #00febe;
+                                color: black !important;
+                            } 
+                            
+                            .input-file {
+                                display: none;
+                            }
+                    
+                            .img_file{
+                                max-width: 15rem;
+                                max-height: 10rem;
+                                border-radius: 15px;
+                                margin-top: 1rem;
+                                display: flex;
+                                margin-left: 4rem;
+                            }
+                        }
+
+
+                        textarea{
+                            margin: 1rem;
+                            height: 5rem;
+                        }
+
+                        .container_btn_change_comment{
+                            text-align: right;
+                        }
+
+                        .btn_change_comment{
+                            width: 3rem;
+                            font-size: 20px;
+                            padding-top: 0.3rem;
+                            padding-left: 0.85rem;
+                        }
+
+                        .btn_cancel_display_comment{
+                            width: 3rem;
+                            font-size: 20px;
+                            padding-top: 0.3rem;
+                            padding-left: 0.85rem;
                         }
 
                         .comment{
