@@ -6,6 +6,7 @@ import { uploadFile } from '../utils/upload';
 import Linkify from 'react-linkify';
 import Scrollbars from 'react-scrollbars-custom';
 import { AutoSizer } from "react-virtualized";
+import { convertDate } from "../utils/fctDate";
 import { FaPen } from "react-icons/fa";
 import { BiMailSend } from "react-icons/bi";
 import { BsBackspace } from "react-icons/bs";
@@ -187,24 +188,24 @@ class Chat extends React.Component {
         )
     }
 
-    convertDate(paraStr) {
-        paraStr = paraStr.split("T");
-        let date = paraStr[0];
-        let horaire = paraStr[1].split(".");
-        horaire = horaire[0];
+    // convertDate(paraStr) {
+    //     paraStr = paraStr.split("T");
+    //     let date = paraStr[0];
+    //     let horaire = paraStr[1].split(".");
+    //     horaire = horaire[0];
 
-        horaire = horaire.split(":");
-        let time = horaire[0];
-        let minute = horaire[1];
-        let second = horaire[2];
+    //     horaire = horaire.split(":");
+    //     let time = horaire[0];
+    //     let minute = horaire[1];
+    //     let second = horaire[2];
 
-        date = date.split("-");
-        let year = date[0];
-        let month = date[1];
-        let day = date[2];
+    //     date = date.split("-");
+    //     let year = date[0];
+    //     let month = date[1];
+    //     let day = date[2];
 
-        return ("posté le " + day + "-" + month + "-" + year + " " + "à " + time + "h " + minute + "mn ");
-    };
+    //     return ("posté le " + day + "-" + month + "-" + year + " " + "à " + time + "h " + minute + "mn ");
+    // };
 
 
     renderMessagesList() {
@@ -232,7 +233,7 @@ class Chat extends React.Component {
                                                         <img className="img_profil" src={'http://localhost:3000/public/uploads/' + element.users_image} />
                                                         <p className="message_post_name">{element.users_first_name} {element.users_last_name}</p>
                                                     </div>
-                                                    <p className="message_post_date">{this.convertDate(element.msg_date)}</p>
+                                                    <p className="message_post_date">{convertDate(element.msg_date)}</p>
                                                 </div>
                                                 <div className="message_post_content">
                                                     <div className="btn_post_content">

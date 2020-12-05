@@ -3,6 +3,9 @@ import Layout from './layout';
 import { appFetch } from '../utils/appFetch';
 import jwt from 'jsonwebtoken';
 import { uploadFile } from '../utils/upload';
+import { convertDate } from '../utils/fctDate';
+
+// let fctDate = convertDate();
 
 class Profil extends React.Component {
     constructor(props) {
@@ -177,16 +180,17 @@ class Profil extends React.Component {
 
                             <div className="container_profil_p">
                                 <div className="profil_p">
-                                    <p>Email : {this.state.email}</p>
+                                    <p><span className="profil_style_title">EMAIL</span> : {this.state.email}</p>
                                 </div>
                                 <div className="profil_p">
-                                    {this.state.changeName ? <input value={this.state.lastName} onChange={this.handleChangeLastName}></input> : <p>Nom de famille : {this.state.lastName}</p>}
+                                    {this.state.changeName ? <input value={this.state.lastName} onChange={this.handleChangeLastName}></input> : <p><span className="profil_style_title">NOM DE FAMILLE</span> : {this.state.lastName}</p>}
                                 </div>
                                 <div className="profil_p">
-                                    {this.state.changeName ? <input value={this.state.firstName} onChange={this.handleChangeFirstName}></input> : <p>Prénom : {this.state.firstName} </p>}
+                                    {this.state.changeName ? <input value={this.state.firstName} onChange={this.handleChangeFirstName}></input> : <p><span className="profil_style_title">PRENOM</span> : {this.state.firstName} </p>}
                                 </div>
                                 <div className="profil_p">
-                                    <p> Date de création du profil : {this.state.createdDate}</p>
+                                    {/* <p> <span className="profil_style_title">DATE DE CREATION</span> : {this.state.createdDate}</p> */}
+                                    <p>{convertDate(this.state.createdDate)}</p>
                                 </div>
                             </div>
                             <div className="container_profil_button">

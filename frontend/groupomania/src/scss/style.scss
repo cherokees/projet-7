@@ -1051,11 +1051,12 @@ button, input{
     position: absolute;
     border-radius: 15px;
     padding: 0;
-    width: 50rem;
+    max-width: 50rem;
     display: flex;
     flex-direction: column;
     background-color: #008362;
     box-shadow: 0px 0px 10px 0px #000000;
+    margin-bottom: 10rem;
     
     .container_profil_img{
         border-radius: 15px;
@@ -1069,6 +1070,14 @@ button, input{
             max-width: 25rem;
             border-radius: 15px;
             box-shadow: $shadowgreenMediumOutside;
+
+            @media screen and(max-width:750px) {
+                max-width: 20rem;
+            }
+
+            @media screen and(max-width:400px) {
+                max-width: 15rem;
+            }
         }
 
         .label-file {
@@ -1094,16 +1103,27 @@ button, input{
 
     .container_profil_p{
         margin-top: 1.5rem;
-        flex-grow: 1;
         margin: 1rem;
         @include neumorphismeContainer;
 
+        @media screen and (max-width: 750px) {
+            width: auto;
+        }
 
         .profil_p{
             text-align: left;
             margin-top: 1.5rem;
             margin-left: 2rem;
+            margin-right: 1rem;
             width: auto;
+
+            .profil_style_title{
+                font-weight: 700;
+            }
+
+            @media screen and (max-width: 500px) {
+                margin-left: 0.5rem;
+            }
     
             p{
                 font-size: 1.5rem;
