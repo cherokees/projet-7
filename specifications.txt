@@ -39,9 +39,6 @@ CHOSE A FAIRE
 
 TODOLIST BUG
 
--configurer multer sur la taille des fichiers acceptables
-    --> option fileSize et fieldSize pas prisent en compte
-
 -mettre le bouton "laisser un commentaire" en haut ou en bas de la liste de commentaire en fonction du bouton "afficher les commentaires" 
 -mettre un bouton de suppression d'images
 -finir le css sur la page chat, style de modification de commentaire/message à mettre à jour

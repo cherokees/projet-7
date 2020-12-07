@@ -5,6 +5,8 @@ import Layout from './layout';
 import axios from 'axios';
 import { uploadFile } from '../utils/upload';
 import { validateSubmit, VLD_IS_EMAIL, VLD_NOT_EMPTY_STRING } from '../utils/frontValidator';
+import { AiOutlineEye } from 'react-icons/ai'
+import { AiOutlineEyeInvisible } from 'react-icons/ai'
 
 class Signup extends React.Component {
 
@@ -143,6 +145,7 @@ class Signup extends React.Component {
             const validationReport = validateSubmit(body, {
                 email: [VLD_IS_EMAIL],
                 password: [VLD_NOT_EMPTY_STRING],
+                confirm_password: [VLD_NOT_EMPTY_STRING],
                 firstName: [VLD_NOT_EMPTY_STRING],
                 lastName: [VLD_NOT_EMPTY_STRING],
             })
@@ -190,74 +193,102 @@ class Signup extends React.Component {
                             <div className="container_form_style">
                                 <div className="container_label">
                                     <label>Prénom</label>
-                                    <input
-                                        type="text"
-                                        value={this.state.firstName}
-                                        onChange={this.handleChangeFirstName}
-                                        placeholder="Entrer votre prénom">
-                                    </input>
+                                    <div className="container_input_style">
+                                        <input
+                                            type="text"
+                                            value={this.state.firstName}
+                                            onChange={this.handleChangeFirstName}
+                                            placeholder="Entrer votre prénom">
+                                        </input>
+                                        <div className="txt_error_sign_up">
+                                            {this.state.validationReport.firstName && this.state.validationReport.firstName}
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className="container_label">
                                     <label>Nom</label>
-                                    <input
-                                        type="text"
-                                        value={this.state.lastName}
-                                        onChange={this.handleChangeLastName}
-                                        placeholder="Entrer votre nom">
-                                    </input>
+                                    <div className="container_input_style">
+                                        <input
+                                            type="text"
+                                            value={this.state.lastName}
+                                            onChange={this.handleChangeLastName}
+                                            placeholder="Entrer votre nom">
+                                        </input>
+                                        <div className="txt_error_sign_up">
+                                            {this.state.validationReport.lastName && this.state.validationReport.lastName}
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="container_label">
                                     <label className="email_label_form"> Email</label>
-                                    <input
-                                        className="email_input_form"
-                                        type="email"
-                                        value={this.state.email}
-                                        onChange={this.handleChangeEmail}
-                                        placeholder="Entrer votre Email">
-                                    </input>
-                                    <div style={{ fontSize: 12, color: "red" }}>
-                                        {/* {this.state.emailError} */}
-                                        {this.state.validationReport.email && this.state.validationReport.email}
+                                    <div className="container_input_style">
+                                        <input
+                                            className="email_input_form"
+                                            type="email"
+                                            value={this.state.email}
+                                            onChange={this.handleChangeEmail}
+                                            placeholder="Entrer votre Email">
+                                        </input>
+                                        <div className="txt_error_sign_up">
+                                            {this.state.validationReport.email && this.state.validationReport.email}
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div className="container_label">
                                     <label className="confirm_email_label_form"> Confirmer votre email</label>
-                                    <input
-                                        className="confirm_email_input_form"
-                                        type="email"
-                                        value={this.state.confirm_email}
-                                        onChange={this.handleChangeConfirmEmail}
-                                        placeholder="Confirmer votre Email">
-                                    </input>
+                                    <div className="container_input_style">
+                                        <input
+                                            className="confirm_email_input_form"
+                                            type="email"
+                                            value={this.state.confirm_email}
+                                            onChange={this.handleChangeConfirmEmail}
+                                            placeholder="Confirmer votre Email">
+                                        </input>
+                                        <div className="txt_error_sign_up">
+                                            {this.state.confirm_email !== this.state.email && this.state.validationReport.email ?
+                                                "Le champ saisie n'est pas égale à l'email" : null}
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className="container_label">
                                     <label className="password_label_form"> Mot de passe</label>
-                                    <input
-                                        className="password_input_form"
-                                        type={this.state.showPassword ? "text" : "password"}
-                                        value={this.state.password}
-                                        onChange={this.handleChangePassword}
-                                        placeholder="Entrer votre mot de passe">
-                                    </input>
+                                    <div className="container_input_style">
+                                        <input
+                                            className="password_input_form"
+                                            type={this.state.showPassword ? "text" : "password"}
+                                            value={this.state.password}
+                                            onChange={this.handleChangePassword}
+                                            placeholder="Entrer votre mot de passe">
+                                        </input>
+                                        <div className="txt_error_sign_up">
+                                            {this.state.validationReport.password && this.state.validationReport.password}
+                                        </div>
+                                    </div>
                                     <button className="password_button_form"
-                                        onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}
+                                        onClick={this.handleShowPassword}> {this.state.showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                                     </button>
                                 </div>
 
                                 <div className="container_label">
                                     <label className="confirm_password_label_form"> Confirmer votre de passe</label>
-                                    <input
-                                        className="password_input_form"
-                                        type={this.state.showConfirmPassword ? "text" : "password"}
-                                        value={this.state.confirm_password}
-                                        onChange={this.handleChangeConfirmPassword}
-                                        placeholder="Confirmer votre mot de passe">
-                                    </input>
+                                    <div className="container_input_style">
+                                        <input
+                                            className="password_input_form"
+                                            type={this.state.showConfirmPassword ? "text" : "password"}
+                                            value={this.state.confirm_password}
+                                            onChange={this.handleChangeConfirmPassword}
+                                            placeholder="Confirmer votre mot de passe">
+                                        </input>
+                                        <div className="txt_error_sign_up">
+                                            {this.state.confirm_password !== this.state.password && this.state.validationReport.confirm_password ?
+                                                "Le champ saisie n'est pas égale au mot de passe" : null}
+                                        </div>
+                                    </div>
                                     <button className="password_button_form"
-                                        onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? "cacher" : "montrer"}
+                                        onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                                     </button>
                                 </div>
 
