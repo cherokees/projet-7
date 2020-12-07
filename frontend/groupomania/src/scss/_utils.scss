@@ -1,0 +1,53 @@
+//VARIABLES COULEUR
+
+$lightGreen: rgb(0,190,142) ;
+$lightMediumGreen: #008362;
+$mediumGreenShadowLowIntensity: rgba(0,84,63, 0.7);
+$darkGreen: rgb(0,48,36);
+
+//VARIABLES OMBRES
+
+$naturalHightShadow:0 19px 19px 0 rgba(0, 0, 0, 0.3), 0 15px 6px 0 rgba(0, 0, 0, 0.22);
+$naturalShadow2:0px 2px 8px 0px #000000;
+$shadowgreenMediumOutside: 4px 4px 9px #006f53, -4px -4px 9px #009771;
+$shadowgreenMediumInset: inset 1px 1px 20px 0px #00543f;
+$textShadowMediumGreen:#00543f 5px 0 5px;
+
+//MIXIN COLOR
+
+@mixin neumorphismeButtonlight {
+    border-radius: 15px;
+    background: linear-gradient(145deg, #00cc99, #00ac81);
+    box-shadow:  4px 4px 7px #00a27a, 
+    -4px -4px 7px #00dca4;
+    border: none;
+}
+
+@mixin neumorphismeHoverButtonlight {
+    border-radius: 15px;
+    background: linear-gradient(145deg, #00ac81, #00cc99);
+    box-shadow:  4px 4px 7px #00a27a, 
+    -4px -4px 7px #00dca4;
+    border: none;
+}
+
+@mixin neumorphismeButtonMedium {
+    border-radius: 15px;
+    background: linear-gradient(145deg, #008c69, #007658);
+    box-shadow:  2px 2px 4px #006f53, -2px -2px 4px #009771;
+    border: none;
+}
+
+@mixin neumorphismeHoverButtonMedium {
+    border-radius: 15px;
+    background: linear-gradient(145deg, #007658, #008c69);
+    box-shadow:  2px 2px 4px #006f53, -2px -2px 4px #009771;
+    border: none;
+}
+
+@mixin neumorphismeContainer {
+    border-radius: 21px;
+    background: #008362;
+    box-shadow:  5px 5px 10px #006b50, 
+    -5px -5px 10px #009b74;
+}
