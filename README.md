@@ -31,6 +31,8 @@ Modifier le fichier database/mysql.js
     connectionLimit: "Temps impartis pour la durée de connection"
     port: "port d'ecoute de la base de donnée" (par défaut 3306 sur phpMyAdmin)
 
+Importer les tables dans votre base de données, qui se trouvent dans le fichier modelBDD/groupomania
+
 Pour ajouter un administrateur mettre 1 dans la colonne users_admin sur la ligne de l'utilisateur concerné
 
 
