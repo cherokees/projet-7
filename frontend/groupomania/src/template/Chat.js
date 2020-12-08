@@ -203,7 +203,6 @@ class Chat extends React.Component {
                             return (
                                 <Scrollbars style={{ width, height }}>
 
-                                    {/* <a id="section1" href="#section2" className="button_bas_page">Bas de page</a> */}
                                     {this.state.messageList.map((element, index) => {
                                         return (
                                             <div className="message_post" key={index}>
@@ -259,7 +258,7 @@ class Chat extends React.Component {
                                                             <button value={index} onClick={e => this.handleCancelComment(e, element.msg_id)}><BsBackspace /></button>
                                                             <button
                                                                 className={this.state.comment === "" ? "btn-disabled" : ""}
-                                                                //disabled = propriétée booleénne, on peut me mettre une condition qui retourne un boolean
+                                                                //disabled = propriétée booleénne, on peut mettre une condition qui retourne un boolean
                                                                 disabled={this.state.comment === ""}
                                                                 value={index}
                                                                 // onClick attend une fonction, donc on lui donne une fonction fléchée pour pouvoir ajouter notre argument en second ensuite
@@ -282,15 +281,38 @@ class Chat extends React.Component {
                                                     {this.state.replyIndex === index ?
                                                         <div value={index}>{this.renderFormComment()}</div>
                                                         :
-                                                        // (this.state.btnDisplayComment == true && this.state.replyIndexComment === index) ?
-                                                        // (this.state.btnDisplayComment === true) ?
                                                         this.state.displayCommentsList.includes(index) ?
-
-                                                            <div className="container_comments" value={index}>{this.renderComments(element.comments, index)}</div>
+                                                            <>
+                                                                <div className="container_comments" value={index}>{this.renderComments(element.comments, index)}</div>
+                                                                {this.state.replyIndex === index ?
+                                                                    <>
+                                                                        <button value={index} onClick={e => this.handleCancelComment(e, element.msg_id)}><BsBackspace /></button>
+                                                                        <button
+                                                                            className={this.state.comment === "" ? "btn-disabled" : ""}
+                                                                            disabled={this.state.comment === ""}
+                                                                            value={index}
+                                                                            onClick={e => this.handlePostComment(e, element.msg_id)}
+                                                                        > <BiMailSend /> </button>
+                                                                    </>
+                                                                    :
+                                                                    <>
+                                                                        <button onClick={e => this.handleFormComment(e, index)}><BiCommentAdd /></button>
+                                                                        {this.state.messageList[index].comments.length > 0 &&
+                                                                            <button onClick={e => this.handleBtnDisplayComment(e, index)}>
+                                                                                {!this.state.displayCommentsList.includes(index) ?
+                                                                                    <BsArrowsExpand />
+                                                                                    :
+                                                                                    <BsArrowsCollapse />}
+                                                                            </button>
+                                                                        }
+                                                                    </>
+                                                                }
+                                                            </>
                                                             :
                                                             <div className="container_comments" value={index}></div>
                                                     }
                                                 </div>
+
                                             </div>
                                         );
                                     })}
@@ -353,8 +375,6 @@ class Chat extends React.Component {
             messagePutContent: this.state.messagePutContent,
             image: this.state.image,
         }
-        // const token = await JSON.parse(localStorage.getItem('access-token'));
-        // const payload = await jwt.decode(token);
 
         //fetch
         const result = await appFetch('PUT', '/message/' + postUserId, body);
@@ -489,7 +509,7 @@ class Chat extends React.Component {
             <div className="container_txt_area_comment">
                 <textarea value={this.state.comment} onChange={this.handleGetComment}></textarea>
                 <div className="container_flex_comment_img">
-                    <label for="file" className="label_file"><BsCardImage /></label>
+                    <label htmlFor="file" className="label_file"><BsCardImage /></label>
                     <input id="file" className="input_file" type="file" onChange={this.handleChangeImage}></input>
                     {this.state.image && <img className="img_file" src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                 </div>
@@ -522,8 +542,8 @@ class Chat extends React.Component {
                             <div className="container_user_comment" key={index}>
                                 <div className="container_style_img_comment">
                                     {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
-                                    <label for="file" class="label_file"><BsCardImage /></label>
-                                    <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                                    <label htmlFor="file" className="label_file"><BsCardImage /></label>
+                                    <input id="file" className="input_file" type="file" onChange={this.handleChangeImage}></input>
                                 </div>
                                 <textarea value={this.state.editCommentContent} onChange={e => this.handleEditCommentContent(e)}></textarea>
                                 {this.state.changeBtnComment.includes(element.comment_id) ?
@@ -622,9 +642,6 @@ class Chat extends React.Component {
             image: this.state.image,
         }
 
-        // const token = await JSON.parse(localStorage.getItem('access-token'));
-        // const payload = await jwt.decode(token);
-
         const result = await appFetch('PUT', '/comment/' + commentUserId, body);
 
         if (result.status !== 200) {
@@ -686,12 +703,6 @@ class Chat extends React.Component {
             alert("Un problème est survenu. Veuillez rafraîchir la page.");
         }
 
-
-        // this.setState({
-        //     // deletePostIndex: null,
-        //     // comment: "",
-        // });
-
         this.setState({ displayComment: true })
 
     }
@@ -727,9 +738,6 @@ class Chat extends React.Component {
             firstName: split[0],
             lastName: split[1],
         }
-        // const token = await JSON.parse(localStorage.getItem('access-token'));
-        // const payload = await jwt.decode(token);
-        // body = JSON.stringify(body);
 
         const result = await appFetch('POST', '/user/search', body);
 
@@ -737,7 +745,6 @@ class Chat extends React.Component {
             if (result.status === 401) {
                 alert(`l'utilisateur que vous avez séléctionner n'éxiste pas`)
             } else {
-                //en cas d'erreur autre on renvois l'utilisateur vers une page erreur
                 alert(`une erreur est survenue (code: ${result.status})`)
             }
             return;
@@ -759,7 +766,6 @@ class Chat extends React.Component {
     async handleCancelSearchMsg() {
 
         const result = await appFetch('GET', '/message');
-        // const resultImage = await appFetch('POST', '/user/')
 
         if (result.status !== 200) {
             if (result.status === 401) {

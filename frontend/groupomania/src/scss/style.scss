@@ -6,7 +6,11 @@ button, input{
     outline: none;
 }
 
-//DEBUT GENERALE
+textarea, p{
+    word-break: break-word;
+}
+
+//FIN GENERALE
 
 //HEADER
 
@@ -734,6 +738,7 @@ button, input{
 
         @media screen and (max-width:780px) {
             margin-top: 3rem;
+            height: calc(100vh - 2rem - 4rem - 4rem);
         }
 
         .message_post{
@@ -853,6 +858,12 @@ button, input{
                         margin-bottom: 1rem;
                         margin-left: 1.5rem;
                         text-align: left;
+                        margin-right: 1.5rem;
+
+                        @media screen and (max-width:450px){
+                            margin-right: 0.5rem;
+                            margin-left: 0.5rem;
+                        }
                     }
 
                     img{

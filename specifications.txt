@@ -4,10 +4,7 @@ Fonctionnalités à prévoir :
 - la création d’un compte doit être simple et possible depuis un téléphone mobile ;                                     REUSSIT
 - le profil doit contenir très peu d’informations pour que sa complétion soit rapide ;                                  REUSSIT
 - la suppression du compte doit être possible ;                                                                         REUSSIT
-
 - l’accès à un forum où les salariés publient des contenus multimédias doit être présent ;                              REUSSIT
-    --> fonctionalitées implémenté, mais non présente dans toutes les routes.
-
 - l’accès à un forum où les salariés publient des textes doit être présent ;                                            REUSSIT
 - les utilisateurs doivent pouvoir facilement repérer les dernières participations des employés ;                       REUSSIT
 - le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre employés                   REUSSIT
@@ -39,12 +36,7 @@ CHOSE A FAIRE
 
 TODOLIST BUG
 
--mettre le bouton "laisser un commentaire" en haut ou en bas de la liste de commentaire en fonction du bouton "afficher les commentaires" 
--mettre un bouton de suppression d'images
--finir le css sur la page chat, style de modification de commentaire/message à mettre à jour
--liens trop long depasse de la div (word-break)
 -dans la page juridiction, rester connecté si connecté.
-
 -dans la recherche avancée, gérer les erreurs
 
 
