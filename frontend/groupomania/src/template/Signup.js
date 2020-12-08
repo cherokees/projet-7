@@ -1,5 +1,5 @@
 import React from 'react';
-import { appFetch, appFetchFormData } from '../utils/appFetch';
+import { appFetch } from '../utils/appFetch';
 import { Redirect } from 'react-router-dom';
 import Layout from './layout';
 import { uploadFile } from '../utils/upload';
@@ -23,9 +23,7 @@ class Signup extends React.Component {
             showPassword: false,
             showConfirmPassword: false,
             confirm_email: "",
-            confirm_email_error: "",
             confirm_password: "",
-            confirm_password_error: "",
             signupSuccess: false,
             emailError: "",
             image: "",
@@ -34,7 +32,7 @@ class Signup extends React.Component {
 
         // DEBUG
         // let rd = Math.floor(Math.random() * 30000);
-        let rd = "mathieu";
+        let rd = "maxime";
         this.state.email = rd + "@gmail.com";
         this.state.confirm_email = rd + "@gmail.com";
         this.state.password = rd;
@@ -145,13 +143,9 @@ class Signup extends React.Component {
                 image: this.state.image,
             }
 
-
-
             const validationReport = validateSubmit(body, {
                 email: [VLD_IS_EMAIL],
-                // confirm_email: [VLD_IS_EMAIL],
                 password: [VLD_NOT_EMPTY_STRING],
-                // confirm_password: [VLD_NOT_EMPTY_STRING],
                 firstName: [VLD_NOT_EMPTY_STRING],
                 lastName: [VLD_NOT_EMPTY_STRING],
             })
@@ -176,9 +170,8 @@ class Signup extends React.Component {
 
                 this.setState({
                     validationReport,
-                    confirm_password_error: this.state.confirm_password,
-                    confirm_email_error: this.state.confirm_email,
                 })
+
             }
 
             // ELSE (erreurs validation front)
@@ -248,22 +241,6 @@ class Signup extends React.Component {
                                     </div>
                                 </div>
 
-                                {/* <div className="container_label">
-                                    <label className="confirm_email_label_form"> Confirmer votre email</label>
-                                    <div className="container_input_style">
-                                        <input
-                                            className="confirm_email_input_form"
-                                            type="email"
-                                            value={this.state.confirm_email}
-                                            onChange={this.handleChangeConfirmEmail}
-                                            placeholder="Confirmer votre Email">
-                                        </input>
-                                        <div className="txt_error_sign_up">
-                                            {this.state.confirm_email_error === this.state.confirm_email && "l'email n'est la pas le même"}
-                                        </div>
-                                    </div>
-                                </div> */}
-
                                 <div className="container_label">
                                     <label className="password_label_form"> Mot de passe</label>
                                     <div className="container_input_style">
@@ -275,7 +252,6 @@ class Signup extends React.Component {
                                             placeholder="Entrer votre mot de passe">
                                         </input>
                                         <div className="txt_error_sign_up">
-                                            {/* {this.state.validationReport.password ? this.state.validationReport.password : "ce mot de passe n'est pas valide"} */}
                                             {this.state.validationReport.password && this.state.validationReport.password}
                                         </div>
                                     </div>
@@ -283,25 +259,6 @@ class Signup extends React.Component {
                                         onClick={this.handleShowPassword}> {this.state.showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                                     </button>
                                 </div>
-
-                                {/* <div className="container_label">
-                                    <label className="confirm_password_label_form"> Confirmer votre de passe</label>
-                                    <div className="container_input_style">
-                                        <input
-                                            className="password_input_form"
-                                            type={this.state.showConfirmPassword ? "text" : "password"}
-                                            value={this.state.confirm_password}
-                                            onChange={this.handleChangeConfirmPassword}
-                                            placeholder="Confirmer votre mot de passe">
-                                        </input>
-                                        <div className="txt_error_sign_up">
-                                            {this.state.confirm_password_error === this.state.confirm_password && "le mot de passe n'est pas le même"}
-                                        </div>
-                                    </div>
-                                    <button className="password_button_form"
-                                        onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                                    </button>
-                                </div> */}
 
                                 <div className="container_label">
                                     <label htmlFor="file" className="label_file"><BsCardImage /></label>
