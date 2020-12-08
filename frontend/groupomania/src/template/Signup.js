@@ -23,7 +23,9 @@ class Signup extends React.Component {
             showPassword: false,
             showConfirmPassword: false,
             confirm_email: "",
+            confirm_email_error: "",
             confirm_password: "",
+            confirm_password_error: "",
             signupSuccess: false,
             emailError: "",
             image: "",
@@ -32,7 +34,7 @@ class Signup extends React.Component {
 
         // DEBUG
         // let rd = Math.floor(Math.random() * 30000);
-        let rd = "babybel";
+        let rd = "mathieu";
         this.state.email = rd + "@gmail.com";
         this.state.confirm_email = rd + "@gmail.com";
         this.state.password = rd;
@@ -96,7 +98,7 @@ class Signup extends React.Component {
 
     handleChangeConfirmPassword(e) {
         e.preventDefault();
-
+        // console.log(this.state.confirm_password);
         this.setState({ confirm_password: e.target.value });
     }
 
@@ -144,17 +146,21 @@ class Signup extends React.Component {
             }
 
 
+
             const validationReport = validateSubmit(body, {
                 email: [VLD_IS_EMAIL],
+                // confirm_email: [VLD_IS_EMAIL],
                 password: [VLD_NOT_EMPTY_STRING],
-                confirm_password: [VLD_NOT_EMPTY_STRING],
+                // confirm_password: [VLD_NOT_EMPTY_STRING],
                 firstName: [VLD_NOT_EMPTY_STRING],
                 lastName: [VLD_NOT_EMPTY_STRING],
             })
 
+            // if (Object.keys(validationReport).length === 0 && this.state.confirm_password === "" && this.state.confirm_email === "") {
             if (Object.keys(validationReport).length === 0) {
 
                 // DANS IF (rapport vide)
+
                 const result = await appFetch('POST', '/user/signup', body);
 
                 if (result.status === 200) {
@@ -168,7 +174,11 @@ class Signup extends React.Component {
             } else {
                 console.log("validationReport", validationReport);
 
-                this.setState({ validationReport })
+                this.setState({
+                    validationReport,
+                    confirm_password_error: this.state.confirm_password,
+                    confirm_email_error: this.state.confirm_email,
+                })
             }
 
             // ELSE (erreurs validation front)
@@ -238,7 +248,7 @@ class Signup extends React.Component {
                                     </div>
                                 </div>
 
-                                <div className="container_label">
+                                {/* <div className="container_label">
                                     <label className="confirm_email_label_form"> Confirmer votre email</label>
                                     <div className="container_input_style">
                                         <input
@@ -249,11 +259,10 @@ class Signup extends React.Component {
                                             placeholder="Confirmer votre Email">
                                         </input>
                                         <div className="txt_error_sign_up">
-                                            {this.state.confirm_email !== this.state.email && this.state.validationReport.email ?
-                                                "Le champ saisie n'est pas égale à l'email" : null}
+                                            {this.state.confirm_email_error === this.state.confirm_email && "l'email n'est la pas le même"}
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="container_label">
                                     <label className="password_label_form"> Mot de passe</label>
@@ -266,6 +275,7 @@ class Signup extends React.Component {
                                             placeholder="Entrer votre mot de passe">
                                         </input>
                                         <div className="txt_error_sign_up">
+                                            {/* {this.state.validationReport.password ? this.state.validationReport.password : "ce mot de passe n'est pas valide"} */}
                                             {this.state.validationReport.password && this.state.validationReport.password}
                                         </div>
                                     </div>
@@ -274,7 +284,7 @@ class Signup extends React.Component {
                                     </button>
                                 </div>
 
-                                <div className="container_label">
+                                {/* <div className="container_label">
                                     <label className="confirm_password_label_form"> Confirmer votre de passe</label>
                                     <div className="container_input_style">
                                         <input
@@ -285,14 +295,13 @@ class Signup extends React.Component {
                                             placeholder="Confirmer votre mot de passe">
                                         </input>
                                         <div className="txt_error_sign_up">
-                                            {this.state.confirm_password !== this.state.password && this.state.validationReport.confirm_password ?
-                                                "Le champ saisie n'est pas égale au mot de passe" : null}
+                                            {this.state.confirm_password_error === this.state.confirm_password && "le mot de passe n'est pas le même"}
                                         </div>
                                     </div>
                                     <button className="password_button_form"
                                         onClick={this.handleShowConfirmPassword}> {this.state.showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                                     </button>
-                                </div>
+                                </div> */}
 
                                 <div className="container_label">
                                     <label htmlFor="file" className="label_file"><BsCardImage /></label>
@@ -303,7 +312,7 @@ class Signup extends React.Component {
                             </div>
                         </div>
                     </form>
-                </Layout>
+                </Layout >
             )
         }
     }
