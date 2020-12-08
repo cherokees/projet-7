@@ -38,6 +38,7 @@ button, input{
         width: 12rem;
         display: flex;
         padding-right: 7rem; 
+        text-align: right;
 
         .login, .signup, .logout, .profil, .forum{
             height: 100%;
@@ -47,6 +48,10 @@ button, input{
 
             @media screen and (max-width: 780px) {
                 margin-right: 0.5rem;
+            }
+
+            @media screen and (max-width: 300px) {
+                width: 4rem;
             }
 
             button{
@@ -63,6 +68,9 @@ button, input{
                     width: 4rem;
                     padding-top: 0.4rem;
                     font-size: 22px;
+                }
+                @media screen and (max-width: 300px) {
+                    width: 3rem;
                 }
 
             }
@@ -169,7 +177,6 @@ button, input{
     .container_form{
         border-radius: 5%;
         width: 33rem;
-        height: 30.3rem;
         text-align: left;
         align-items: left;
         border-radius: 15px;
@@ -180,6 +187,7 @@ button, input{
             width: 100%;
             border-radius: 0;
             height: 35rem;
+            margin-bottom: 4rem;
         }
 
         .container_form_style{
@@ -202,20 +210,21 @@ button, input{
             label{
                 color: white;
                 font-size: 2rem;
-                border-radius: 15px;
                 background: $lightMediumGreen;
                 width: auto;
                 padding-left: 0rem;
-            }
-
-            .email_label_form{
                 margin-top: 2rem;
+
+                @media screen and (max-width: 540px){
+                    margin-top: 0rem;
+                }
             }
     
             .email_input_form{
+                @include paddingInput;
                 margin-bottom: 3rem;
                 margin-top: 1rem;
-                width: 15rem;
+                width: 13rem;
                 height: 2rem;
                 border: none;
                 border-radius: 15px;
@@ -227,8 +236,9 @@ button, input{
                 display: flex;
 
                 input{
+                    @include paddingInput;
                     margin-top: 1rem;
-                    width: 15rem;
+                    width: 13rem;
                     height: 2rem;
                     border: none;
                     border-radius: 15px;
@@ -239,10 +249,9 @@ button, input{
     
                 .password_button_form{
                     color: white;
-                    padding: 1rem;
-                    font-size: 19px;
                     margin-left: 3rem;
                     border-radius: 15px;
+                    @include buttonSize;
                     @include neumorphismeButtonMedium;
     
                     &:hover{
@@ -252,8 +261,7 @@ button, input{
 
                     @media screen and (max-width: 540px){
                         margin-top: 2rem;
-                        width: auto;
-                        margin-left: 0;
+                        margin-left: 6.2rem;
                     }
                 }
 
@@ -268,8 +276,7 @@ button, input{
                 font-size: 19px;
                 margin: auto;
                 margin-top: 3rem;
-                height: 5rem;
-                width: 8rem;
+                @include buttonSize;
                 border-radius: 15px;
                 @include neumorphismeButtonMedium;
 
@@ -340,6 +347,7 @@ button, input{
                     
                     @media screen and (max-width: 780px) {
                         height: 0rem;
+                        padding: 1rem;
                     }
 
                     @media screen and (max-width: 450px) {
@@ -350,6 +358,10 @@ button, input{
                 .container_input_style{
                     display: flex;
                     flex-direction: column;
+
+                    @media screen and (max-width: 300px) {
+                        margin-bottom: -0.7rem;
+                    }
 
                     input{
                         margin-top: 1.5rem;
@@ -365,17 +377,20 @@ button, input{
                             // margin-bottom: 0.5rem;
                             margin-left: 1rem;
                         }
+                        @media screen and (max-width: 300px) {
+                            width: 13rem;
+                        }
                     }
 
                     .txt_error_sign_up{
                         // height: 1.5rem;
-                        max-width: 10rem;
+                        max-width: auto;
                         padding-left: 1rem;
                         padding-right: 1rem;
                         margin: 1rem;
-                        background-color: white;
+                        background-color: rgb(255, 0, 0);
                         border-radius: 15px;
-                        color: red;
+                        color: rgb(255, 255, 255);
                         font-weight: 700;
                     }
                     
@@ -387,32 +402,34 @@ button, input{
                     }
                 }
 
-                .label-file {
+                .label_file {
                     border-radius: 15px;
                     @include neumorphismeButtonMedium;
                     cursor: pointer;
                     color: white;
-                    font-weight: bold;
-                    width: auto;
+                    font-size: 28px;
                     margin-left: 2rem;
-                    margin-top: 3rem;
+                    width: 2rem;
 
                     @media screen and (max-width: 780px) {
-                        width: 10rem;
+                        width: 3;
                         height: 1rem;
-                        font-size: 18px;
-                        padding-top: 0.8rem;
+                        font-size: 28px;
+                        padding: 0.8rem;
+                        padding-bottom: 1.5rem;
                         margin: auto;
-                        margin-top: 1.2rem;
+                    }
+                    @media screen and (max-width: 300px) {
+                        margin-top: 1rem;
                     }
                 }
 
-                .label-file:hover {
+                .label_file:hover {
                     @include neumorphismeHoverButtonMedium;
                     color: white;
                 }
                 
-                .input-file {
+                .input_file {
                     display: none;
                 }
         
@@ -434,23 +451,19 @@ button, input{
 
                     @media screen and (max-width: 780px) {
                         height: 1.5rem;
-                        margin-bottom: 0.8rem;
+                        // margin-bottom: 0.8rem;
                     }
                 }
         
                 .password_button_form{
                     margin: 1rem;
-                    padding-top: 0.5rem;
-                    font-size: 28px;
                     color: white;
-                    // margin: 0.5rem;
-                    height: 3rem;
-                    width: 3rem;
                     @include neumorphismeButtonMedium;
+                    @include buttonSize;
 
                     @media screen and (max-width: 780px) {
+                        margin-top: 0;
                         margin-left: 1rem;
-                        margin-top: -1rem;
                     }
         
                     &:hover{
@@ -460,14 +473,18 @@ button, input{
             }
     
             .button_form_submit{
+                font-size: 38px;
                 color: white;
                 margin: auto;
                 margin-top: 2rem;
                 margin-bottom: 1rem;
-                height: 4rem;
-                font-size: 24px;
-                padding: 1rem;
+                width: 5rem;
+                height: 5rem;
                 @include neumorphismeButtonMedium;
+
+                @media screen and (max-width: 750px) {
+                    @include buttonSize;
+                }
                 
                 &:hover{
                     @include neumorphismeHoverButtonMedium;
@@ -527,8 +544,9 @@ button, input{
                 color: white;
 
                 @media screen and (max-width: 780px) {
-                    font-size: 14px;
+                    font-size: 18px;
                     height: 2rem;
+                    padding-top: 0.4rem;
                 }
                 
             }
@@ -597,6 +615,11 @@ button, input{
             width: 40rem;
             margin: auto;
             margin-top: 5rem;
+            margin-bottom: 7rem;
+
+            @media screen and (max-width:700px) {
+                width: auto;
+            }
 
             :nth-child(1){
                 font-size: 1.4rem;
@@ -604,14 +627,20 @@ button, input{
             }
 
             .title_message{
-                margin-bottom: 1rem;
                 padding-top: 1rem;
+                margin: auto;
+                display: flex;
+                flex-direction: column;
 
                 label{
-                    margin-right: 1rem;
+                    margin: auto;
                 }
 
                 input{
+                    margin: auto;
+                    width: 15rem;
+                    margin-top: 1rem;
+                    margin-bottom: 2rem;
                     height: 2rem;
                     border-radius: 15px;
                     border: none;
@@ -636,25 +665,25 @@ button, input{
 
             .message_style{
                 display: flex;
+                margin: auto;
 
-                .label-file {
+                .label_file {
                     border-radius: 15px;
                     @include neumorphismeButtonMedium;
                     cursor: pointer;
                     color: white;
+                    width: 2rem;
+                    height: 2rem;
                     font-weight: bold;
-                    width: 15rem;
                     margin-top: 1rem;
                     padding: 1rem;
-                    max-height: 2rem;
-                    margin-left: 3rem;
                 }
-                .label-file:hover {
+                .label_file:hover {
                     @include neumorphismeHoverButtonMedium;
                     color: white;
                 }
                 
-                .input-file {
+                .input_file {
                     display: none;
                 }
         
@@ -665,6 +694,11 @@ button, input{
                     margin-top: 1rem;
                     display: flex;
                     margin-left: 4rem;
+
+                    @media screen and (max-width:400px) {
+                        width: 10rem;
+                        margin-left: 1rem;
+                    }
                 }
             }
 
@@ -672,12 +706,12 @@ button, input{
             button{
                 margin-top: 3rem;
                 margin-bottom: 2rem;
-                width: 10rem;
-                height: 4rem;
                 border-radius: 30px;
-                font-size: 1.5rem;
                 border: none;
                 color: white;
+                padding-top:0.5rem ;
+                height: 4rem;
+                width: 4rem;
                 @include neumorphismeButtonMedium;
             }
     
@@ -765,8 +799,12 @@ button, input{
                 display: flex;
                 flex-direction: column;
 
-                .btn_post_content{
+                .title_post_content{
                     display: flex;
+
+                    @media screen and (max-width: 750px) {
+                        flex-direction: column;
+                    }
 
                     h2{
                         flex-grow: 1;
@@ -774,25 +812,40 @@ button, input{
                         margin-left: 1rem;
                     }
 
-                    button{
-                        font-size: 22px;
-                        border-radius: 15px;
-                        margin-top: 1rem;
-                        margin-right: 1rem;
-                        height: 2rem;
-                        background-color:$mediumGreenShadowLowIntensity;
-                        border: none;
-                        transition: 0.3s;
-                        color: white;
-                        padding-top: 0.3rem;
-                        padding-left: 1rem;
-                        padding-right: 1rem;
+                    .container_user_button{
 
-                        &:hover{
-                            background-color:#00febe;
-                            color: black;
+                        @media screen and (max-width: 750px) {
+                            text-align: left;
+                            margin-left: 1rem;
+                            margin-left: 1rem;
+                        }
+
+                        button{
+                            border-radius: 15px;
+                            margin-top: 1rem;
+                            margin-right: 1rem;
+                            font-size: 18px;
+                            height: 2rem;
+                            background-color:$mediumGreenShadowLowIntensity;
+                            border: none;
+                            transition: 0.3s;
+                            color: white;
+                            padding-top: 0.3rem;
+                            padding-left: 1rem;
+                            padding-right: 1rem;
+
+                            @media screen and (max-width: 350px) {
+                                text-align: left;
+                                font-size: 14px;
+                            }
+    
+                            &:hover{
+                                background-color:#00febe;
+                                color: black;
+                            }
                         }
                     }
+
                 }
                 .element_post_content{
 
@@ -814,13 +867,16 @@ button, input{
                         @media screen and (max-width:450px){
                             max-width: 15rem;
                         }
+                        @media screen and (max-width:350px){
+                            max-width: 11rem;
+                        }
                     }
 
                     .container_style_post_img{
                         display: flex;
                         flex-direction: column;
                         justify-content: right;
-                        .label-file {
+                        .label_file {
                             font-size: 22px;
                             justify-content: right;
                             width: 3rem;
@@ -838,13 +894,13 @@ button, input{
                             cursor: pointer;
                         }
 
-                        .label-file:hover{
+                        .label_file:hover{
 
                             background-color: #00febe;
                             color: black !important;
                         } 
                         
-                        .input-file {
+                        .input_file {
                             display: none;
                         }
 
@@ -907,6 +963,10 @@ button, input{
                             max-width: 13rem;
                             margin-left: 1rem;
 
+                            @media screen and (max-width:350px) {
+                                width: 11rem;
+                            }
+
                         }
                         .container_style_img_comment{
                             display: flex;
@@ -919,7 +979,7 @@ button, input{
                                 margin: auto;
                             }
     
-                            .label-file {
+                            .label_file {
                                 font-size: 24px;
                                 margin: auto;
                                 margin-top: 1rem;
@@ -937,13 +997,13 @@ button, input{
                                 
                             }
     
-                            .label-file:hover{
+                            .label_file:hover{
     
                                 background-color: #00febe;
                                 color: black !important;
                             } 
                             
-                            .input-file {
+                            .input_file {
                                 display: none;
                             }
                     
@@ -1017,7 +1077,7 @@ button, input{
                         flex-direction: column;
                         justify-content: center;
 
-                        .label-file {
+                        .label_file {
                             font-size: 24px;
                             margin: auto;
                             margin-bottom: 1rem;
@@ -1035,12 +1095,12 @@ button, input{
                             max-height: 1.5rem;
                         }
 
-                        .label-file:hover {
+                        .label_file:hover {
                             background-color:#00febe;
                             color: black;
                         }
                         
-                        .input-file {
+                        .input_file {
                             display: none;
                         }
                 
@@ -1100,14 +1160,16 @@ button, input{
         border-radius: 15px;
         margin: auto;
         margin-top: 2rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         width: auto;
         display: flex;
+        flex-direction: column;
 
         img{
             max-width: 25rem;
             border-radius: 15px;
             box-shadow: $shadowgreenMediumOutside;
+            margin-bottom: 1rem;
 
             @media screen and(max-width:750px) {
                 max-width: 20rem;
@@ -1118,22 +1180,21 @@ button, input{
             }
         }
 
-        .label-file {
+        .label_file {
             font-size: 20px;
             color: white;
             @include neumorphismeButtonMedium;
             padding: 1rem;
             margin-left: 1rem;
             height: 2rem;
-            margin-top: 5rem;
-            margin-left: 4rem;
+            margin: auto;
                 
             }
-            .label-file:hover {
+            .label_file:hover {
                 @include neumorphismeHoverButtonMedium;
             }
             
-            .input-file {
+            .input_file {
                 display: none;
             }
         
@@ -1164,7 +1225,7 @@ button, input{
             }
     
             p{
-                font-size: 1.5rem;
+                font-size: 20px;
                 color: rgb(255, 255, 255);
                 margin-left: 1rem;
             }
@@ -1192,12 +1253,19 @@ button, input{
     button{
         color: white;
         margin: 2rem;
-        width: 10rem;
+        width: 4rem;
         height: 4rem;
         border-radius: 30px;
-        font-size: 1.5rem;
+        font-size: 26px;
         @include neumorphismeButtonMedium
+
+        @media screen and (max-width:350px) {
+            font-size: 22px;
+            width: 3rem;
+            height: 3rem;
+        }
     }
+
     
     button:hover{
         @include neumorphismeHoverButtonMedium;

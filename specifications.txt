@@ -45,10 +45,8 @@ TODOLIST BUG
 -liens trop long depasse de la div (word-break)
 -dans la page juridiction, rester connecté si connecté.
 
--gérer les champs de textes saisies valide/non valide
 -dans la recherche avancée, gérer les erreurs
 
--Demander a JF pour la limit mo de multer 
 
  ! verification global ! 
 

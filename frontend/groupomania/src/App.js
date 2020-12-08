@@ -12,20 +12,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 //Notre objet récupère les méthodes de l'objet "history"
 import { createBrowserHistory } from "history";
-import jurisdiction from './template/jurisdiction';
-
-// const style_accueil = {
-//   container: {
-//     backgroundImage: 'url("./images/city-ravi-patel.jpg")',
-//     opacity: '0.6',
-//     height: '60rem',
-//     width: '100%',
-//     backgroundPosition: 'center',
-//     backgroundRepeat: 'no-repeat',
-//     backgroundSize: 'cover',
-//     backgroundAttachment: 'fixed',
-//   }
-// }
 
 //On redéclare ensuite les méthodes
 export const appHistory = createBrowserHistory();

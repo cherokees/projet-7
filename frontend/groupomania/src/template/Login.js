@@ -2,7 +2,9 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import { appFetch } from '../utils/appFetch';
 import Layout from './layout';
-
+import { AiOutlineEye } from 'react-icons/ai'
+import { AiOutlineEyeInvisible } from 'react-icons/ai'
+import { AiOutlineLogin } from 'react-icons/ai'
 
 class Login extends React.Component {
 
@@ -84,15 +86,18 @@ class Login extends React.Component {
                         <div className="container_form">
                             <div className="container_form_style">
                                 <label className="email_label_form"> Email</label>
-                                <input className="email_input_form" type="email" value={this.state.email} onChange={this.handleChangeEmail} placeholder="Entrer votre Email"></input>
-
+                                <input className="email_input_form"
+                                    type="email"
+                                    value={this.state.email}
+                                    onChange={this.handleChangeEmail}
+                                    placeholder="Entrer votre Email">
+                                </input>
                                 <label className="password_label_form"> Mot de passe</label>
                                 <div className="container_style_input_form_login">
                                     <input className="password_input_form" type={this.state.showPassword ? "text" : "password"} value={this.state.password} onChange={this.handleChangePassword} placeholder="Entrer votre mot de passe"></input>
-                                    <button className="password_button_form" onClick={this.handleShowPassword}> {this.state.showPassword ? "cacher" : "montrer"}</button>
+                                    <button className="password_button_form" onClick={this.handleShowPassword}> {this.state.showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}</button>
                                 </div>
-
-                                <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
+                                <button className="button_form_submit" onClick={this.handleSubmit}><AiOutlineLogin /></button>
                             </div>
                         </div>
                     </form>

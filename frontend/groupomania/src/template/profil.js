@@ -4,6 +4,11 @@ import { appFetch } from '../utils/appFetch';
 import jwt from 'jsonwebtoken';
 import { uploadFile } from '../utils/upload';
 import { convertDate } from '../utils/fctDate';
+import { FaPen } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { BiSend } from "react-icons/bi";
+import { BsBackspace } from "react-icons/bs";
+import { BsCardImage } from "react-icons/bs";
 
 // let fctDate = convertDate();
 
@@ -172,8 +177,8 @@ class Profil extends React.Component {
                                     <span>pas d'image</span>}
                                 {this.state.changeName &&
                                     <>
-                                        <label for="file" class="label-file">Choisir une image</label>
-                                        <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                                        <label for="file" class="label_file"><BsCardImage /></label>
+                                        <input id="file" class="input_file" type="file" onChange={this.handleChangeImage}></input>
                                     </>
                                 }
                             </div>
@@ -194,8 +199,8 @@ class Profil extends React.Component {
                                 </div>
                             </div>
                             <div className="container_profil_button">
-                                {this.state.changeName ? <button onClick={this.handleCancel}>Annuler</button> : <button onClick={this.handleDeleteProfile}>Supprimer</button>}
-                                {this.state.changeName ? <button onClick={this.handleSubmit}>Envoyer</button> : <button onClick={this.handleName}>Changer</button>}
+                                {this.state.changeName ? <button onClick={this.handleCancel}><BsBackspace /></button> : <button onClick={this.handleDeleteProfile}><MdDelete /></button>}
+                                {this.state.changeName ? <button onClick={this.handleSubmit}><BiSend /></button> : <button onClick={this.handleName}><FaPen /></button>}
                             </div>
                         </div>
                     </Layout>

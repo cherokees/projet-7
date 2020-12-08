@@ -17,8 +17,6 @@ import { BiCommentAdd } from "react-icons/bi";
 import { BsArrowsExpand } from "react-icons/bs";
 import { BsArrowsCollapse } from "react-icons/bs";
 
-
-
 //Composant de la page du forum
 
 class Chat extends React.Component {
@@ -180,35 +178,15 @@ class Chat extends React.Component {
                     <label>Votre message</label>
                     <textarea value={this.state.formMsgContent} onChange={this.handleFormMsgContent}></textarea>
                     <div className="message_style">
-                        <label for="file" class="label-file">Choisir une image</label>
-                        <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                        <label for="file" className="label_file"><BsCardImage /></label>
+                        <input id="file" className="input_file" type="file" onChange={this.handleChangeImage}></input>
                         {this.state.image && <img className="img_file" src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                     </div>
                 </div>
-                <button className="Send_message" onClick={this.handleSubmit}>Envoyer</button>
+                <button className="Send_message" onClick={this.handleSubmit}><BiMailSend /></button>
             </div>
         )
     }
-
-    // convertDate(paraStr) {
-    //     paraStr = paraStr.split("T");
-    //     let date = paraStr[0];
-    //     let horaire = paraStr[1].split(".");
-    //     horaire = horaire[0];
-
-    //     horaire = horaire.split(":");
-    //     let time = horaire[0];
-    //     let minute = horaire[1];
-    //     let second = horaire[2];
-
-    //     date = date.split("-");
-    //     let year = date[0];
-    //     let month = date[1];
-    //     let day = date[2];
-
-    //     return ("posté le " + day + "-" + month + "-" + year + " " + "à " + time + "h " + minute + "mn ");
-    // };
-
 
     renderMessagesList() {
 
@@ -238,19 +216,19 @@ class Chat extends React.Component {
                                                     <p className="message_post_date">{convertDate(element.msg_date)}</p>
                                                 </div>
                                                 <div className="message_post_content">
-                                                    <div className="btn_post_content">
+                                                    <div className="title_post_content">
                                                         <h2>{element.msg_title}</h2>
                                                         {(this.checkIdentity(element.msg_user_id) && element.msg_content !== null) ?
                                                             this.state.messagePut !== index ?
-                                                                <>
+                                                                <div className="container_user_button">
                                                                     <button onClick={e => this.handlePutMsg(e, index, element.msg_content, element.msg_image)}><FaPen /></button>
                                                                     <button onClick={e => this.handleDeleteMsg(e, element.msg_id, element.msg_user_id, index)}><MdDelete /></button>
-                                                                </>
+                                                                </div>
                                                                 :
-                                                                <>
+                                                                <div className="container_user_button">
                                                                     <button onClick={e => this.handleSubmitPutMsg(e, element.msg_id, element.msg_user_id, index)}><BiMailSend /></button>
                                                                     <button onClick={e => this.handleCancelPutMsg(e)}><BsBackspace /></button>
-                                                                </>
+                                                                </div>
                                                             :
                                                             null
                                                         }
@@ -260,8 +238,8 @@ class Chat extends React.Component {
                                                         <div className="element_post_content">
                                                             {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                                                             <div className="container_style_post_img">
-                                                                <label for="file" class="label-file"><BsCardImage /></label>
-                                                                <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                                                                <label for="file" className="label_file"><BsCardImage /></label>
+                                                                <input id="file" className="input_file" type="file" onChange={this.handleChangeImage}></input>
                                                                 <textarea value={this.state.messagePutContent} onChange={this.handleMessagePutContent}></textarea>
                                                             </div>
                                                         </div>
@@ -511,8 +489,8 @@ class Chat extends React.Component {
             <div className="container_txt_area_comment">
                 <textarea value={this.state.comment} onChange={this.handleGetComment}></textarea>
                 <div className="container_flex_comment_img">
-                    <label for="file" class="label-file"><BsCardImage /></label>
-                    <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                    <label for="file" className="label_file"><BsCardImage /></label>
+                    <input id="file" className="input_file" type="file" onChange={this.handleChangeImage}></input>
                     {this.state.image && <img className="img_file" src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                 </div>
             </div>
@@ -544,7 +522,7 @@ class Chat extends React.Component {
                             <div className="container_user_comment" key={index}>
                                 <div className="container_style_img_comment">
                                     {this.state.image && <img src={'http://localhost:3000/public/uploads/' + this.state.image} />}
-                                    <label for="file" class="label-file"><BsCardImage /></label>
+                                    <label for="file" class="label_file"><BsCardImage /></label>
                                     <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
                                 </div>
                                 <textarea value={this.state.editCommentContent} onChange={e => this.handleEditCommentContent(e)}></textarea>

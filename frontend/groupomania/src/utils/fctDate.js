@@ -7,7 +7,6 @@ export function convertDate(paraStr) {
     horaire = horaire.split(":");
     let time = horaire[0];
     let minute = horaire[1];
-    let second = horaire[2];
 
     date = date.split("-");
     let year = date[0];

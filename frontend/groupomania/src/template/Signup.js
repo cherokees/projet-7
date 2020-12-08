@@ -2,11 +2,13 @@ import React from 'react';
 import { appFetch, appFetchFormData } from '../utils/appFetch';
 import { Redirect } from 'react-router-dom';
 import Layout from './layout';
-import axios from 'axios';
 import { uploadFile } from '../utils/upload';
 import { validateSubmit, VLD_IS_EMAIL, VLD_NOT_EMPTY_STRING } from '../utils/frontValidator';
-import { AiOutlineEye } from 'react-icons/ai'
-import { AiOutlineEyeInvisible } from 'react-icons/ai'
+import { AiOutlineEye } from 'react-icons/ai';
+import { AiOutlineEyeInvisible } from 'react-icons/ai';
+import { BsCardImage } from "react-icons/bs";
+import { AiOutlineUserAdd } from "react-icons/ai";
+
 
 class Signup extends React.Component {
 
@@ -188,7 +190,7 @@ class Signup extends React.Component {
 
             return (
                 <Layout>
-                    <form className="form_signup" enctype="multipart/form-data">
+                    <form className="form_signup" encType="multipart/form-data">
                         <div className="container_form">
                             <div className="container_form_style">
                                 <div className="container_label">
@@ -293,11 +295,11 @@ class Signup extends React.Component {
                                 </div>
 
                                 <div className="container_label">
-                                    <label for="file" class="label-file">Choisir une image</label>
-                                    <input id="file" class="input-file" type="file" onChange={this.handleChangeImage}></input>
+                                    <label htmlFor="file" className="label_file"><BsCardImage /></label>
+                                    <input id="file" className="input_file" type="file" onChange={this.handleChangeImage}></input>
                                     {this.state.image && <img className="img_file" src={'http://localhost:3000/public/uploads/' + this.state.image} />}
                                 </div>
-                                <button className="button_form_submit" onClick={this.handleSubmit}>Envoyer</button>
+                                <button className="button_form_submit" onClick={this.handleSubmit}><AiOutlineUserAdd /></button>
                             </div>
                         </div>
                     </form>
